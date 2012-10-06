@@ -14,7 +14,7 @@ public:
 signals:
 	
 public slots:
-	void setSound(const Sound& otherSound) {sound = currentSound;};
+	void setSound(const Sound& otherSound) {currentSound = otherSound;};
 	
 private:
 	Sound currentSound;

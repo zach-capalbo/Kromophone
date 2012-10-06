@@ -47,7 +47,7 @@ typedef enum {
 } io_method;
 
 Camera::Camera(QObject *parent) :
-	QObject(parent)
+	ColorSource(parent)
 {
 	
 }

@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QString>
+#include "ColorSource.h"
 
-class Camera : public QObject
+class Camera : public ColorSource
 {
 	Q_OBJECT
 public:
@@ -16,6 +17,8 @@ public:
 		IO_METHOD_USERPTR,
 	} io_method;
 	
+	//! Todo: Implement this
+	const QColor color() const { return QColor(Qt::black); };
 signals:
 	
 public slots:
