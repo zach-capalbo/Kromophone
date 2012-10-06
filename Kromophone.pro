@@ -12,9 +12,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         MainWindow.cpp \
-    Camera.cpp
+    Camera.cpp \
+    Kromophone.cpp \
+    ColorSource.cpp \
+    AudioEngine.cpp \
+    Sound.cpp \
+    Timber.cpp
 
 HEADERS  += MainWindow.h \
-    Camera.h
+    Camera.h \
+    Kromophone.h \
+    ColorSource.h \
+    AudioEngine.h \
+    Sound.h \
+    Timber.h
 
 FORMS    += MainWindow.ui
