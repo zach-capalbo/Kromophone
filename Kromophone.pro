@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
 TARGET = Kromophone
 TEMPLATE = app
@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ColorSource.cpp \
     AudioEngine.cpp \
     Sound.cpp \
-    Timber.cpp
+    Timber.cpp \
+    ImageSourceWidget.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -25,6 +26,8 @@ HEADERS  += MainWindow.h \
     ColorSource.h \
     AudioEngine.h \
     Sound.h \
-    Timber.h
+    Timber.h \
+    ImageSourceWidget.h
 
-FORMS    += MainWindow.ui
+FORMS    += MainWindow.ui \
+    ImageSourceWidget.ui
