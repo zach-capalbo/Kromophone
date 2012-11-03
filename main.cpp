@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "MainWindow.h"
-#include "ColorSource.h"
+#include "Color.h"
 #include "Transform.h"
 #include "SoundOut.h"
 

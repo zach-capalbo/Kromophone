@@ -2,11 +2,17 @@
 #define TRANSFORM_H
 
 #include <QObject>
+#include <stdlib.h>
+#include "Sound.h"
+#include "Color.h"
 
 
 /**
 */
 class Transform : public QObject {
+
+	Q_OBJECT
+
 public:
 
 	Transform();
@@ -22,6 +28,6 @@ public slots:
 
 	void fromJon(Color P);
 
-}
+};
 
 #endif
