@@ -15,7 +15,6 @@ signals:
     void colorChanged(Color color);
 	
 public slots:
-    void doRandomColor();
 //	virtual void enableSweep() {};
 //	virtual void enableAverage() {};
 //	virtual void increaseGranularity() {};
@@ -33,6 +32,8 @@ public:
 
     const Color color();
 
+protected:
+    void timerEvent(QTimerEvent *event);
 
 };
 

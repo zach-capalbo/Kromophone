@@ -18,7 +18,7 @@ public:
 	} io_method;
 	
 	//! Todo: Implement this
-	const QColor color() const { return QColor(Qt::black); };
+    const Color color() const { return Color(); };
 signals:
 	
 public slots:

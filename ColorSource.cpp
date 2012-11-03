@@ -2,14 +2,13 @@
 
 RandomColorSource::RandomColorSource()
 {
-
+    startTimer(1000);
 }
 
 const Color RandomColorSource::color()
 {
     int randomGen = rand() %255;
-    Color randomColor = Color.FromArgb(randomGen.Next(255), randomGen.Next(255),
-    randomGen.Next(255));
+    Color randomColor(rand()%255,rand()%255,rand()%255);
 
     return randomColor;
 };
@@ -18,7 +17,10 @@ const Color RandomColorSource::color()
 
 
 
-
+void RandomColorSource::timerEvent(QTimerEvent *event)
+{
+    emit colorChanged(color());
+}
 
 
 

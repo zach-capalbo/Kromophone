@@ -10,6 +10,8 @@ class Color
 public:
     Color();
 
+    Color(ColorType r, ColorType g, ColorType b) { Red = r; Green = g; Blue = b; }
+
     ColorType Red;
     ColorType Green;
     ColorType Blue;
