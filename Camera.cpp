@@ -1,4 +1,5 @@
 #include "Camera.h"
+#ifndef _WIN32
 
 /*
  *  V4L2 video capture example
@@ -60,3 +61,5 @@ int Camera::xioctl (int fd, int request, void * arg)
 
         return r;
 }
+
+#endif
