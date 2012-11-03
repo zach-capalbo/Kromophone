@@ -20,8 +20,7 @@ SOURCES += main.cpp\
     ColorSource.cpp \
     AudioEngine.cpp \
     Sound.cpp \
-    Timber.cpp \
-    ImageSourceWidget.cpp
+    Timbre.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -29,8 +28,6 @@ HEADERS  += MainWindow.h \
     ColorSource.h \
     AudioEngine.h \
     Sound.h \
-    Timber.h \
-    ImageSourceWidget.h
+    Timbre.h
 
-FORMS    += MainWindow.ui \
-    ImageSourceWidget.ui
+FORMS    += MainWindow.ui
