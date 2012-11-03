@@ -2,7 +2,7 @@
 #define COLORSOURCE_H
 
 #include <QObject>
-#include <QColor>
+#include "Color.h"
 
 class ColorSource : public QObject
 {
@@ -10,15 +10,30 @@ class ColorSource : public QObject
 public:
 	explicit ColorSource(QObject *parent = 0);
 	
-	virtual const QColor& color()=0;
+    virtual const Color color()=0;
 signals:
-	void colorChanged(QColor color);
+    void colorChanged(Color color);
 	
 public slots:
-	virtual void enableSweep() {};
-	virtual void enableAverage() {};
-	virtual void increaseGranularity() {};
-	virtual void decreaseGranularity() {};
+//	virtual void enableSweep() {};
+//	virtual void enableAverage() {};
+//	virtual void increaseGranularity() {};
+//	virtual void decreaseGranularity() {};
+
+
+
 };
+
+
+class RandomColorSource : public ColorSource
+{
+public:
+    RandomColorSource();
+
+    const Color color();
+
+
+};
+
 
 #endif // COLORSOURCE_H

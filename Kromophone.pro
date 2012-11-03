@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     ColorSource.cpp \
     AudioEngine.cpp \
     Sound.cpp \
-    Timbre.cpp
+    Timbre.cpp \
+    Color.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -25,6 +26,7 @@ HEADERS  += MainWindow.h \
     ColorSource.h \
     AudioEngine.h \
     Sound.h \
-    Timbre.h
+    Timbre.h \
+    Color.h
 
 FORMS    += MainWindow.ui
