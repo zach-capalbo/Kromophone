@@ -1,0 +1,20 @@
+# This file is used to ignore files which are generated in the Qt build system
+# ----------------------------------------------------------------------------
+
+syntax: glob
+
+*~
+*.a
+*.la
+*.pc
+*.core
+*.moc
+*.o
+*.obj
+*.orig
+*.swp
+*.rej
+*.so
+*.pro.user
+debug/
+release/

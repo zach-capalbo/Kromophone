@@ -4,10 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui widgets
 
 TARGET = Kromophone
 TEMPLATE = app
+
+target.path = /tmp/
+INSTALLS += target
 
 
 SOURCES += main.cpp\
@@ -18,7 +21,9 @@ SOURCES += main.cpp\
     AudioEngine.cpp \
     Sound.cpp \
     Timbre.cpp \
-    Color.cpp
+    Color.cpp \
+	SoundOut.cpp \
+	Transform.cpp 
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -27,6 +32,8 @@ HEADERS  += MainWindow.h \
     AudioEngine.h \
     Sound.h \
     Timbre.h \
-    Color.h
+    SoundOut.h \
+    Transform.h \
+	Color.h
 
 FORMS    += MainWindow.ui
