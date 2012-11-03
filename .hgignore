@@ -16,5 +16,6 @@ syntax: glob
 *.rej
 *.so
 *.pro.user
+moc_*.cpp
 debug/
 release/
