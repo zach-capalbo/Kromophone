@@ -21,7 +21,8 @@ SOURCES += main.cpp\
     AudioEngine.cpp \
     Sound.cpp \
     Timbre.cpp \
-    SoundOut.cpp
+    SoundOut.cpp \
+    Transform.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -30,6 +31,7 @@ HEADERS  += MainWindow.h \
     AudioEngine.h \
     Sound.h \
     Timbre.h \
-    SoundOut.h
+    SoundOut.h \
+    Transform.h
 
 FORMS    += MainWindow.ui
