@@ -15,7 +15,7 @@ class Transform : public QObject {
 
 public:
 
-	Transform(){};
+    Transform();
 
 private:
 

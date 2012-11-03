@@ -1,5 +1,8 @@
 #include "Transform.h"
 
+Transform::Transform()
+{}
+
 void Transform::fromJon(Color P) {
 	Sound newSound;
 	// NOTE: THIS IS BULLSHIT

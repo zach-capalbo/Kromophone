@@ -23,8 +23,9 @@ SOURCES += main.cpp\
     Timbre.cpp \
     Color.cpp \
         SoundOut.cpp \
-        Transform.cpp \
-    VideoSource.cpp
+    Transform.cpp \
+    SoundOutQTAudio.cpp \
+	VideoSource.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -34,8 +35,9 @@ HEADERS  += MainWindow.h \
     Sound.h \
     Timbre.h \
     SoundOut.h \
-    Transform.h \
         Color.h \
-    VideoSource.h
+    Transform.h \
+    SoundOutQTAudio.h \
+	VideoSource.h
 
 FORMS    += MainWindow.ui
