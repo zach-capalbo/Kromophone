@@ -46,8 +46,7 @@ typedef enum {
 	IO_METHOD_USERPTR,
 } io_method;
 
-Camera::Camera(QObject *parent) :
-	ColorSource(parent)
+Camera::Camera(QObject *parent)
 {
 	
 }

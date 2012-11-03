@@ -7,9 +7,7 @@
 class ColorSource : public QObject
 {
 	Q_OBJECT
-public:
-	explicit ColorSource(QObject *parent = 0);
-	
+public:	
     virtual const Color color()=0;
 signals:
     void colorChanged(Color color);
