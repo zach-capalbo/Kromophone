@@ -25,13 +25,15 @@ public slots:
 
 class RandomColorSource : public ColorSource
 {
+	Q_OBJECT
 public:
     RandomColorSource();
 
     const Color color();
 
-protected:
-    void timerEvent(QTimerEvent *event);
+public slots:
+    void doColor();
+	void start();
 
 };
 

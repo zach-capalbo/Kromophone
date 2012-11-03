@@ -1,8 +1,9 @@
 #include "ColorSource.h"
+#include <QTimer>
 
 RandomColorSource::RandomColorSource()
 {
-    startTimer(1000);
+
 }
 
 const Color RandomColorSource::color()
@@ -15,9 +16,14 @@ const Color RandomColorSource::color()
 
 
 
+void RandomColorSource::start()
+{
+	QTimer *timer = new QTimer(this);
+	 connect(timer, SIGNAL(timeout()), this, SLOT(doColor()));
+	 timer->start(1000);
+}
 
-
-void RandomColorSource::timerEvent(QTimerEvent *event)
+void RandomColorSource::doColor()
 {
     emit colorChanged(color());
 }

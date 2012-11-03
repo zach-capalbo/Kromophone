@@ -2,6 +2,7 @@
 #define SOUND_H
 
 #include "Timbre.h"
+#include <QMetaType>
 
 class Sound
 {
@@ -15,4 +16,6 @@ public:
     Timbre* timbre;
 };
 
+
+Q_DECLARE_METATYPE(Sound)
 #endif // SOUND_H

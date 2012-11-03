@@ -4,11 +4,21 @@
 #include "Color.h"
 #include "Transform.h"
 #include "SoundOut.h"
+#include <QThread>
+#include <QMetaType>
 
 int main(int argc, char *argv[])
 {
+	QApplication a(argc, argv);
+	qRegisterMetaType<Color>();
+	qRegisterMetaType<Sound>();
 	// TEST VALUES
 	RandomColorSource M_RCS;
+	QThread sourceThread;
+	M_RCS.moveToThread(&sourceThread);
+	QMetaObject::invokeMethod(&M_RCS,"start");
+	sourceThread.start();
+	
 	Transform M_T;
 	SoundOut M_SO;
 	//
@@ -19,7 +29,7 @@ int main(int argc, char *argv[])
 					 &M_SO, SLOT(PlaySound(Sound)));
 	//
 
-	QApplication a(argc, argv);
+	
 	MainWindow w;
 	w.show();
 	

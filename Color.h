@@ -4,7 +4,9 @@
 typedef unsigned char ColorType;
 #define MAX_COLOR_TYPE 255
 
-class Color
+#include <QMetaType>
+
+struct Color
 {
 
 public:
@@ -17,5 +19,7 @@ public:
     ColorType Blue;
 
 };
+
+Q_DECLARE_METATYPE(Color)
 
 #endif // COLOR_H
