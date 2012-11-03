@@ -3,6 +3,8 @@
 
 syntax: glob
 
+Makefile*
+ui_*
 *~
 *.a
 *.la

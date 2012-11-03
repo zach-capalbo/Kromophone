@@ -4,7 +4,7 @@
 using namespace std;
 
 SoundOut::SoundOut()
-{    
+{
 }
 
 void SoundOut::PlaySound(Sound InputSound)
