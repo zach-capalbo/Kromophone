@@ -8,7 +8,7 @@ class Sound
 public:
 	Sound();
 	
-private:
+public:
 	float pitch;
 	float pan;
 	float volume;
