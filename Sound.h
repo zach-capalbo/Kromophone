@@ -1,7 +1,7 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include "Timber.h"
+#include "Timbre.h"
 
 class Sound
 {
@@ -12,7 +12,7 @@ private:
 	float pitch;
 	float pan;
 	float volume;
-	Timber* timber;
+    Timbre* timbre;
 };
 
 #endif // SOUND_H
