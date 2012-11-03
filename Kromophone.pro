@@ -9,6 +9,9 @@ QT       += core gui widgets
 TARGET = Kromophone
 TEMPLATE = app
 
+target.path = /tmp/
+INSTALLS += target
+
 
 SOURCES += main.cpp\
         MainWindow.cpp \
