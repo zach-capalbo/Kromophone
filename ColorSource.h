@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "Color.h"
+#include <QImage>
 
 class ColorSource : public QObject
 {
@@ -35,6 +36,26 @@ public slots:
     void doColor();
 	void start();
 
+};
+
+class ImageColorSource : public ColorSource
+{
+	Q_OBJECT
+public:
+	ImageColorSource(const QString& file);
+	
+	const Color color();
+	
+protected:
+	bool eventFilter(QObject *, QEvent *);
+	
+signals:
+	void colorChanged(Color color);
+	
+private:
+	Color lastColor;
+	QImage image;
+	QWidget* displayWidget;
 };
 
 

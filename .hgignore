@@ -3,6 +3,8 @@
 
 syntax: glob
 
+Kromophone
+*.user*
 Makefile*
 ui_*
 *~
