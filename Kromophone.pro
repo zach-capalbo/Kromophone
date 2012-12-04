@@ -6,11 +6,17 @@
 
 QT       += core gui widgets
 
+CONFIG   += console mobility debug
+CONFIG   -= app_bundle
+CONFIG	 += multimediakit
 TARGET = Kromophone
 TEMPLATE = app
 
 target.path = /tmp/
 INSTALLS += target
+
+INCLUDEPATH += /usr/include/QtMultimediaKit
+LIBS += -lQtMultimediaKit
 
 
 SOURCES += main.cpp\
@@ -24,7 +30,7 @@ SOURCES += main.cpp\
     Color.cpp \
         SoundOut.cpp \
     Transform.cpp \
-   # SoundOutQTAudio.cpp \
+   #SoundOutQTAudio.cpp \
 	#VideoSource.cpp
 
 HEADERS  += MainWindow.h \
