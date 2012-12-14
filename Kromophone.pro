@@ -43,7 +43,8 @@ SOURCES += main.cpp\
    #SoundOutQTAudio.cpp \
 	#VideoSource.cpp
     OpenCVColorSource.cpp \
-    AudioGenerator.cpp
+    AudioGenerator.cpp \
+    ColorPreviewWidget.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -58,6 +59,7 @@ HEADERS  += MainWindow.h \
     #SoundOutQTAudio.h \
 	#VideoSource.h
     OpenCVColorSource.h \
-    AudioGenerator.h
+    AudioGenerator.h \
+    ColorPreviewWidget.h
 
 FORMS    += MainWindow.ui

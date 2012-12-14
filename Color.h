@@ -26,6 +26,8 @@ public:
 	float luminosity() const;
 	
 	void hsl(float& hue, float& saturation, float& luminosity) const;
+	
+	const QString toHex() const;
 
 };
 

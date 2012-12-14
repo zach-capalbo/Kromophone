@@ -26,6 +26,9 @@ public slots:
 	
 	void pullTimerExpired();
 	
+	void stateChanged(QAudio::State newState);
+	
+	void notify();
 	
 private:
 	Sound currentSound;

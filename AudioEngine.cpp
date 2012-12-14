@@ -89,3 +89,21 @@ void AudioEngine::PlaySound(const Sound &otherSound)
 	emit updateSound(currentSound);
 	//m_audioOutput->start(m_generator);
 }
+
+void AudioEngine::notify()
+{
+	qDebug() << "Notified";
+}
+
+void AudioEngine::stateChanged(QAudio::State newState)
+{
+	qDebug() << newState;
+	
+	if (m_audioOutput->error() != QAudio::NoError)
+	{
+		if (newState == QAudio::IdleState)
+		{
+			m_audioOutput->start(m_generator);
+		}
+	}
+}

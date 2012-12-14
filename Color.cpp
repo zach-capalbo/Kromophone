@@ -78,3 +78,10 @@ void Color::hsl(float& hue, float& saturation, float& luminosity) const
 	}
 	hue/=5.0f;
 }
+
+const QString Color::toHex() const
+{
+	QString out;
+	
+	return out.sprintf("0x%2X%2X%2X",(int) (Red*255.0),(int) (Blue*255.0),(int) (Green*255.0)).replace(" ","0");
+}
