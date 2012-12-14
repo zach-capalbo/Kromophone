@@ -6,6 +6,7 @@
 #include "SoundOut.h"
 #include <QThread>
 #include <QMetaType>
+#include "OpenCVColorSource.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,6 +22,8 @@ int main(int argc, char *argv[])
 	
 	ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
 	
+	OpenCVColorSource cv;
+	
 	Transform M_T;
 	SoundOut M_SO;
 	//
@@ -34,6 +37,8 @@ int main(int argc, char *argv[])
 	
 	MainWindow w;
 	w.show();
+	
+	cv.run();
 	
 	return a.exec();
 }

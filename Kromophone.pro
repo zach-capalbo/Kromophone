@@ -18,6 +18,8 @@ INSTALLS += target
 INCLUDEPATH += /usr/include/QtMultimediaKit
 LIBS += -lQtMultimediaKit
 
+LIBS += -lopencv_core -lopencv_video -lopencv_highgui
+
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -32,6 +34,7 @@ SOURCES += main.cpp\
     Transform.cpp \
    #SoundOutQTAudio.cpp \
 	#VideoSource.cpp
+    OpenCVColorSource.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -45,5 +48,6 @@ HEADERS  += MainWindow.h \
     Transform.h \
     #SoundOutQTAudio.h \
 	#VideoSource.h
+    OpenCVColorSource.h
 
 FORMS    += MainWindow.ui
