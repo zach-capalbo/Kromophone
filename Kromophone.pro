@@ -20,6 +20,15 @@ LIBS += -lQtMultimediaKit
 
 LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 
+release: CONFIG-=debug
+message($$CONFIG)
+
+CONFIG(release, debug|release) {
+    DEFINES += QT_NO_DEBUG
+    QMAKE_CXXFLAGS_RELEASE -= -O2
+    QMAKE_CXXFLAGS_RELEASE += -O3
+}
+
 
 SOURCES += main.cpp\
         MainWindow.cpp \
@@ -34,7 +43,8 @@ SOURCES += main.cpp\
     Transform.cpp \
    #SoundOutQTAudio.cpp \
 	#VideoSource.cpp
-    OpenCVColorSource.cpp
+    OpenCVColorSource.cpp \
+    AudioGenerator.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -48,6 +58,7 @@ HEADERS  += MainWindow.h \
     Transform.h \
     #SoundOutQTAudio.h \
 	#VideoSource.h
-    OpenCVColorSource.h
+    OpenCVColorSource.h \
+    AudioGenerator.h
 
 FORMS    += MainWindow.ui

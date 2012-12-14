@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QLayout>
 #include <QApplication>
+#include <QTimer>
 
 static QImage IplImage2QImage(const IplImage *iplImage)
 {
@@ -50,23 +51,60 @@ OpenCVColorSource::OpenCVColorSource(QObject *parent) :
 	//Now add the image to our display widget
 	displayWidget->layout()->addWidget(imageLabel);
 	
-	
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
+	timer->start(10);
 	
 	//Show it on the screen
 	displayWidget->show();
 }
 
-void OpenCVColorSource::run()
+void OpenCVColorSource::captureImage()
 {
-	forever
-	{
-		
-		IplImage* frame = 0;
-		frame = cvQueryFrame(camera);
-		
-		imageLabel->setPixmap(QPixmap::fromImage(IplImage2QImage(frame)));
-		
-		QApplication::processEvents();
-	}
+	if (!camera)
+		return;
+	IplImage* frame = 0;
+	frame = cvQueryFrame(camera);
+	
+	//image = ;//.mirrored(true,false);
+	QImage image(IplImage2QImage(frame).mirrored(true,false));
+	
+	QImage displayImage(image);
+	
+	drawCrosshairs(displayImage);
+	
+	imageLabel->setPixmap(QPixmap::fromImage(displayImage));
+	
+	imageLabel->update();
+	
+	emit colorChanged(pickColor(image));
 }
 
+Color& OpenCVColorSource::pickColor(const QImage& image)
+{
+	int x = image.width() / 2;
+	int y = image.height() / 2;
+	
+	lastColor = image.pixel(x,y);
+	
+	return lastColor;
+}
+
+void OpenCVColorSource::drawCrosshairs(QImage& image)
+{
+	int posx = image.width() / 2;
+	int posy = image.height() / 2;
+	
+	int cwidth = 5;
+	int cheight = 5;
+	
+	for (int x = posx - cwidth; x < posx + cwidth; x++ )
+	{
+		image.setPixel(x,posy,qRgb(255, 255, 255));
+	}
+
+	for (int y = posy - cheight; y < posy + cheight; y++)
+	{
+		image.setPixel(posx,y,qRgb(255, 255, 255));
+	}
+}

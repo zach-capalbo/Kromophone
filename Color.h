@@ -1,10 +1,11 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-typedef unsigned char ColorType;
-#define MAX_COLOR_TYPE 255
+typedef float ColorType;
+#define MAX_COLOR_TYPE 1.0f
 
 #include <QMetaType>
+#include <QRgb>
 
 struct Color
 {
@@ -17,6 +18,14 @@ public:
     ColorType Red;
     ColorType Green;
     ColorType Blue;
+	
+	Color& operator=(const QRgb& qrgb);
+	
+	float hue() const;
+	float saturation() const;
+	float luminosity() const;
+	
+	void hsl(float& hue, float& saturation, float& luminosity) const;
 
 };
 

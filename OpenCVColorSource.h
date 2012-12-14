@@ -24,9 +24,13 @@ signals:
 	
 public slots:
 	
-	void run();
+	void captureImage();
+	
+	Color& pickColor(const QImage &image);
 	
 protected:
+	
+	void drawCrosshairs(QImage& image);
 	
 	CvCapture* camera;
 	

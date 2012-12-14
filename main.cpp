@@ -7,6 +7,7 @@
 #include <QThread>
 #include <QMetaType>
 #include "OpenCVColorSource.h"
+#include "AudioEngine.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,25 +21,27 @@ int main(int argc, char *argv[])
 	QMetaObject::invokeMethod(&M_RCS,"start");
 	sourceThread.start();
 	
+	SoundOut testOut;
+
 	ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
 	
 	OpenCVColorSource cv;
 	
-	Transform M_T;
-	SoundOut M_SO;
-	//
-	//
-	QObject::connect(&i, SIGNAL(colorChanged(Color)),
-					 &M_T, SLOT(fromJon(Color)));
-	QObject::connect(&M_T, SIGNAL(toNathan(Sound)),
-					 &M_SO, SLOT(PlaySound(Sound)));
-	//
+	HSLMode M_T;
 
+	QThread audioThread;
+	AudioEngine audio;
 	
-	MainWindow w;
-	w.show();
+	audio.moveToThread(&audioThread);
 	
-	cv.run();
+	QMetaObject::invokeMethod(&audio,"initalizeAudio");
+	
+	audioThread.start(QThread::HighPriority);
+	
+	QObject::connect(&i, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
+	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
+	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &testOut, SLOT(PlaySound(Sound)));
+	//cv.moveToThread(&sourceThread);
 	
 	return a.exec();
 }

@@ -14,7 +14,7 @@ RandomColorSource::RandomColorSource()
 
 const Color RandomColorSource::color()
 {
-    int randomGen = rand() %255;
+    int randomGen = rand() % 255;
     Color randomColor(rand()%255,rand()%255,rand()%255);
 
     return randomColor;
@@ -82,9 +82,9 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		QRgb rgb = image.pixel(mouseEvent->pos());
 		
 		//Setup our saved color with the color from the image
-		lastColor.Blue = qBlue(rgb);
-		lastColor.Green = qGreen(rgb);
-		lastColor.Red = qRed(rgb);
+		lastColor.Blue = qBlue(rgb) / 255.0f;
+		lastColor.Green = qGreen(rgb) / 255.0f;
+		lastColor.Red = qRed(rgb) / 255.0f;
 		
 		//Pass the color on
 		emit colorChanged(lastColor);

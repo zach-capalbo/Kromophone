@@ -22,12 +22,29 @@ private:
 
 signals:
 
-	void toNathan(Sound P);
+	void SoundGenerated(Sound P);
 
 public slots:
 
-	void fromJon(Color P);
+	virtual void ReceiveColor(Color P);
 
+};
+
+class HSLMode : public Transform
+{
+	Q_OBJECT
+	
+public:
+	
+	HSLMode();
+	
+signals:
+	
+	void SoundGenerated(Sound P);
+	
+public slots:
+	
+	virtual void ReceiveColor(Color P);
 };
 
 #endif

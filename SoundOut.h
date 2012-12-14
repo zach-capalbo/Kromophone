@@ -10,7 +10,7 @@ public:
     SoundOut();
 
 public slots:
-    void PlaySound(Sound InputSound);
+    virtual void PlaySound(Sound InputSound);
 };
 
 #endif // SOUNDOUT_H

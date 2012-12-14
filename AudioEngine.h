@@ -1,13 +1,15 @@
-#ifndef AUDIOGENERATOR_H
-#define AUDIOGENERATOR_H
+#ifndef AUDIOENGINE_H
+#define AUDIOENGINE_H
 
 #include <QObject>
 #include <QtMultimediaKit/QAbstractAudioOutput>
 #include <QAudioOutput>
 #include "Sound.h"
 #include <QTimer>
+#include "AudioGenerator.h"
+#include "SoundOut.h"
 
-class AudioEngine : public QObject
+class AudioEngine : public SoundOut
 {
 	Q_OBJECT
 public:
@@ -16,9 +18,12 @@ public:
 signals:
 	
 public slots:
-    void setSound(const Sound& otherSound) {currentSound = otherSound;}
+    virtual void PlaySound(const Sound& otherSound);
 	
 	void initalizeAudio();
+	
+	void pullTimerExpired();
+	
 	
 private:
 	Sound currentSound;
@@ -29,6 +34,9 @@ private:
     QAudioOutput*    m_audioOutput;
     QIODevice*       m_output; // not owned
     QAudioFormat     m_format;
+	QByteArray m_buffer;
+	
+	AudioGenerator* m_generator;
 	
 	bool m_pullMode;
 };
