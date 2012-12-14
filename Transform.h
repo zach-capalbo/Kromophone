@@ -23,6 +23,8 @@ private:
 signals:
 
 	void SoundGenerated(Sound P);
+	
+	void SoundsGenerated(SoundList sounds);
 
 public slots:
 
@@ -41,6 +43,23 @@ public:
 signals:
 	
 	void SoundGenerated(Sound P);
+	
+public slots:
+	
+	virtual void ReceiveColor(Color P);
+};
+
+class RGBMode : public Transform
+{
+	Q_OBJECT
+	
+public:
+	
+	RGBMode();
+	
+signals:
+	
+	void SoundsGenerated(SoundList sounds);
 	
 public slots:
 	

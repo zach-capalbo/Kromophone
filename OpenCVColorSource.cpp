@@ -33,7 +33,7 @@ static QImage IplImage2QImage(const IplImage *iplImage)
 }
 
 OpenCVColorSource::OpenCVColorSource(QObject *parent) :
-	ColorSource()
+	ImageSource()
 {
 	camera = cvCaptureFromCAM( CV_CAP_ANY );
 	
@@ -69,42 +69,16 @@ void OpenCVColorSource::captureImage()
 	//image = ;//.mirrored(true,false);
 	QImage image(IplImage2QImage(frame).mirrored(true,false));
 	
+	cursor.setX(image.width()/2);
+	cursor.setY(image.height()/2);
+	
 	QImage displayImage(image);
 	
-	drawCrosshairs(displayImage);
+	drawCursor(displayImage);
 	
 	imageLabel->setPixmap(QPixmap::fromImage(displayImage));
 	
 	imageLabel->update();
 	
 	emit colorChanged(pickColor(image));
-}
-
-Color& OpenCVColorSource::pickColor(const QImage& image)
-{
-	int x = image.width() / 2;
-	int y = image.height() / 2;
-	
-	lastColor = image.pixel(x,y);
-	
-	return lastColor;
-}
-
-void OpenCVColorSource::drawCrosshairs(QImage& image)
-{
-	int posx = image.width() / 2;
-	int posy = image.height() / 2;
-	
-	int cwidth = 5;
-	int cheight = 5;
-	
-	for (int x = posx - cwidth; x < posx + cwidth; x++ )
-	{
-		image.setPixel(x,posy,qRgb(255, 255, 255));
-	}
-
-	for (int y = posy - cheight; y < posy + cheight; y++)
-	{
-		image.setPixel(posx,y,qRgb(255, 255, 255));
-	}
 }

@@ -52,15 +52,17 @@ signals:
 public slots:
 	
 	void setSound(const Sound& sound);
+	void setSounds(const SoundList& sounds);
 	
 protected:
 	Sound m_sound;
-	Sound m_oldSound;
+	
+	SoundList m_sounds;
 	
 	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent);
 	qreal generateSine(int frequency, qreal angle);
 	qreal generateSweep(int frequency, qreal angle, float percent);
-	qreal generateTimbre(int frequency, qreal angle, float percent);
+	qreal generateTimbre(const Sound &sound, int frequency, qreal angle, float percent);
 	
 };
 

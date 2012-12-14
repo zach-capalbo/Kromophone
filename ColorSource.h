@@ -4,6 +4,8 @@
 #include <QObject>
 #include "Color.h"
 #include <QImage>
+#include <QPoint>
+#include <QLabel>
 
 class ColorSource : public QObject
 {
@@ -38,7 +40,29 @@ public slots:
 
 };
 
-class ImageColorSource : public ColorSource
+class ImageSource : public ColorSource
+{
+	Q_OBJECT
+	
+protected:
+	ImageSource();
+	
+	void drawCursor(QImage& displayImage);
+	
+	Color& pickColor(const QImage& image);
+	
+	void average(const QImage& image);
+	
+	QPoint cursor;
+	
+	QSize cursorSize;
+	
+	Color lastColor;
+	
+	bool averageEnabled;
+};
+
+class ImageColorSource : public ImageSource
 {
 	Q_OBJECT
 public:
@@ -56,6 +80,7 @@ private:
 	Color lastColor;
 	QImage image;
 	QWidget* displayWidget;
+	QLabel* imageLabel;
 };
 
 

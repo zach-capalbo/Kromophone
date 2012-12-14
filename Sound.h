@@ -3,6 +3,7 @@
 
 #include "Timbre.h"
 #include <QMetaType>
+#include <QVector>
 
 class Sound
 {
@@ -16,6 +17,11 @@ public:
     Timbre* timbre;
 };
 
+typedef QVector<Sound> SoundList;
+
 
 Q_DECLARE_METATYPE(Sound)
+
+Q_DECLARE_METATYPE(SoundList)
+
 #endif // SOUND_H

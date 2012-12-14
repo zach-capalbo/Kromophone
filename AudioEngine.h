@@ -22,6 +22,8 @@ signals:
 public slots:
     virtual void PlaySound(const Sound& otherSound);
 	
+	virtual void PlaySounds(const SoundList &InputSounds);
+	
 	void initalizeAudio();
 	
 	void pullTimerExpired();

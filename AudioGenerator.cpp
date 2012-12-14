@@ -155,21 +155,30 @@ AudioGenerator::AudioGenerator(const QAudioFormat &format, qint64 durationUs, in
 
 void AudioGenerator::setSound(const Sound &sound)
 {
-	m_oldSound = m_sound;
 	m_sound = sound;
-	
-	//generateData(m_format, m_durationUs, m_frequency);
-	
-	m_oldSound = m_sound;
+}
+
+void AudioGenerator::setSounds(const SoundList& sounds)
+{
+	m_sounds = sounds;
 }
 
 void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qreal angle, float percent)
 {
-	qreal sweep = generateTimbre(frequency, angle, percent);
+	left = 0.0f;
+	right = 0.0f;
+	foreach (Sound s, m_sounds)
+	{
+		qreal sweep = generateTimbre(s, frequency, angle, percent);
+		
+		left += sweep * s.pan;
+		
+		right += sweep * (1.0 - s.pan);
+	}
 	
-	left = sweep * m_sound.pan;
+	left /= m_sounds.size();
 	
-	right = sweep * (1.0 - m_sound.pan);
+	right /= m_sounds.size();
 }
 
 qreal AudioGenerator::generateSine(int frequency, qreal angle)
@@ -184,12 +193,12 @@ qreal AudioGenerator::generateSweep(int frequency, qreal angle, float percent)
 	return newsound;// * percent + oldsound * (1.0 - percent);
 }
 
-qreal AudioGenerator::generateTimbre(int frequency, qreal angle, float percent)
+qreal AudioGenerator::generateTimbre(const Sound& sound, int frequency, qreal angle, float percent)
 {
-	if (m_sound.timbre == NULL)
+	if (sound.timbre == NULL)
 	{
 		return 0.0;
 	}
 	
-	return m_sound.volume * m_sound.timbre->generateTone(2 * M_PI * (m_sound.pitch * 200 + frequency) * angle);
+	return sound.volume * sound.timbre->generateTone(2 * M_PI * (sound.pitch * 200 + frequency) * angle);
 }

@@ -90,6 +90,11 @@ void AudioEngine::PlaySound(const Sound &otherSound)
 	//m_audioOutput->start(m_generator);
 }
 
+void AudioEngine::PlaySounds(const SoundList &InputSounds)
+{
+	m_generator->setSounds(InputSounds);
+}
+
 void AudioEngine::notify()
 {
 	qDebug() << "Notified";

@@ -12,7 +12,7 @@
 #include <QWidget>
 #include <QLabel>
 
-class OpenCVColorSource : public ColorSource
+class OpenCVColorSource : public ImageSource
 {
 	Q_OBJECT
 public:
@@ -26,15 +26,11 @@ public slots:
 	
 	void captureImage();
 	
-	Color& pickColor(const QImage &image);
-	
 protected:
 	
 	void drawCrosshairs(QImage& image);
 	
 	CvCapture* camera;
-	
-	Color lastColor;
 	
 	QWidget* displayWidget;
 	

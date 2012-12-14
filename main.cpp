@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
 	QApplication a(argc, argv);
 	qRegisterMetaType<Color>();
 	qRegisterMetaType<Sound>();
+	qRegisterMetaType<SoundList>();
 	// TEST VALUES
 	RandomColorSource M_RCS;
 	QThread sourceThread;
@@ -24,11 +25,11 @@ int main(int argc, char *argv[])
 	
 	SoundOut testOut;
 
-	ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
+	//ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
 	
 	OpenCVColorSource cv;
 	
-	HSLMode M_T;
+	RGBMode M_T;
 
 	QThread audioThread;
 	AudioEngine audio;
@@ -49,6 +50,7 @@ int main(int argc, char *argv[])
 	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
 	
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
+	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
 	//QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &testOut, SLOT(PlaySound(Sound)));
 	//cv.moveToThread(&sourceThread);
 	

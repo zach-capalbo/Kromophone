@@ -42,7 +42,7 @@ ImageColorSource::ImageColorSource(const QString& file) : image(file)
 	this->displayWidget = new QWidget();
 	
 	//The label to display the pixmap
-	QLabel* imageLabel = new QLabel();
+	imageLabel = new QLabel();
 	
 	//We need to set a layout for the widget so we can add things to it
 	displayWidget->setLayout(new QVBoxLayout());
@@ -78,6 +78,14 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		//Recast it to a mouse event so we can get the data from it
 		QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
 		
+		cursor = mouseEvent->pos();
+		
+		QImage displayImage(image);
+		
+		drawCursor(displayImage);
+		
+		imageLabel->setPixmap(QPixmap::fromImage(displayImage));
+		
 		//Get the rgb value at the pixel that the mouse is over
 		QRgb rgb = image.pixel(mouseEvent->pos());
 		
@@ -96,4 +104,70 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		//If it's not a mouse movement, let qobject handle it
 		return QObject::eventFilter(obj,event);
 	}
+}
+
+ImageSource::ImageSource()
+	: ColorSource(), cursorSize(5,5), averageEnabled(false)
+{
+
+}
+
+void ImageSource::drawCursor(QImage& image)
+{
+	int posx = cursor.x();
+	int posy = cursor.y();
+	
+	int cwidth = cursorSize.width();
+	int cheight = cursorSize.height();
+	
+	for (int x = posx - cwidth; x < posx + cwidth; x++ )
+	{
+		image.setPixel(x,posy,qRgb(255, 255, 255));
+	}
+
+	for (int y = posy - cheight; y < posy + cheight; y++)
+	{
+		image.setPixel(posx,y,qRgb(255, 255, 255));
+	}
+}
+
+Color &ImageSource::pickColor(const QImage& image)
+{	
+	if (averageEnabled)
+	{
+		average(image);	
+	}
+	else
+	{
+		lastColor = image.pixel(cursor);
+	}
+	
+	return lastColor;
+}
+
+void ImageSource::average(const QImage& image)
+{
+	unsigned int sumr = 0;
+	
+	unsigned int sumg = 0;
+	
+	unsigned int sumb = 0;
+	
+	for (int x = cursor.x() - cursorSize.width(); x < cursor.x() + cursorSize.width(); x++)
+	{
+		for (int y = cursor.y() - cursorSize.height(); y < cursor.y() + cursorSize.height(); y++)
+		{
+			QRgb rgb = image.pixel(x,y);
+			
+			sumr += qRed(rgb);
+			
+			sumg += qGreen(rgb);
+			
+			sumb += qBlue(rgb);
+		}
+	}
+	
+	lastColor.Red = (float) sumr / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	lastColor.Green = (float) sumg / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	lastColor.Blue = (float) sumb / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 }

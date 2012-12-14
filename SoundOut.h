@@ -10,7 +10,8 @@ public:
     SoundOut();
 
 public slots:
-    virtual void PlaySound(Sound InputSound);
+    virtual void PlaySound(const Sound &InputSound);
+	virtual void PlaySounds(const SoundList& InputSounds);
 };
 
 #endif // SOUNDOUT_H
