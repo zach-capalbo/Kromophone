@@ -1,6 +1,7 @@
 #include "AudioEngine.h"
 
 #include <QDebug>
+#include <QThread>
 
 const int DurationSeconds = 1;
 const int ToneFrequencyHz = 131;
@@ -46,16 +47,26 @@ void AudioEngine::initalizeAudio()
 	
 	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, this); //DurationSeconds*1000000
 	
+	QThread* generatorThread = new QThread(this);
+	
+	generatorThread->setPriority(QThread::HighPriority);
+	
+	//m_generator->moveToThread(generatorThread);
+	
+	generatorThread->start();
+	
+	connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
+	
 	m_generator->start();
 	
-	m_pullTimer->start(0);
+	//m_pullTimer->start(200);
 	
-	m_output = m_audioOutput->start();
+	//m_output = m_audioOutput->start();
+	m_audioOutput->start(m_generator);
 }
 
 void AudioEngine::pullTimerExpired()
-{
-	m_generator->setSound(currentSound);
+{	
     if (m_audioOutput && m_audioOutput->state() != QAudio::StoppedState) {
         int chunks = m_audioOutput->bytesFree()/m_audioOutput->periodSize();
         while (chunks) {
@@ -67,9 +78,14 @@ void AudioEngine::pullTimerExpired()
            --chunks;
         }
     }
+	
+	emit updateSound(currentSound);
 }
 
 void AudioEngine::PlaySound(const Sound &otherSound)
 {
 	currentSound = otherSound;
+	//m_audioOutput->stop();
+	emit updateSound(currentSound);
+	//m_audioOutput->start(m_generator);
 }

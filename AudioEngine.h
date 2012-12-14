@@ -17,6 +17,8 @@ public:
 	
 signals:
 	
+	void updateSound(const Sound& sound);
+	
 public slots:
     virtual void PlaySound(const Sound& otherSound);
 	

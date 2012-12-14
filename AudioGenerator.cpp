@@ -93,16 +93,40 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
     }
 }
 
+void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int frequency, char* buffer, qint64 length)
+{
+	
+	unsigned char *ptr = reinterpret_cast<unsigned char *>(buffer);
+
+    while (length) {
+			qreal left;
+			qreal right;
+			generateTone(left, right, frequency, qreal(sampleIndex) / format.sampleRate(), sampleIndex / (float) m_buffer.size());
+		
+        //for (int i=0; i<format.channelCount(); ++i) {
+			convertToFormat(format, ptr, left );
+            ptr += channelBytes;
+            length -= channelBytes;
+			
+			convertToFormat(format, ptr, right );
+            ptr += channelBytes;
+            length -= channelBytes;
+        //}
+        ++sampleIndex;
+    }
+}
+
 qint64 Generator::readData(char *data, qint64 len)
 {	
     qint64 total = 0;
-    while (len - total > 0) {
+    /*while (len - total > 0) {
         const qint64 chunk = qMin((m_buffer.size() - m_pos), len - total);
         memcpy(data + total, m_buffer.constData() + m_pos, chunk);
         m_pos = (m_pos + chunk) % m_buffer.size();
         total += chunk;
-    }
-    return total;
+    }*/
+	generateData(m_format, m_durationUs, m_frequency, data, len);
+    return len;
 }
 
 qint64 Generator::writeData(const char *data, qint64 len)
@@ -134,14 +158,14 @@ void AudioGenerator::setSound(const Sound &sound)
 	m_oldSound = m_sound;
 	m_sound = sound;
 	
-	generateData(m_format, m_durationUs, m_frequency);
+	//generateData(m_format, m_durationUs, m_frequency);
 	
 	m_oldSound = m_sound;
 }
 
 void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qreal angle, float percent)
 {
-	qreal sweep = generateSweep(frequency, angle, percent);
+	qreal sweep = generateTimbre(frequency, angle, percent);
 	
 	left = sweep * m_sound.pan;
 	
@@ -158,4 +182,14 @@ qreal AudioGenerator::generateSweep(int frequency, qreal angle, float percent)
 	qreal newsound = m_sound.volume * qSin(2 * M_PI * (m_sound.pitch * 200 + frequency) * angle );
 	//qreal oldsound = m_oldSound.volume * qSin(2 * M_PI * (m_oldSound.pitch + frequency) * angle );
 	return newsound;// * percent + oldsound * (1.0 - percent);
+}
+
+qreal AudioGenerator::generateTimbre(int frequency, qreal angle, float percent)
+{
+	if (m_sound.timbre == NULL)
+	{
+		return 0.0;
+	}
+	
+	return m_sound.volume * m_sound.timbre->generateTone(2 * M_PI * (m_sound.pitch * 200 + frequency) * angle);
 }

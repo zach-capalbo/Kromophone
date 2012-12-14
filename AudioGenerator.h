@@ -21,6 +21,8 @@ public:
 
 protected:
     void generateData(const QAudioFormat &format, qint64 durationUs, int frequency);
+	 void generateData(const QAudioFormat &format, qint64 durationUs, int frequency, char* buffer, qint64 length);
+	
 	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent)=0;
 	
 	void convertToFormat(const QAudioFormat &format, unsigned char *ptr, qreal x);
@@ -58,6 +60,7 @@ protected:
 	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent);
 	qreal generateSine(int frequency, qreal angle);
 	qreal generateSweep(int frequency, qreal angle, float percent);
+	qreal generateTimbre(int frequency, qreal angle, float percent);
 	
 };
 

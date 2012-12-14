@@ -19,9 +19,8 @@ INCLUDEPATH += /usr/include/QtMultimediaKit
 LIBS += -lQtMultimediaKit
 
 LIBS += -lopencv_core -lopencv_video -lopencv_highgui
-
-release: CONFIG-=debug
-message($$CONFIG)
+#release: CONFIG-=debug
+#message($$CONFIG)
 
 CONFIG(release, debug|release) {
     DEFINES += QT_NO_DEBUG

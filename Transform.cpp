@@ -34,7 +34,7 @@ void HSLMode::ReceiveColor(Color P)
 	
 	newSound.volume = luminosity;
 	
-	newSound.timbre = NULL;
+	newSound.timbre = &Trumpet::timbre;
 	
 	emit SoundGenerated(newSound);
 }

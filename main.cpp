@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 	ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
 	
-	OpenCVColorSource cv;
+	//OpenCVColorSource cv;
 	
 	HSLMode M_T;
 
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 	
 	QMetaObject::invokeMethod(&audio,"initalizeAudio");
 	
-	audioThread.start(QThread::HighPriority);
+	audioThread.start(QThread::HighestPriority);
 	
 	QObject::connect(&i, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
