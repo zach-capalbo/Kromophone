@@ -6,7 +6,7 @@
 #include "Sound.h"
 #include "Color.h"
 
-
+#include <QPointF>
 /**
 */
 class Transform : public QObject {
@@ -29,6 +29,14 @@ signals:
 public slots:
 
 	virtual void ReceiveColor(Color P);
+	
+	void setSweep(bool enabled, const QPointF& sweepPct);
+	
+protected:
+	
+	QPointF sweep;
+	
+	bool sweepEnabled;
 
 };
 

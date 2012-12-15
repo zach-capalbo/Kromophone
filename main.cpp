@@ -26,9 +26,9 @@ int main(int argc, char *argv[])
 	SoundOut testOut;
 
 	//ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
-	//ImageColorSource i("/home/zach/src/c/kromophone/data/spectrum.jpg");
+	ImageColorSource i("/home/zach/src/c/kromophone/data/spectrum.jpg");
 	
-	OpenCVColorSource cv;
+	//OpenCVColorSource cv;
 	
 	RGBYWMode M_T;
 
@@ -45,10 +45,11 @@ int main(int argc, char *argv[])
 	
 	audioThread.start(QThread::HighestPriority);
 	
-	ColorSource* source = &cv;
+	ImageSource* source = &i;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
 	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
+	QObject::connect(source, SIGNAL(doSweep(bool,QPointF)), &M_T, SLOT(setSweep(bool,QPointF)));
 	
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
 	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));

@@ -54,6 +54,9 @@ public slots:
 	
 	void decreaseAverage();
 	
+signals:
+	void doSweep(bool enabled, QPointF sweepPct);
+	
 protected slots:
 	void sweep();
 	

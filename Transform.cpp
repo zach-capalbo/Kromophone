@@ -1,7 +1,14 @@
 #include "Transform.h"
 
-Transform::Transform()
+Transform::Transform() : sweepEnabled(false)
 {}
+
+void Transform::setSweep(bool enabled, const QPointF &sweepPct)
+{
+	sweepEnabled = enabled;
+	
+	sweep = sweepPct;
+}
 
 void Transform::ReceiveColor(Color P) {
 	Sound newSound;
@@ -15,7 +22,7 @@ void Transform::ReceiveColor(Color P) {
 	emit SoundGenerated(newSound);
 }
 
-HSLMode::HSLMode()
+HSLMode::HSLMode() : Transform()
 {
 	
 }
@@ -39,7 +46,7 @@ void HSLMode::ReceiveColor(Color P)
 	emit SoundGenerated(newSound);
 }
 
-RGBMode::RGBMode()
+RGBMode::RGBMode() : Transform()
 {
 	
 }
@@ -68,7 +75,7 @@ void RGBMode::ReceiveColor(Color P)
 	emit SoundsGenerated(l);
 }
 
-RGBYWMode::RGBYWMode()
+RGBYWMode::RGBYWMode() : RGBMode()
 {
 	
 }
@@ -107,6 +114,14 @@ void RGBYWMode::ReceiveColor(Color P)
 	l[4].pan = 1.0f;
 	l[4].timbre = &SinTimbre::timbre;
 	l[4].volume = saturation;
+	
+	if (sweepEnabled)
+	{
+		for (int i = 0; i < l.size(); i++)
+		{
+			l[i].pan = 1.0f - sweep.x();
+		}
+	}
 	
 	emit SoundsGenerated(l);
 }

@@ -111,7 +111,7 @@ ImageSource::ImageSource()
 {
 	QTimer *sweepTimer = new QTimer(this);
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
-	sweepTimer->start(0);
+	//sweepTimer->start(10);
 }
 
 void ImageSource::setAverage(bool enabled)
@@ -236,5 +236,7 @@ void ImageSource::sweep()
 	{
 		sweepDirectionIsRight = true;
 	}
+	
+	emit doSweep(true, QPointF((sweepSize.width() + sweepPos.x()) / ( (float) sweepSize.width()*2.0f ), sweepPos.y() / (float) sweepSize.height() ));
 		
 }
