@@ -45,7 +45,7 @@ SOURCES += main.cpp\
     OpenCVColorSource.cpp \
     AudioGenerator.cpp \
     ColorPreviewWidget.cpp \
-    KromophoneKeyboardFilter.cpp
+    KeyboardFilter.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -62,7 +62,7 @@ HEADERS  += MainWindow.h \
     OpenCVColorSource.h \
     AudioGenerator.h \
     ColorPreviewWidget.h \
-    KromophoneKeyboardFilter.h
+    KeyboardFilter.h
 
 FORMS    += MainWindow.ui
 

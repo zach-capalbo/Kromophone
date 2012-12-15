@@ -1,14 +1,14 @@
-#include "KromophoneKeyboardFilter.h"
+#include "KeyboardFilter.h"
 
 #include <QEvent>
 #include <QKeyEvent>
 
-KromophoneKeyboardFilter::KromophoneKeyboardFilter(QObject *parent) :
+KeyboardFilter::KeyboardFilter(QObject *parent) :
 	QObject(parent)
 {
 }
 
-bool KromophoneKeyboardFilter::eventFilter(QObject *obj, QEvent *event)
+bool KeyboardFilter::eventFilter(QObject *obj, QEvent *event)
 {
 	if ( event->type() == QEvent::KeyRelease )
 	{

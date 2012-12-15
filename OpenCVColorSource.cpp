@@ -5,7 +5,7 @@
 #include <QLayout>
 #include <QApplication>
 #include <QTimer>
-#include "KromophoneKeyboardFilter.h"
+#include "KeyboardFilter.h"
 
 static QImage IplImage2QImage(const IplImage *iplImage)
 {
@@ -33,13 +33,38 @@ static QImage IplImage2QImage(const IplImage *iplImage)
     }
 }
 
-OpenCVColorSource::OpenCVColorSource(QObject *parent) :
-	ImageColorSource()
+OpenCVImageSource::OpenCVImageSource(QObject *parent) :
+	ImageSource()
+{
+
+}
+
+void OpenCVImageSource::start()
 {
 	camera = cvCaptureFromCAM( CV_CAP_ANY );
 	
-    qWarning() <<"ERROR: capture is NULL";
+	Q_CHECK_PTR(camera);
 	
+	QTimer *timer = new QTimer(this);
+	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
+	timer->start(10);
+}
+
+void OpenCVImageSource::captureImage()
+{
+	if (!camera)
+		return;
+	IplImage* frame = 0;
+	frame = cvQueryFrame(camera);
+	
+	//image = ;//.mirrored(true,false);
+	QImage image(IplImage2QImage(frame).mirrored(true,false));
+	
+	emit update(image);
+}
+
+LiveImageColorSource::LiveImageColorSource()
+{
 	//The main widget to display
 	displayWidget = new QWidget();
 	
@@ -52,27 +77,15 @@ OpenCVColorSource::OpenCVColorSource(QObject *parent) :
 	//Now add the image to our display widget
 	displayWidget->layout()->addWidget(imageLabel);
 	
-	QTimer *timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
-	timer->start(10);
-	
-	KromophoneKeyboardFilter* keyboard = new KromophoneKeyboardFilter(this);
+	KeyboardFilter* keyboard = new KeyboardFilter(this);
 	displayWidget->installEventFilter(keyboard);
 	
 	//Show it on the screen
 	displayWidget->show();
 }
 
-void OpenCVColorSource::captureImage()
+void LiveImageColorSource::updateImage(const QImage &image)
 {
-	if (!camera)
-		return;
-	IplImage* frame = 0;
-	frame = cvQueryFrame(camera);
-	
-	//image = ;//.mirrored(true,false);
-	QImage image(IplImage2QImage(frame).mirrored(true,false));
-	
 	cursor.setX(image.width()/2);
 	cursor.setY(image.height()/2);
 	
@@ -86,5 +99,5 @@ void OpenCVColorSource::captureImage()
 	
 	imageLabel->update();
 	
-	emit colorChanged(pickColor(image));
+	emit colorChanged(pickColor(image));	
 }

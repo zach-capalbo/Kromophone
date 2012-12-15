@@ -132,7 +132,6 @@ signals:
 	void colorChanged(Color color);
 	
 private:
-	Color lastColor;
 	QWidget* displayWidget;
 	QLabel* imageLabel;
 	QImage image;

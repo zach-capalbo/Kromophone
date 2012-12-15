@@ -12,17 +12,17 @@
 #include <QWidget>
 #include <QLabel>
 
-class OpenCVColorSource : public ImageColorSource
+class OpenCVImageSource : public ImageSource
 {
 	Q_OBJECT
 public:
-	explicit OpenCVColorSource(QObject *parent = 0);
-	
-	const Color color() { return lastColor; }
+	explicit OpenCVImageSource(QObject *parent = 0);
 	
 signals:
 	
 public slots:
+	
+	void start();
 	
 	void captureImage();
 	
@@ -32,10 +32,24 @@ protected:
 	
 	CvCapture* camera;
 	
+};
+
+class LiveImageColorSource : public ImageColorSource
+{
+	Q_OBJECT
+	
+public:
+	LiveImageColorSource();
+	
+	virtual const Color color() { return lastColor; }
+
+public slots:
+	void updateImage(const QImage& image);
+	
+protected:
 	QWidget* displayWidget;
 	
 	QLabel* imageLabel;
-	
 };
 
 #endif // OPENCVCOLORSOURCE_H

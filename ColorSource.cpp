@@ -6,6 +6,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QRgb>
+#include "KeyboardFilter.h"
 
 RandomColorSource::RandomColorSource()
 {
@@ -63,6 +64,10 @@ StaticImageColorSource::StaticImageColorSource()
 	
 	//Install an event filter so the ImageColorSource gets the label's mouse events
 	imageLabel->installEventFilter(this);
+	
+	//Get key presses
+	KeyboardFilter* keyboard = new KeyboardFilter(this);
+	displayWidget->installEventFilter(keyboard);
 }
 
 const Color StaticImageColorSource::color()
@@ -88,13 +93,7 @@ bool StaticImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		
 		imageLabel->setPixmap(QPixmap::fromImage(displayImage));
 		
-		//Get the rgb value at the pixel that the mouse is over
-		QRgb rgb = image.pixel(mouseEvent->pos());
-		
-		//Setup our saved color with the color from the image
-		lastColor.Blue = qBlue(rgb) / 255.0f;
-		lastColor.Green = qGreen(rgb) / 255.0f;
-		lastColor.Red = qRed(rgb) / 255.0f;
+		pickColor(image);
 		
 		//Pass the color on
 		emit colorChanged(lastColor);
@@ -220,8 +219,8 @@ void ImageColorSource::average(const QImage& image)
 			sumb += qBlue(rgb);
 		}
 	}
-	
-	lastColor.Red = (float) sumr / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	float r = (float) sumr / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	lastColor.Red = r;
 	lastColor.Green = (float) sumg / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 	lastColor.Blue = (float) sumb / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 }
@@ -246,6 +245,5 @@ void ImageColorSource::sweep()
 		sweepDirectionIsRight = true;
 	}
 	
-	emit doSweep(true, QPointF((sweepSize.width() + sweepPos.x()) / ( (float) sweepSize.width()*2.0f ), sweepPos.y() / (float) sweepSize.height() ));
-		
+	emit doSweep(true, QPointF((sweepSize.width() + sweepPos.x()) / ( (float) sweepSize.width()*2.0f ), sweepPos.y() / (float) sweepSize.height() ));		
 }

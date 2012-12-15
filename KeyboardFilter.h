@@ -3,11 +3,11 @@
 
 #include <QObject>
 
-class KromophoneKeyboardFilter : public QObject
+class KeyboardFilter : public QObject
 {
 	Q_OBJECT
 public:
-	explicit KromophoneKeyboardFilter(QObject *parent = 0);
+	explicit KeyboardFilter(QObject *parent = 0);
 	
 signals:
 	
