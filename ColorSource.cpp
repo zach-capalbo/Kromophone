@@ -34,9 +34,14 @@ void RandomColorSource::doColor()
     emit colorChanged(color());
 }
 
+FileImageSource::FileImageSource(const QString &file) : image(file)
+{
+	
+}
+
 
 //The constructor takes in the file to open, and makes a widget to display it
-ImageColorSource::ImageColorSource(const QString& file) : image(file)
+StaticImageColorSource::StaticImageColorSource()
 {
 	//The main widget to display
 	this->displayWidget = new QWidget();
@@ -46,9 +51,6 @@ ImageColorSource::ImageColorSource(const QString& file) : image(file)
 	
 	//We need to set a layout for the widget so we can add things to it
 	displayWidget->setLayout(new QVBoxLayout());
-	
-	//Now we set the pixmap to the pixmap that we got from the image
-	imageLabel->setPixmap(QPixmap::fromImage(image));
 	
 	//We went to receive all mouse move events, not just clicks
 	imageLabel->setMouseTracking(true);
@@ -63,14 +65,14 @@ ImageColorSource::ImageColorSource(const QString& file) : image(file)
 	imageLabel->installEventFilter(this);
 }
 
-const Color ImageColorSource::color()
+const Color StaticImageColorSource::color()
 {
 	//Just return whatever the last color we used was
 	return lastColor;
 }
 
 //This will get called whenever there's in event in an object we're filtering
-bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
+bool StaticImageColorSource::eventFilter(QObject *obj, QEvent *event)
 {
 	//We only care about mouse move events
 	if (event->type() == QEvent::MouseMove)
@@ -106,7 +108,14 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 	}
 }
 
-ImageSource::ImageSource()
+void StaticImageColorSource::updateImage(const QImage &newImage)
+{
+	image = newImage;
+	//Now we set the pixmap to the pixmap that we got from the image
+	imageLabel->setPixmap(QPixmap::fromImage(image));
+}
+
+ImageColorSource::ImageColorSource()
 	: ColorSource(), cursorSize(5,5), averageEnabled(true), sweepPos(0,0), sweepSize(200, 200)
 {
 	QTimer *sweepTimer = new QTimer(this);
@@ -114,7 +123,7 @@ ImageSource::ImageSource()
 	//sweepTimer->start(10);
 }
 
-void ImageSource::setAverage(bool enabled)
+void ImageColorSource::setAverage(bool enabled)
 {
 	averageEnabled = enabled;
 	
@@ -124,22 +133,22 @@ void ImageSource::setAverage(bool enabled)
 	}
 }
 
-void ImageSource::toggleAverage()
+void ImageColorSource::toggleAverage()
 {
 	setAverage(!averageEnabled);
 }
 
-void ImageSource::increaseAverage()
+void ImageColorSource::increaseAverage()
 {
 	cursorSize += QSize(5,5);
 }
 
-void ImageSource::decreaseAverage()
+void ImageColorSource::decreaseAverage()
 {
 	cursorSize -= QSize(5,5);
 }
 
-void ImageSource::drawCursor(QImage& image)
+void ImageColorSource::drawCursor(QImage& image)
 {
 	int posx = cursor.x();
 	int posy = cursor.y();
@@ -164,7 +173,7 @@ void ImageSource::drawCursor(QImage& image)
 	}
 }
 
-Color &ImageSource::pickColor(const QImage& image)
+Color &ImageColorSource::pickColor(const QImage& image)
 {	
 	if (averageEnabled)
 	{
@@ -178,7 +187,7 @@ Color &ImageSource::pickColor(const QImage& image)
 	return lastColor;
 }
 
-void ImageSource::average(const QImage& image)
+void ImageColorSource::average(const QImage& image)
 {
 	unsigned int sumr = 0;
 	
@@ -217,7 +226,7 @@ void ImageSource::average(const QImage& image)
 	lastColor.Blue = (float) sumb / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 }
 
-void ImageSource::sweep()
+void ImageColorSource::sweep()
 {
 	if (sweepDirectionIsRight)
 	{

@@ -12,7 +12,7 @@
 #include <QWidget>
 #include <QLabel>
 
-class OpenCVColorSource : public ImageSource
+class OpenCVColorSource : public ImageColorSource
 {
 	Q_OBJECT
 public:

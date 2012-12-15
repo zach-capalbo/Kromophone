@@ -25,7 +25,10 @@ int main(int argc, char *argv[])
 	
 	SoundOut testOut;
 
-	ImageColorSource i(":/Images/spectrum.jpg");
+	FileImageSource fs(":/Images/spectrum.jpg");
+	StaticImageColorSource i;
+	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
+	fs.start();
 	
 	//OpenCVColorSource cv;
 	
@@ -44,7 +47,7 @@ int main(int argc, char *argv[])
 	
 	audioThread.start(QThread::HighestPriority);
 	
-	ImageSource* source = &i;
+	ImageColorSource* source = &i;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
 	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));

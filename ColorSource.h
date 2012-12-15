@@ -40,7 +40,20 @@ public slots:
 
 };
 
-class ImageSource : public ColorSource
+class ImageSource : public QObject
+{
+	Q_OBJECT
+	
+public slots:
+	
+	virtual void start() = 0;
+	
+signals:
+	
+	void update(const QImage& image);
+};
+
+class ImageColorSource : public ColorSource
 {
 	Q_OBJECT
 	
@@ -61,7 +74,7 @@ protected slots:
 	void sweep();
 	
 protected:
-	ImageSource();
+	ImageColorSource();
 	
 	void drawCursor(QImage& displayImage);
 	
@@ -86,13 +99,31 @@ protected:
 	QTimer* sweepTimer;
 };
 
-class ImageColorSource : public ImageSource
+class FileImageSource : public ImageSource
+{
+	Q_OBJECT
+	
+public:
+	FileImageSource(const QString& file);
+	
+public slots:
+	void start() { emit update(image); }
+	
+protected:
+	
+	QImage image;
+};
+
+class StaticImageColorSource : public ImageColorSource
 {
 	Q_OBJECT
 public:
-	ImageColorSource(const QString& file);
+	StaticImageColorSource();
 	
 	const Color color();
+	
+public slots:
+	void updateImage(const QImage& newImage);
 	
 protected:
 	bool eventFilter(QObject *, QEvent *);
@@ -102,9 +133,9 @@ signals:
 	
 private:
 	Color lastColor;
-	QImage image;
 	QWidget* displayWidget;
 	QLabel* imageLabel;
+	QImage image;
 };
 
 

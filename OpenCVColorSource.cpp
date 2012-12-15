@@ -34,7 +34,7 @@ static QImage IplImage2QImage(const IplImage *iplImage)
 }
 
 OpenCVColorSource::OpenCVColorSource(QObject *parent) :
-	ImageSource()
+	ImageColorSource()
 {
 	camera = cvCaptureFromCAM( CV_CAP_ANY );
 	
