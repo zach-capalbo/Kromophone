@@ -28,6 +28,10 @@ bool KeyboardFilter::eventFilter(QObject *obj, QEvent *event)
 			QMetaObject::invokeMethod(parent(), "decreaseAverage");
 			break;
 			
+		case Qt::Key_S:
+			QMetaObject::invokeMethod(parent(), "toggleSweep");
+			break;
+			
 		default:
 			return false;
 		}

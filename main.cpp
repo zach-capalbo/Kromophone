@@ -30,12 +30,12 @@ int main(int argc, char *argv[])
 	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
 	fs.start();
 	
-	OpenCVImageSource cv;
+	//OpenCVImageSource cv;
 	//LiveImageColorSource ls;
 	//QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
 	//cv.start();
 	
-	RGBYWMode M_T;
+	HSLMode M_T;
 
 	QThread audioThread;
 	AudioEngine audio;

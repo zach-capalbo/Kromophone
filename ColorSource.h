@@ -67,6 +67,10 @@ public slots:
 	
 	void decreaseAverage();
 	
+	void toggleSweep();
+	
+	virtual void updateColor() {}
+	
 signals:
 	void doSweep(bool enabled, QPointF sweepPct);
 	
@@ -124,6 +128,8 @@ public:
 	
 public slots:
 	void updateImage(const QImage& newImage);
+	
+	void updateColor();
 	
 protected:
 	bool eventFilter(QObject *, QEvent *);

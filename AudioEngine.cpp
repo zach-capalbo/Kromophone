@@ -3,10 +3,17 @@
 #include <QDebug>
 #include <QThread>
 
+/*
 const int DurationSeconds = 1;
 const int ToneFrequencyHz = 131;
 const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
+*/
+
+const int DurationSeconds = 1;
+const int ToneFrequencyHz = 131;
+const int DataFrequencyHz = 44100/4;
+const int BufferSize      = 32768/16;
 
 AudioEngine::AudioEngine(QObject *parent) :
 	SoundOut(),  m_pullTimer(new QTimer(this)), m_buffer(BufferSize, 0), m_output(NULL)
@@ -50,13 +57,13 @@ void AudioEngine::initalizeAudio()
 	
 	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, this); //DurationSeconds*1000000
 	
-	QThread* generatorThread = new QThread(this);
+	//QThread* generatorThread = new QThread(this);
 	
-	generatorThread->setPriority(QThread::HighPriority);
+	//generatorThread->setPriority(QThread::HighPriority);
 	
 	//m_generator->moveToThread(generatorThread);
 	
-	generatorThread->start();
+	//generatorThread->start();
 	
 	connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
 	

@@ -2,7 +2,7 @@
 #define AUDIOENGINE_H
 
 #include <QObject>
-#include <QtMultimediaKit/QAbstractAudioOutput>
+#include <QAbstractAudioOutput>
 #include <QAudioOutput>
 #include "Sound.h"
 #include <QTimer>

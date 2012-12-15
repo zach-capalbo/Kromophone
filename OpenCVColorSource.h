@@ -1,6 +1,8 @@
 #ifndef OPENCVCOLORSOURCE_H
 #define OPENCVCOLORSOURCE_H
 
+#ifdef USE_OPENCV
+
 #include "ColorSource.h"
 #include "Color.h"
 
@@ -51,5 +53,7 @@ protected:
 	
 	QLabel* imageLabel;
 };
+
+#endif
 
 #endif // OPENCVCOLORSOURCE_H

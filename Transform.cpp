@@ -41,7 +41,7 @@ void HSLMode::ReceiveColor(Color P)
 	
 	newSound.volume = luminosity;
 	
-	newSound.timbre = &Trumpet::timbre;
+	newSound.timbre = &SinTimbre::timbre; //&Trumpet::timbre;
 	
 	emit SoundGenerated(newSound);
 }
@@ -90,7 +90,7 @@ void RGBYWMode::ReceiveColor(Color P)
 	
 	l.resize(5);
 	
-	l[0].pitch = 1.0f;
+	l[0].pitch = 0.9f;
 	l[0].pan = 1.0f;
 	l[0].timbre = &Trumpet::timbre;
 	l[0].volume = P.Red - yellow - saturation;
@@ -110,7 +110,7 @@ void RGBYWMode::ReceiveColor(Color P)
 	l[3].timbre = &Trumpet::timbre;
 	l[3].volume = yellow;
 	
-	l[4].pitch = 0.3f;
+	l[4].pitch = 1.0f;
 	l[4].pan = 1.0f;
 	l[4].timbre = &SinTimbre::timbre;
 	l[4].volume = saturation;

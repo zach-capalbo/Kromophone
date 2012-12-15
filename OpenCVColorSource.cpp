@@ -1,5 +1,7 @@
 #include "OpenCVColorSource.h"
 
+#ifdef USE_OPENCV
+
 #include <QDebug>
 #include <QLabel>
 #include <QLayout>
@@ -101,3 +103,4 @@ void LiveImageColorSource::updateImage(const QImage &image)
 	
 	emit colorChanged(pickColor(image));	
 }
+#endif

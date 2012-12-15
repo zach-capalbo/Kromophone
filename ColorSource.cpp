@@ -87,16 +87,7 @@ bool StaticImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		
 		cursor = mouseEvent->pos() + sweepPos;
 		
-		QImage displayImage(image);
-		
-		drawCursor(displayImage);
-		
-		imageLabel->setPixmap(QPixmap::fromImage(displayImage));
-		
-		pickColor(image);
-		
-		//Pass the color on
-		emit colorChanged(lastColor);
+		updateColor();
 		
 		return true;
 	}
@@ -105,6 +96,20 @@ bool StaticImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		//If it's not a mouse movement, let qobject handle it
 		return QObject::eventFilter(obj,event);
 	}
+}
+
+void StaticImageColorSource::updateColor()
+{
+	QImage displayImage(image);
+	
+	drawCursor(displayImage);
+	
+	imageLabel->setPixmap(QPixmap::fromImage(displayImage));
+	
+	pickColor(image);
+	
+	//Pass the color on
+	emit colorChanged(lastColor);
 }
 
 void StaticImageColorSource::updateImage(const QImage &newImage)
@@ -117,9 +122,8 @@ void StaticImageColorSource::updateImage(const QImage &newImage)
 ImageColorSource::ImageColorSource()
 	: ColorSource(), cursorSize(5,5), averageEnabled(true), sweepPos(0,0), sweepSize(200, 200)
 {
-	QTimer *sweepTimer = new QTimer(this);
+	sweepTimer = new QTimer(this);
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
-	//sweepTimer->start(10);
 }
 
 void ImageColorSource::setAverage(bool enabled)
@@ -129,22 +133,30 @@ void ImageColorSource::setAverage(bool enabled)
 	if (!enabled)
 	{
 		cursorSize = QSize(5,5);
-	}
+	}	
+	
+	updateColor();
 }
 
 void ImageColorSource::toggleAverage()
 {
 	setAverage(!averageEnabled);
+	
+	updateColor();
 }
 
 void ImageColorSource::increaseAverage()
 {
 	cursorSize += QSize(5,5);
+	
+	updateColor();
 }
 
 void ImageColorSource::decreaseAverage()
 {
 	cursorSize -= QSize(5,5);
+	
+	updateColor();
 }
 
 void ImageColorSource::drawCursor(QImage& image)
@@ -230,10 +242,12 @@ void ImageColorSource::sweep()
 	if (sweepDirectionIsRight)
 	{
 		sweepPos += QPoint(20,0);
+		cursor += QPoint(20,0);
 	}
 	else
 	{
 		sweepPos += QPoint(-20,0);
+		cursor += QPoint(-20,0);
 	}
 	
 	if (sweepDirectionIsRight && sweepPos.x() >= sweepSize.width())
@@ -246,4 +260,19 @@ void ImageColorSource::sweep()
 	}
 	
 	emit doSweep(true, QPointF((sweepSize.width() + sweepPos.x()) / ( (float) sweepSize.width()*2.0f ), sweepPos.y() / (float) sweepSize.height() ));		
+	
+	updateColor();
+}
+
+void ImageColorSource::toggleSweep()
+{
+	if (sweepTimer->isActive())
+	{
+		sweepTimer->stop();
+		sweepPos = QPoint(0,0);
+	}
+	else
+	{
+		sweepTimer->start(10);
+	}
 }

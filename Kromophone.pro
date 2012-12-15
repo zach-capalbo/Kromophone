@@ -5,21 +5,25 @@
 #-------------------------------------------------
 
 QT       += core gui widgets
+QT	 += multimedia
 
 CONFIG   += console mobility debug
 CONFIG   -= app_bundle
 CONFIG	 += multimediakit
+#CONFIG	 += opencv
 TARGET = Kromophone
 TEMPLATE = app
 
 target.path = /tmp/
 INSTALLS += target
 
-INCLUDEPATH += /usr/include/QtMultimediaKit
-LIBS += -lQtMultimediaKit
+#INCLUDEPATH += /usr/include/QtMultimediaKit
+#INCLUDEPATH += $$OE_QMAKE_INCDIR_QT/QtMultimedia
+#LIBS += -lQtMultimediaKit
 
-LIBS += -lopencv_core -lopencv_video -lopencv_highgui
-#release: CONFIG-=debug
+opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
+opencv: DEFINES += USE_OPENCV
+release: CONFIG-=debug
 #message($$CONFIG)
 
 CONFIG(release, debug|release) {
