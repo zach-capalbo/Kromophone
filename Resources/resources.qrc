@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>cow-in-space.jpg</file>
+        <file>spectrum.jpg</file>
+    </qresource>
+</RCC>

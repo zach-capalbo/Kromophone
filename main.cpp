@@ -25,8 +25,7 @@ int main(int argc, char *argv[])
 	
 	SoundOut testOut;
 
-	//ImageColorSource i("/home/zach/Backgrounds/cow-in-space.jpg");
-	ImageColorSource i("/home/zach/src/c/kromophone/data/spectrum.jpg");
+	ImageColorSource i(":/Images/spectrum.jpg");
 	
 	//OpenCVColorSource cv;
 	

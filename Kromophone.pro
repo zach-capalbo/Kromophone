@@ -65,3 +65,6 @@ HEADERS  += MainWindow.h \
     KromophoneKeyboardFilter.h
 
 FORMS    += MainWindow.ui
+
+RESOURCES += \
+    Resources/resources.qrc
