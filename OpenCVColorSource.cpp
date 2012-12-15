@@ -5,6 +5,7 @@
 #include <QLayout>
 #include <QApplication>
 #include <QTimer>
+#include "KromophoneKeyboardFilter.h"
 
 static QImage IplImage2QImage(const IplImage *iplImage)
 {
@@ -55,6 +56,9 @@ OpenCVColorSource::OpenCVColorSource(QObject *parent) :
 	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
 	timer->start(10);
 	
+	KromophoneKeyboardFilter* keyboard = new KromophoneKeyboardFilter(this);
+	displayWidget->installEventFilter(keyboard);
+	
 	//Show it on the screen
 	displayWidget->show();
 }
@@ -71,6 +75,8 @@ void OpenCVColorSource::captureImage()
 	
 	cursor.setX(image.width()/2);
 	cursor.setY(image.height()/2);
+	
+	cursor += sweepPos;
 	
 	QImage displayImage(image);
 	

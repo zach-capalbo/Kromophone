@@ -25,4 +25,11 @@ public:
 	static SinTimbre timbre;
 };
 
+class OrganTimbre : public Timbre
+{
+public:
+	virtual qreal generateTone(float angleInRadians);
+	
+	static OrganTimbre timbre;
+};
 #endif // TIMBRE_H

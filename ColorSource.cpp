@@ -78,7 +78,7 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 		//Recast it to a mouse event so we can get the data from it
 		QMouseEvent* mouseEvent = static_cast<QMouseEvent*>(event);
 		
-		cursor = mouseEvent->pos();
+		cursor = mouseEvent->pos() + sweepPos;
 		
 		QImage displayImage(image);
 		
@@ -107,9 +107,36 @@ bool ImageColorSource::eventFilter(QObject *obj, QEvent *event)
 }
 
 ImageSource::ImageSource()
-	: ColorSource(), cursorSize(5,5), averageEnabled(false)
+	: ColorSource(), cursorSize(5,5), averageEnabled(true), sweepPos(0,0), sweepSize(200, 200)
 {
+	QTimer *sweepTimer = new QTimer(this);
+	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
+	sweepTimer->start(0);
+}
 
+void ImageSource::setAverage(bool enabled)
+{
+	averageEnabled = enabled;
+	
+	if (!enabled)
+	{
+		cursorSize = QSize(5,5);
+	}
+}
+
+void ImageSource::toggleAverage()
+{
+	setAverage(!averageEnabled);
+}
+
+void ImageSource::increaseAverage()
+{
+	cursorSize += QSize(5,5);
+}
+
+void ImageSource::decreaseAverage()
+{
+	cursorSize -= QSize(5,5);
 }
 
 void ImageSource::drawCursor(QImage& image)
@@ -122,12 +149,18 @@ void ImageSource::drawCursor(QImage& image)
 	
 	for (int x = posx - cwidth; x < posx + cwidth; x++ )
 	{
-		image.setPixel(x,posy,qRgb(255, 255, 255));
+		if (x > 0 && x < image.width())
+		{
+			image.setPixel(x,posy,qRgb(255, 255, 255));
+		}
 	}
 
 	for (int y = posy - cheight; y < posy + cheight; y++)
 	{
-		image.setPixel(posx,y,qRgb(255, 255, 255));
+		if (y > 0 && y < image.height())
+		{
+			image.setPixel(posx,y,qRgb(255, 255, 255));
+		}
 	}
 }
 
@@ -153,9 +186,21 @@ void ImageSource::average(const QImage& image)
 	
 	unsigned int sumb = 0;
 	
-	for (int x = cursor.x() - cursorSize.width(); x < cursor.x() + cursorSize.width(); x++)
+	int startX = cursor.x() - cursorSize.width();
+	startX = qMax(startX, 0);
+	
+	int endX = cursor.x() + cursorSize.width();
+	endX = qMin(endX, image.width());
+	
+	int startY = cursor.y() - cursorSize.height();
+	startY = qMax(startY, 0);
+	
+	int endY = cursor.y() + cursorSize.height();
+	endY = qMin(endY, image.height());
+	
+	for (int x = startX; x < endX; x++)
 	{
-		for (int y = cursor.y() - cursorSize.height(); y < cursor.y() + cursorSize.height(); y++)
+		for (int y = startY; y < endY; y++)
 		{
 			QRgb rgb = image.pixel(x,y);
 			
@@ -170,4 +215,26 @@ void ImageSource::average(const QImage& image)
 	lastColor.Red = (float) sumr / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 	lastColor.Green = (float) sumg / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
 	lastColor.Blue = (float) sumb / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+}
+
+void ImageSource::sweep()
+{
+	if (sweepDirectionIsRight)
+	{
+		sweepPos += QPoint(20,0);
+	}
+	else
+	{
+		sweepPos += QPoint(-20,0);
+	}
+	
+	if (sweepDirectionIsRight && sweepPos.x() >= sweepSize.width())
+	{
+		sweepDirectionIsRight = false;
+	}
+	else if (!sweepDirectionIsRight && sweepPos.x() <= -sweepSize.width())
+	{
+		sweepDirectionIsRight = true;
+	}
+		
 }

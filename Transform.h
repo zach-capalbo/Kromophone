@@ -66,4 +66,17 @@ public slots:
 	virtual void ReceiveColor(Color P);
 };
 
+class RGBYWMode : public RGBMode
+{
+	Q_OBJECT
+	
+public:
+	
+	RGBYWMode();
+	
+public slots:
+	
+	virtual void ReceiveColor(Color P);
+};
+
 #endif

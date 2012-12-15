@@ -26,11 +26,7 @@ float Color::hue() const
 
 float Color::saturation() const
 {
-	float h,s,l;
-	
-	hsl(h,s,l);
-	
-	return s;
+	return qMin(Red, qMin(Green, Blue));
 }
 
 float Color::luminosity() const

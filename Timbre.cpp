@@ -15,3 +15,11 @@ qreal SinTimbre::generateTone(float phase)
 {
 	return qSin(phase);
 }
+
+OrganTimbre OrganTimbre::timbre;
+
+qreal OrganTimbre::generateTone(float phase)
+{
+	phase *= 10;
+	return 0.2 * (0.001831f*sin(phase*0.100000f) + 0.117470f*sin(phase*0.200000f) + 0.606061f*sin(phase*0.300000f) + 0.667617f*sin(phase*0.400000f) + 0.323250f*sin(phase*0.500000f) + 5.296854f*sin(phase*0.600000f) + 0.323250f*sin(phase*0.700000f) + 0.667617f*sin(phase*0.800000f) + 0.606061f*sin(phase*0.900000f) + 0.117470f*sin(phase*1.000000f));
+}

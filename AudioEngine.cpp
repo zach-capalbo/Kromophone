@@ -17,7 +17,7 @@ void AudioEngine::initalizeAudio()
 {
 	connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
 
-    m_pullMode = true;
+    m_pullMode = false;
 
     m_format.setSampleRate(DataFrequencyHz);
     m_format.setChannelCount(2);
@@ -42,6 +42,9 @@ void AudioEngine::initalizeAudio()
     }
 	
 	m_audioOutput = new QAudioOutput(m_device, m_format, this);
+	
+	float buffsize = m_audioOutput->bufferSize();
+	m_audioOutput->setBufferSize(BufferSize);
     connect(m_audioOutput, SIGNAL(notify()), SLOT(notified()));
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
 	

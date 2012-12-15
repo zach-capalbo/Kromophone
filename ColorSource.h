@@ -44,6 +44,19 @@ class ImageSource : public ColorSource
 {
 	Q_OBJECT
 	
+public slots:
+	
+	void setAverage(bool enabled = true);
+	
+	void toggleAverage();
+	
+	void increaseAverage();
+	
+	void decreaseAverage();
+	
+protected slots:
+	void sweep();
+	
 protected:
 	ImageSource();
 	
@@ -55,11 +68,19 @@ protected:
 	
 	QPoint cursor;
 	
+	QPoint sweepPos;
+	
+	QSize sweepSize;
+	
+	bool sweepDirectionIsRight;
+	
 	QSize cursorSize;
 	
 	Color lastColor;
 	
 	bool averageEnabled;
+	
+	QTimer* sweepTimer;
 };
 
 class ImageColorSource : public ImageSource
