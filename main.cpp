@@ -25,17 +25,17 @@ int main(int argc, char *argv[])
 	
 	SoundOut testOut;
 
-	FileImageSource fs(":/Images/spectrum.jpg");
-	StaticImageColorSource i;
-	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
-	fs.start();
+//	FileImageSource fs(":/Images/cow-in-space.jpg");
+//	StaticImageColorSource i;
+//	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
+//	fs.start();
+
+	OpenCVImageSource cv;
+	LiveImageColorSource ls;
+	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
+	cv.start();
 	
-	//OpenCVImageSource cv;
-	//LiveImageColorSource ls;
-	//QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
-	//cv.start();
-	
-	HSLMode M_T;
+	RGBYWMode M_T;
 
 	QThread audioThread;
 	AudioEngine audio;
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 	
 	audioThread.start(QThread::HighestPriority);
 	
-	ImageColorSource* source = &i;
+	ImageColorSource* source = &ls;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
 	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));

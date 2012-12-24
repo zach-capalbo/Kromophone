@@ -1,4 +1,5 @@
 #include "Color.h"
+#include <QString>
 
 
 Color::Color()

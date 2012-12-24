@@ -1,5 +1,4 @@
 #include "AudioGenerator.h"
-#include <QAudio>
 #include <QAudioFormat>
 
 #include <math.h>
@@ -168,9 +167,9 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 	left = 0.0f;
 	right = 0.0f;
 	
-	left = right = generateTimbre(m_sound, frequency, angle, percent);
+	//left = right = generateTimbre(m_sound, frequency, angle, percent);
 	
-	/*
+	
 	foreach (Sound s, m_sounds)
 	{
 		qreal sweep = generateTimbre(s, frequency, angle, percent);
@@ -183,7 +182,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 	left /= m_sounds.size();
 	
 	right /= m_sounds.size();
-	*/
+	
 }
 
 qreal AudioGenerator::generateSine(int frequency, qreal angle)

@@ -13,7 +13,7 @@ class ColorSource : public QObject
 public:	
     virtual const Color color()=0;
 signals:
-    void colorChanged(Color color);
+    void colorChanged(const Color& color);
 	
 public slots:
 //	virtual void enableSweep() {};

@@ -47,6 +47,12 @@ void OpenCVImageSource::start()
 	
 	Q_CHECK_PTR(camera);
 	
+	if (camera == NULL)
+	{
+		qFatal("Could not open camera.");
+		QApplication::exit(-1);
+	}
+	
 	QTimer *timer = new QTimer(this);
 	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
 	timer->start(10);
@@ -100,6 +106,21 @@ void LiveImageColorSource::updateImage(const QImage &image)
 	imageLabel->setPixmap(QPixmap::fromImage(displayImage));
 	
 	imageLabel->update();
+	
+	emit colorChanged(pickColor(image));	
+}
+
+LiveImageHeadlessColorSource::LiveImageHeadlessColorSource()
+{
+	
+}
+
+void LiveImageHeadlessColorSource::updateImage(const QImage &image)
+{
+	cursor.setX(image.width()/2);
+	cursor.setY(image.height()/2);
+	
+	cursor += sweepPos;
 	
 	emit colorChanged(pickColor(image));	
 }

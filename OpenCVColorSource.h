@@ -54,6 +54,20 @@ protected:
 	QLabel* imageLabel;
 };
 
+class LiveImageHeadlessColorSource : public ImageColorSource
+{
+	Q_OBJECT
+	
+public:
+	
+	LiveImageHeadlessColorSource();
+	
+	virtual const Color color() { return lastColor; }
+
+public slots:
+	void updateImage(const QImage& image);
+};
+
 #endif
 
 #endif // OPENCVCOLORSOURCE_H
