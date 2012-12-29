@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#ifndef _WIN32
+//#ifndef _WIN32
 #include <QObject>
 #include <QString>
 #include "ColorSource.h"
@@ -34,6 +34,6 @@ private:
 	QString device;
 };
 
-#endif // _132
+//#endif // _132
 
 #endif // CAMERA_H

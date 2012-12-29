@@ -23,9 +23,12 @@ INSTALLS += target
 #INCLUDEPATH += $$OE_QMAKE_INCDIR_QT/QtMultimedia
 #LIBS += -lQtMultimediaKit
 
-opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
+opencv:unix: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
-release: CONFIG-=debug
+opencv:win32: INCLUDEPATH += C:\\opencv\\include C:\\opencv\\modules\\core\\include C:\\opencv\\modules\\video\\include C:\\opencv\\modules\\imgproc\\include C:\\opencv\\modules\\highgui\\include
+opencv:win32: LIBS += -LC:\\opencv\\build\\x86\\vc9\\lib
+opencv:win32: LIBS += -lopencv_core243 -lopencv_video243 -lopencv_highgui243
+#CONFIG(release, debug|release): CONFIG-=debug
 #message($$CONFIG)
 
 CONFIG(release, debug|release) {

@@ -25,40 +25,40 @@ int main(int argc, char *argv[])
 	
 	SoundOut testOut;
 
-//	FileImageSource fs(":/Images/cow-in-space.jpg");
-//	StaticImageColorSource i;
-//	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
-//	fs.start();
+    FileImageSource fs(":/Images/cow-in-space.jpg");
+    StaticImageColorSource i;
+    QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));
+    fs.start();
 
-	OpenCVImageSource cv;
-	LiveImageColorSource ls;
-	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
-	cv.start();
+//    OpenCVImageSource cv;
+//    LiveImageColorSource ls;
+//    QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
+//    cv.start();
 	
 	RGBYWMode M_T;
 
 	QThread audioThread;
-	AudioEngine audio;
+    AudioEngine audio;
 	
 	ColorPreviewWidget* preview = new ColorPreviewWidget;
 	
 	preview->show();
 	
-	audio.moveToThread(&audioThread);
+    audio.moveToThread(&audioThread);
 	
-	QMetaObject::invokeMethod(&audio,"initalizeAudio");
+    QMetaObject::invokeMethod(&audio,"initalizeAudio");
 	
-	audioThread.start(QThread::HighestPriority);
+    audioThread.start(QThread::HighPriority);
 	
-	ImageColorSource* source = &ls;
+    ImageColorSource* source = &i;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
 	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
 	QObject::connect(source, SIGNAL(doSweep(bool,QPointF)), &M_T, SLOT(setSweep(bool,QPointF)));
 	
-	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
-	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
-	//QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &testOut, SLOT(PlaySound(Sound)));
+    QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
+    QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
+    //QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &testOut, SLOT(PlaySound(Sound)));
 	//cv.moveToThread(&sourceThread);
 	
 	return a.exec();

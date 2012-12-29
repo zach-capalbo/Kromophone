@@ -77,7 +77,7 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
     while (length) {
 			qreal left;
 			qreal right;
-			generateTone(left, right, frequency, qreal(sampleIndex % format.sampleRate() ) / format.sampleRate(), sampleIndex / (float) m_buffer.size());
+            generateTone(left, right, frequency, qreal(sampleIndex  ) / format.sampleRate(), sampleIndex / (float) m_buffer.size());
 		
         //for (int i=0; i<format.channelCount(); ++i) {
 			convertToFormat(format, ptr, left );
@@ -97,7 +97,7 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
 	
 	unsigned char *ptr = reinterpret_cast<unsigned char *>(buffer);
 
-    while (length) {
+    while (length > 0) {
 			qreal left;
 			qreal right;
 			generateTone(left, right, frequency, qreal(sampleIndex) / format.sampleRate(), sampleIndex / (float) m_buffer.size());
@@ -106,10 +106,13 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
 			convertToFormat(format, ptr, left );
             ptr += channelBytes;
             length -= channelBytes;
-			
-			convertToFormat(format, ptr, right );
-            ptr += channelBytes;
-            length -= channelBytes;
+
+            if (format.channelCount() > 1)
+            {
+                convertToFormat(format, ptr, right );
+                ptr += channelBytes;
+                length -= channelBytes;
+            }
         //}
         ++sampleIndex;
     }
