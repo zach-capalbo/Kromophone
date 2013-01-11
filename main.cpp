@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
 	cv.start();
 	
-	RGBYWMode M_T;
+	RGBMode M_T;
 
 	QThread audioThread;
 	AudioEngine audio;

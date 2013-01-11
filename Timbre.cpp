@@ -23,3 +23,11 @@ qreal OrganTimbre::generateTone(float phase)
 	phase *= 10;
 	return 0.2 * (0.001831f*sin(phase*0.100000f) + 0.117470f*sin(phase*0.200000f) + 0.606061f*sin(phase*0.300000f) + 0.667617f*sin(phase*0.400000f) + 0.323250f*sin(phase*0.500000f) + 5.296854f*sin(phase*0.600000f) + 0.323250f*sin(phase*0.700000f) + 0.667617f*sin(phase*0.800000f) + 0.606061f*sin(phase*0.900000f) + 0.117470f*sin(phase*1.000000f));
 }
+
+UkuleleTimbre UkuleleTimbre::timbre;
+
+qreal UkuleleTimbre::generateTone(float phase)
+{
+	phase *= 10;
+	return 0.2 * (0.914102564102564f*sin(0.0406f*phase) +1.0f*sin(0.0518f*phase) +0.624358974358974f*sin(0.0636f*phase) +0.683333333333333f*sin(0.1038f*phase) +0.638461538461538f*sin(0.1554f*phase) +0.4846153846153);
+}
