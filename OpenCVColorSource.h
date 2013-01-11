@@ -44,6 +44,8 @@ public:
 	LiveImageColorSource();
 	
 	virtual const Color color() { return lastColor; }
+	
+	QWidget* widget() { return displayWidget; }
 
 public slots:
 	void updateImage(const QImage& image);

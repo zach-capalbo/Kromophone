@@ -40,6 +40,11 @@ FileImageSource::FileImageSource(const QString &file) : image(file)
 	
 }
 
+void FileImageSource::load(const QString &file)
+{
+	image = QImage(file);
+}
+
 
 //The constructor takes in the file to open, and makes a widget to display it
 StaticImageColorSource::StaticImageColorSource()
@@ -53,14 +58,17 @@ StaticImageColorSource::StaticImageColorSource()
 	//We need to set a layout for the widget so we can add things to it
 	displayWidget->setLayout(new QVBoxLayout());
 	
+	//Set the margin to 0
+	displayWidget->layout()->setMargin(0);
+	
 	//We went to receive all mouse move events, not just clicks
 	imageLabel->setMouseTracking(true);
 	
 	//Now add the image to our display widget
 	displayWidget->layout()->addWidget(imageLabel);
 	
-	//Show it on the screen
-	displayWidget->show();
+	//Don't Show it on the screen
+	//displayWidget->show();
 	
 	//Install an event filter so the ImageColorSource gets the label's mouse events
 	imageLabel->installEventFilter(this);
@@ -117,6 +125,10 @@ void StaticImageColorSource::updateImage(const QImage &newImage)
 	image = newImage;
 	//Now we set the pixmap to the pixmap that we got from the image
 	imageLabel->setPixmap(QPixmap::fromImage(image));
+	
+	imageLabel->updateGeometry();
+	
+	displayWidget->setMaximumSize(imageLabel->minimumSize());	
 }
 
 ImageColorSource::ImageColorSource()

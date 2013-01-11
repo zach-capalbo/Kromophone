@@ -2,7 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include "OpenCVColorSource.h"
+#include "AudioEngine.h"
+#include "Transform.h"
+#include <QThread>
 
 namespace Ui {
 class MainWindow;
@@ -27,6 +30,20 @@ private:
 //    FileDialog *fileDialog;
 
     void getFile();
+	
+	//Some things we need to get this working
+	//Things we'll need for file and camera
+	AudioEngine audioOutput;
+	QThread audioThread;
+	RGBYWMode colorToSoundTransform;
+	
+	//Things we'll need for just the file source
+	QThread fileSourceThread;
+	FileImageSource fileImageSource;
+	StaticImageColorSource staticColorSource;
+	
+	//Things we'll need for the camera
+	//Jon, add your stuff here
 };
 
 #endif // MAINWINDOW_H

@@ -26,7 +26,7 @@ INSTALLS += target
 
 opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
-release: CONFIG-=debug
+#release: CONFIG-=debug
 #message($$CONFIG)
 
 CONFIG(release, debug|release) {

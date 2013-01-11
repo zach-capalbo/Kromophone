@@ -59,17 +59,17 @@ void RGBMode::ReceiveColor(Color P)
 	
 	l[0].pitch = 1.0f;
 	l[0].pan = 1.0f;
-	l[0].timbre = &SinTimbre::timbre;
+	l[0].timbre = &Trumpet::timbre;
 	l[0].volume = P.Red;
 	
 	l[1].pitch = 0.5f;
 	l[1].pan = 0.0f;
-	l[1].timbre = &SinTimbre::timbre;
+	l[1].timbre = &OrganTimbre::timbre;
 	l[1].volume = P.Green;
 	
 	l[2].pitch = 0.0f;
 	l[2].pan = 0.5f;
-	l[2].timbre = &SinTimbre::timbre;
+	l[2].timbre = &Trumpet::timbre;
 	l[2].volume = P.Blue;
 	
 	emit SoundsGenerated(l);
