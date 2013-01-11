@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +16,17 @@ public:
 	explicit MainWindow(QWidget *parent = 0);
 	~MainWindow();
 	
+private slots:
+
+    void on_cButton_clicked();
+
+    void on_fButton_clicked();
+
 private:
 	Ui::MainWindow *ui;
+//    FileDialog *fileDialog;
+
+    void getFile();
 };
 
 #endif // MAINWINDOW_H

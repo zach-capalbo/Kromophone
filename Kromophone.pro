@@ -6,13 +6,14 @@
 
 MOBILITY += multimedia
 QT       += core gui widgets
-QT	 += mobility
-QT	 += multimedia
+QT	 += mobility multimediakit
+#QT	 += multimedia
 
 CONFIG   += console mobility debug
 CONFIG   -= app_bundle
 CONFIG	 += opencv
-CONFIG	 += multimediakit
+#CONFIG	 += multimediakit
+CONFIG   += mobility;
 TARGET = Kromophone
 TEMPLATE = app
 

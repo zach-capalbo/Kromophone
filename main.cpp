@@ -13,22 +13,35 @@
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	qRegisterMetaType<Color>();
-	qRegisterMetaType<Sound>();
-	qRegisterMetaType<SoundList>();
-	// TEST VALUES
-	RandomColorSource M_RCS;
-	QThread sourceThread;
-	M_RCS.moveToThread(&sourceThread);
-	QMetaObject::invokeMethod(&M_RCS,"start");
-	sourceThread.start();
-	
-	SoundOut testOut;
+//	qRegisterMetaType<Color>();
+//	qRegisterMetaType<Sound>();
+//	qRegisterMetaType<SoundList>();
 
-//	FileImageSource fs(":/Images/cow-in-space.jpg");
-//	StaticImageColorSource i;
-//	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
-//	fs.start();
+    MainWindow w;
+
+//    QObject::connect(fButton1, SIGNAL(clicked()), &a, SLOT(quit()));
+
+//    w.show();
+
+//    /*
+
+	// TEST VALUES
+    RandomColorSource M_RCS;
+    QThread sourceThread;
+    M_RCS.moveToThread(&sourceThread);
+    QMetaObject::invokeMethod(&M_RCS,"start");
+    sourceThread.start();
+	
+//	SoundOut testOut;
+
+    //FileImageSource fs(":/Images/cow-in-space.jpg");
+    //StaticImageColorSource i;
+    //QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));
+    //fs.start();
+
+
+    w.show();
+
 
 	OpenCVImageSource cv;
 	LiveImageColorSource ls;
@@ -60,6 +73,9 @@ int main(int argc, char *argv[])
 	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
 	//QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &testOut, SLOT(PlaySound(Sound)));
 	//cv.moveToThread(&sourceThread);
+
+//    */
 	
 	return a.exec();
+
 }
