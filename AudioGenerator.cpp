@@ -21,7 +21,7 @@ Generator::Generator(const QAudioFormat &format,
                         * durationUs / 100000;
 
     Q_ASSERT(bufferLength % sampleBytes == 0);
-    Q_UNUSED(sampleBytes) // suppress warning in release builds
+    Q_UNUSED(sampleBytes); // suppress warning in release builds
 
     m_buffer.resize(bufferLength);
     
@@ -170,7 +170,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 	//left = right = generateTimbre(m_sound, frequency, angle, percent);
 	
 	
-	foreach (Sound s, m_sounds)
+	foreach (const Sound& s, m_sounds)
 	{
 		qreal sweep = generateTimbre(s, frequency, angle, percent);
 		
