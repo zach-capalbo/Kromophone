@@ -25,11 +25,14 @@ private slots:
 
     void on_fButton_clicked();
 
+	void on_spectrumButton_clicked();
+	
 private:
 	Ui::MainWindow *ui;
 //    FileDialog *fileDialog;
 
     void getFile();
+	void startImageSource(const QString& file);
 	
 	//Some things we need to get this working
 	//Things we'll need for file and camera

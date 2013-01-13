@@ -57,15 +57,16 @@ void AudioEngine::initalizeAudio()
 	
 	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, this); //DurationSeconds*1000000
 	
-	//QThread* generatorThread = new QThread(this);
+	QThread* generatorThread = new QThread(this);
 	
-	//generatorThread->setPriority(QThread::HighPriority);
+	generatorThread->setPriority(QThread::HighPriority);
 	
-	//m_generator->moveToThread(generatorThread);
+	m_generator->moveToThread(generatorThread);
 	
-	//generatorThread->start();
+	generatorThread->start();
 	
 	connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
+	connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
 	
 	m_generator->start();
 	
@@ -102,7 +103,7 @@ void AudioEngine::PlaySound(const Sound &otherSound)
 
 void AudioEngine::PlaySounds(const SoundList &InputSounds)
 {
-	m_generator->setSounds(InputSounds);
+	emit updateSounds(InputSounds);
 }
 
 void AudioEngine::notify()
