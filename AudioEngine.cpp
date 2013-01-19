@@ -55,18 +55,16 @@ void AudioEngine::initalizeAudio()
     connect(m_audioOutput, SIGNAL(notify()), SLOT(notified()));
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
 	
-	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, this); //DurationSeconds*1000000
+	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, NULL); //DurationSeconds*1000000
 	
-	QThread* generatorThread = new QThread(this);
-	
-	generatorThread->setPriority(QThread::HighPriority);
-	
+	QThread* generatorThread = new QThread();
+		
 	m_generator->moveToThread(generatorThread);
-	
-	generatorThread->start();
 	
 	connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
 	connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
+	
+	generatorThread->start(QThread::HighPriority);
 	
 	m_generator->start();
 	
