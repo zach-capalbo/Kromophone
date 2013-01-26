@@ -4,15 +4,22 @@
 #
 #-------------------------------------------------
 
+message($$QMAKE_CXX)
+
+contains(QMAKE_CXX, arm-poky-linux-gnueabi-g++): CONFIG+=rpi
+
+rpi: message(Making for raspberry pi)
+
 MOBILITY += multimedia
 QT       += core gui widgets
 QT	 += mobility multimediakit
 win32: QT	 += multimedia
+rpi:QT	 += multimedia
 
 CONFIG   += console mobility debug
 CONFIG   -= app_bundle
 CONFIG	 += opencv
-#CONFIG	 += multimediakit
+rpi:CONFIG	 += multimediakit
 CONFIG   += mobility;
 TARGET = Kromophone
 TEMPLATE = app

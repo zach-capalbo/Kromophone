@@ -2,7 +2,6 @@
 #define AUDIOENGINE_H
 
 #include <QObject>
-//#include <QAbstractAudioOutput>
 #include <QAudioOutput>
 #include "Sound.h"
 #include <QTimer>
@@ -12,12 +11,15 @@
 class AudioEngine : public SoundOut
 {
 	Q_OBJECT
+	
 public:
 	explicit AudioEngine(QObject *parent = 0);
 	
 signals:
 	
 	void updateSound(const Sound& sound);
+	
+	void updateSounds(const SoundList& sounds);
 	
 public slots:
     virtual void PlaySound(const Sound& otherSound);

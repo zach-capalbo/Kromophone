@@ -84,11 +84,8 @@ void MainWindow::on_cButton_clicked()
     //START
 }
 
-//start kromo on image selected from file dialog
-void MainWindow::on_fButton_clicked()
+void MainWindow::startImageSource(const QString& file)
 {
-    QString file = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("File (*.*)"));
-
     //START
 	
 	//Start the audio if it's not already running
@@ -112,10 +109,29 @@ void MainWindow::on_fButton_clicked()
 	fileImageSource.start();
 }
 
+//start kromo on image selected from file dialog
+void MainWindow::on_fButton_clicked()
+{
+    QString file = QFileDialog::getOpenFileName(this, tr("Open File"), "", tr("File (*.*)"));
+	
+	if (file.length() == 0)
+	{
+		return;
+	}
+	
+	startImageSource(file);
+	
+}
+
 //[incomplete] to be used on fbutton clicked
 void MainWindow::getFile()
 {
 //    QFile myFile =;
 //    myFile.open(QIODevice::ReadOnly);
 
+}
+
+void MainWindow::on_spectrumButton_clicked()
+{
+	startImageSource(":/Images/spectrum.jpg");
 }

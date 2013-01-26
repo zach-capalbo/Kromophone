@@ -5,6 +5,16 @@
 #include <qmath.h>
 #include <QtEndian>
 
+#include <QElapsedTimer>
+void delay(unsigned int msecs)
+{
+	QElapsedTimer t;
+	t.start();
+	while ( t.elapsed() < msecs )
+    {}
+        //QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
+
 Generator::Generator(const QAudioFormat &format,
                      qint64 durationUs,
                      int frequency,
@@ -19,13 +29,16 @@ Generator::Generator(const QAudioFormat &format,
 
     bufferLength = (format.sampleRate() * format.channelCount() * (format.sampleSize() / 8))
                         * durationUs / 100000;
+	
+	//bufferLength = 1256;
 
     Q_ASSERT(bufferLength % sampleBytes == 0);
-    Q_UNUSED(sampleBytes) // suppress warning in release builds
+    Q_UNUSED(sampleBytes); // suppress warning in release builds
 
     m_buffer.resize(bufferLength);
     
     sampleIndex = 0;
+	readSampleIndex = 0;
 }
 
 Generator::~Generator()
@@ -116,18 +129,34 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
         //}
         ++sampleIndex;
     }
+	
+	//Artificial delay
+	delay(100);
 }
 
 qint64 Generator::readData(char *data, qint64 len)
-{	
-    qint64 total = 0;
-    /*while (len - total > 0) {
-        const qint64 chunk = qMin((m_buffer.size() - m_pos), len - total);
-        memcpy(data + total, m_buffer.constData() + m_pos, chunk);
-        m_pos = (m_pos + chunk) % m_buffer.size();
-        total += chunk;
-    }*/
-	generateData(m_format, m_durationUs, m_frequency, data, len);
+{
+	//m_buffer.resize(len);
+	
+	//memcpy(data, m_buffer.data(), len);
+	
+	readSampleIndex = 0;
+	
+	qint64 currLen = len;
+	
+	while (currLen)
+	{
+		readSampleIndex = (readSampleIndex) % m_buffer.size();
+		
+		int ammountToCopy = qMin((qint64) (m_buffer.size() - readSampleIndex), currLen);
+		memcpy(data, &(m_buffer.data()[readSampleIndex]), ammountToCopy);
+		
+		readSampleIndex += ammountToCopy;
+		data += ammountToCopy;
+		
+		currLen -= ammountToCopy;
+	}
+	
     return len;
 }
 
@@ -155,6 +184,25 @@ AudioGenerator::AudioGenerator(const QAudioFormat &format, qint64 durationUs, in
 	generateData(format, durationUs, frequency);
 }
 
+void AudioGenerator::start()
+{
+	Generator::start();
+	
+	//Make sure the timer starts in the right thread
+	QMetaObject::invokeMethod(this, "initializeTimer");
+}
+
+void AudioGenerator::initializeTimer()
+{
+	startTimer(0);
+}
+
+void AudioGenerator::timerEvent(QTimerEvent *)
+{
+	sampleIndex = (readSampleIndex + 50) % m_buffer.size();
+	generateData(m_format, m_durationUs, m_frequency, m_buffer.data(), m_buffer.size());
+}
+
 void AudioGenerator::setSound(const Sound &sound)
 {
 	m_sound = sound;
@@ -173,7 +221,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 	//left = right = generateTimbre(m_sound, frequency, angle, percent);
 	
 	
-	foreach (Sound s, m_sounds)
+	foreach (const Sound& s, m_sounds)
 	{
 		qreal sweep = generateTimbre(s, frequency, angle, percent);
 		

@@ -12,7 +12,7 @@ public:
     Generator(const QAudioFormat &format, qint64 durationUs, int frequency, QObject *parent);
     ~Generator();
 
-    void start();
+    virtual void start();
     void stop();
 
     qint64 readData(char *data, qint64 maxlen);
@@ -39,6 +39,7 @@ protected:
 	qint64 bufferLength;
 	
 	unsigned int sampleIndex;
+	unsigned int readSampleIndex;
 };
 
 class AudioGenerator : public Generator
@@ -47,12 +48,16 @@ class AudioGenerator : public Generator
 public:
 	explicit AudioGenerator(const QAudioFormat &format, qint64 durationUs, int frequency, QObject *parent);
 	
+	virtual void start();
+	
 signals:
 	
 public slots:
 	
 	void setSound(const Sound& sound);
 	void setSounds(const SoundList& sounds);
+	
+	void initializeTimer();
 	
 protected:
 	Sound m_sound;
@@ -64,6 +69,7 @@ protected:
 	qreal generateSweep(int frequency, qreal angle, float percent);
 	qreal generateTimbre(const Sound &sound, int frequency, qreal angle, float percent);
 	
+	void timerEvent(QTimerEvent *);
 };
 
 #endif // AUDIOGENERATOR_H
