@@ -7,7 +7,7 @@
 MOBILITY += multimedia
 QT       += core gui widgets
 QT	 += mobility multimediakit
-#QT	 += multimedia
+win32: QT	 += multimedia
 
 CONFIG   += console mobility debug
 CONFIG   -= app_bundle
