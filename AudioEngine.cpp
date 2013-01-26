@@ -22,7 +22,7 @@ AudioEngine::AudioEngine(QObject *parent) :
 
 void AudioEngine::initalizeAudio()
 {
-	connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
+    connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
 
     m_pullMode = false;
 
@@ -34,44 +34,44 @@ void AudioEngine::initalizeAudio()
     m_format.setSampleType(QAudioFormat::SignedInt);
 
     QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
-	qDebug() << "Default: " << info.deviceName();
-	QList<QAudioDeviceInfo> il = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
-	for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
-	{
-		qDebug() << it->deviceName();
-	}
-	
-	m_device = info;
-	
+    qDebug() << "Default: " << info.deviceName();
+    QList<QAudioDeviceInfo> il = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
+    for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
+    {
+        qDebug() << it->deviceName();
+    }
+
+    m_device = info;
+
     if (!info.isFormatSupported(m_format)) {
         qWarning() << "Default format not supported - trying to use nearest";
         m_format = info.nearestFormat(m_format);
     }
-	
-	m_audioOutput = new QAudioOutput(m_device, m_format, this);
-	
-	float buffsize = m_audioOutput->bufferSize();
-	m_audioOutput->setBufferSize(BufferSize);
+
+    m_audioOutput = new QAudioOutput(m_device, m_format, this);
+
     connect(m_audioOutput, SIGNAL(notify()), SLOT(notified()));
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
-	
-	m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, NULL); //DurationSeconds*1000000
-	
-	QThread* generatorThread = new QThread();
-		
-	m_generator->moveToThread(generatorThread);
-	
-	connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
-	connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
-	
-	generatorThread->start(QThread::HighPriority);
-	
-	m_generator->start();
-	
-	//m_pullTimer->start(200);
-	
-	//m_output = m_audioOutput->start();
-	m_audioOutput->start(m_generator);
+
+    m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, NULL); //DurationSeconds*1000000
+
+    QThread* generatorThread = new QThread();
+
+    m_generator->moveToThread(generatorThread);
+
+    connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
+    connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
+
+    generatorThread->start(QThread::HighPriority);
+
+    m_generator->start();
+
+    //m_pullTimer->start(200);
+
+    //m_output = m_audioOutput->start();
+    m_audioOutput->start(m_generator);
+
+
 }
 
 void AudioEngine::pullTimerExpired()

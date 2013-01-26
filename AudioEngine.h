@@ -45,7 +45,7 @@ private:
     QAudioFormat     m_format;
 	QByteArray m_buffer;
 	
-	AudioGenerator* m_generator;
+    AudioGenerator* m_generator;
 	
 	bool m_pullMode;
 };

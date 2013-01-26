@@ -50,8 +50,6 @@ public:
 	
 signals:
 	
-	void SoundGenerated(Sound P);
-	
 public slots:
 	
 	virtual void ReceiveColor(Color P);
@@ -66,8 +64,6 @@ public:
 	RGBMode();
 	
 signals:
-	
-	void SoundsGenerated(SoundList sounds);
 	
 public slots:
 	
