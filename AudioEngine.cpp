@@ -10,7 +10,7 @@ const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 */
 
-const int DurationSeconds = 1;
+const int DurationUSeconds = 100000;
 const int ToneFrequencyHz = 131;
 const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
@@ -53,7 +53,7 @@ void AudioEngine::initalizeAudio()
     connect(m_audioOutput, SIGNAL(notify()), SLOT(notified()));
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
 
-    m_generator = new AudioGenerator(m_format, DurationSeconds*1000000, ToneFrequencyHz, NULL); //DurationSeconds*1000000
+    m_generator = new AudioGenerator(m_format, DurationUSeconds, ToneFrequencyHz, NULL); //DurationSeconds*1000000
 
     QThread* generatorThread = new QThread();
 

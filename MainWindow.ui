@@ -27,7 +27,7 @@
       <item>
        <widget class="QPushButton" name="fButton">
         <property name="text">
-         <string>files</string>
+         <string>Open an Image File</string>
         </property>
        </widget>
       </item>
@@ -48,7 +48,7 @@
      <x>0</x>
      <y>0</y>
      <width>400</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
