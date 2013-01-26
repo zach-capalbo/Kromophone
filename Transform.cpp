@@ -64,7 +64,7 @@ void RGBMode::ReceiveColor(Color P)
 	
 	l[1].pitch = 0.5f;
 	l[1].pan = 0.0f;
-	l[1].timbre = &SinTimbre::timbre;
+	l[1].timbre = &OrganTimbre::timbre;
 	l[1].volume = P.Green;
 	
 	l[2].pitch = 0.0f;
@@ -107,7 +107,7 @@ void RGBYWMode::ReceiveColor(Color P)
 	
 	l[3].pitch = 0.7f;
 	l[3].pan = 0.8f;
-	l[3].timbre = &Trumpet::timbre;
+	l[3].timbre = &UkuleleTimbre::timbre;
 	l[3].volume = yellow;
 	
 	l[4].pitch = 1.0f;

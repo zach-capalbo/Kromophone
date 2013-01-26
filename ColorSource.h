@@ -108,8 +108,9 @@ class FileImageSource : public ImageSource
 	Q_OBJECT
 	
 public:
-	FileImageSource(const QString& file);
+	FileImageSource(const QString& file = QString());
 	
+	void load(const QString& file);
 public slots:
 	void start() { emit update(image); }
 	
@@ -125,6 +126,8 @@ public:
 	StaticImageColorSource();
 	
 	const Color color();
+	
+	QWidget* widget() { return displayWidget; }
 	
 public slots:
 	void updateImage(const QImage& newImage);

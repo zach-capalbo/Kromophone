@@ -32,4 +32,13 @@ public:
 	
 	static OrganTimbre timbre;
 };
+
+class UkuleleTimbre : public Timbre
+{
+public:
+	qreal generateTone(float angleInRadians);
+	
+	static UkuleleTimbre timbre;
+};
+
 #endif // TIMBRE_H

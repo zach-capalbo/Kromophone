@@ -89,7 +89,7 @@ LiveImageColorSource::LiveImageColorSource()
 	displayWidget->installEventFilter(keyboard);
 	
 	//Show it on the screen
-	displayWidget->show();
+	//displayWidget->show();
 }
 
 void LiveImageColorSource::updateImage(const QImage &image)
