@@ -3,6 +3,8 @@
 # Project created by QtCreator 2012-09-08T16:11:25
 #
 #-------------------------------------------------
+TARGET = Kromophone
+TEMPLATE = app
 
 message($$QMAKE_CXX)
 
@@ -16,13 +18,11 @@ QT	 += mobility multimediakit
 win32: QT	 += multimedia
 rpi:QT	 += multimedia
 
-CONFIG   += console mobility debug
-CONFIG   -= app_bundle
+CONFIG   += console mobility
 CONFIG	 += opencv
 rpi:CONFIG	 += multimediakit
 CONFIG   += mobility;
-TARGET = Kromophone
-TEMPLATE = app
+
 
 target.path = /tmp/
 INSTALLS += target
@@ -39,10 +39,13 @@ opencv:win32: LIBS += -lopencv_core243 -lopencv_video243 -lopencv_highgui243
 #CONFIG(release, debug|release): CONFIG-=debug
 #message($$CONFIG)
 
+#Release:CONFIG-=debug
+
 CONFIG(release, debug|release) {
     DEFINES += QT_NO_DEBUG
-    QMAKE_CXXFLAGS_RELEASE -= -O2
-    QMAKE_CXXFLAGS_RELEASE += -O3
+    unix:QMAKE_CXXFLAGS_RELEASE -= -O2
+    unix:QMAKE_CXXFLAGS_RELEASE += -O3
+    message("Release Mode!")
 }
 
 
