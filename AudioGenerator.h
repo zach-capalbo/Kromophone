@@ -4,6 +4,7 @@
 #include <QIODevice>
 #include <QAudioFormat>
 #include "Sound.h"
+#include <QMutex>
 
 
 class Generator : public QIODevice
@@ -55,6 +56,8 @@ protected:
 	Sound m_sound;
 	
 	SoundList m_sounds;
+	
+	QMutex m_mutex;
 	
 	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent);
 	qreal generateSine(int frequency, qreal angle);

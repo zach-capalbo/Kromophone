@@ -10,8 +10,8 @@ const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 */
 
-const int DurationUSeconds = 100000;
-const int ToneFrequencyHz = 131;
+const int DurationUSeconds = 10000;
+const int ToneFrequencyHz = 100;
 const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 
@@ -102,6 +102,7 @@ void AudioEngine::PlaySound(const Sound &otherSound)
 void AudioEngine::PlaySounds(const SoundList &InputSounds)
 {
 	emit updateSounds(InputSounds);
+	m_generator->setSounds(InputSounds);
 }
 
 void AudioEngine::notify()

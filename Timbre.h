@@ -2,10 +2,16 @@
 #define TIMBRE_H
 
 #include <qmath.h>
+#include <QHash>
 
 class Timbre
 {
 public:
+	qreal getTone(float angleInRadians);
+	
+	QHash<int, float> toneCache;
+	
+protected:
 	virtual qreal generateTone(float angleInRadians)=0;
 };
 

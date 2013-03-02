@@ -57,17 +57,17 @@ void RGBMode::ReceiveColor(Color P)
 	
 	l.resize(3);
 	
-	l[0].pitch = 1.0f;
+	l[0].pitch = 5.0f;
 	l[0].pan = 1.0f;
 	l[0].timbre = &Trumpet::timbre;
-	l[0].volume = P.Red;
+	l[0].volume = P.Red * 0.8;
 	
-	l[1].pitch = 0.5f;
+	l[1].pitch = 3.0f;
 	l[1].pan = 0.0f;
-	l[1].timbre = &OrganTimbre::timbre;
+	l[1].timbre = &UkuleleTimbre::timbre;
 	l[1].volume = P.Green;
 	
-	l[2].pitch = 0.0f;
+	l[2].pitch = 1.0f;
 	l[2].pan = 0.5f;
 	l[2].timbre = &Trumpet::timbre;
 	l[2].volume = P.Blue;
@@ -90,27 +90,27 @@ void RGBYWMode::ReceiveColor(Color P)
 	
 	l.resize(5);
 	
-	l[0].pitch = 0.9f;
+	l[0].pitch = 5.0f;
 	l[0].pan = 1.0f;
 	l[0].timbre = &Trumpet::timbre;
 	l[0].volume = P.Red - yellow - saturation;
 	
-	l[1].pitch = 0.5f;
+	l[1].pitch = 3.0f;
 	l[1].pan = 0.0f;
 	l[1].timbre = &OrganTimbre::timbre;
 	l[1].volume = P.Green - yellow - saturation;
 	
-	l[2].pitch = 0.0f;
+	l[2].pitch = 1.0f;
 	l[2].pan = 0.5f;
 	l[2].timbre = &Trumpet::timbre;
 	l[2].volume = P.Blue - saturation;
 	
-	l[3].pitch = 0.7f;
+	l[3].pitch = 4.0f;
 	l[3].pan = 0.8f;
 	l[3].timbre = &UkuleleTimbre::timbre;
 	l[3].volume = yellow;
 	
-	l[4].pitch = 1.0f;
+	l[4].pitch = 2.0f;
 	l[4].pan = 1.0f;
 	l[4].timbre = &SinTimbre::timbre;
 	l[4].volume = saturation;

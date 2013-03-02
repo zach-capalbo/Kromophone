@@ -154,7 +154,11 @@ void AudioGenerator::setSound(const Sound &sound)
 
 void AudioGenerator::setSounds(const SoundList& sounds)
 {
-    m_sounds = sounds;
+	if (m_mutex.tryLock())
+	{
+		m_sounds = sounds;
+		m_mutex.unlock();
+	}
 }
 
 void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qreal angle, float percent)
@@ -164,7 +168,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 
     //left = right = generateTimbre(m_sound, frequency, angle, percent);
 
-
+	m_mutex.lock();
     foreach (const Sound& s, m_sounds)
     {
         qreal sweep = generateTimbre(s, frequency, angle, percent);
@@ -177,7 +181,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
     left /= m_sounds.size();
 
     right /= m_sounds.size();
-
+	m_mutex.unlock();
 }
 
 qreal AudioGenerator::generateSine(int frequency, qreal angle)
@@ -199,5 +203,5 @@ qreal AudioGenerator::generateTimbre(const Sound& sound, int frequency, qreal an
         return 0.0;
     }
 
-    return sound.volume * sound.timbre->generateTone(2 * M_PI * (sound.pitch * 200 + frequency) * angle);
+    return sound.volume * sound.timbre->getTone(2 * M_PI * (sound.pitch * /** 200 +*/ frequency) * angle);
 }

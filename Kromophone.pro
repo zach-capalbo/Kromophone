@@ -6,8 +6,6 @@
 TARGET = Kromophone
 TEMPLATE = app
 
-message($$QMAKE_CXX)
-
 contains(QMAKE_CXX, arm-poky-linux-gnueabi-g++): CONFIG+=rpi
 
 rpi: message(Making for raspberry pi)
@@ -30,6 +28,8 @@ INSTALLS += target
 #INCLUDEPATH += /usr/include/QtMultimediaKit
 #INCLUDEPATH += $$OE_QMAKE_INCDIR_QT/QtMultimedia
 #LIBS += -lQtMultimediaKit
+
+!rpi: DEFINES+= DESKTOP
 
 opencv:unix: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
@@ -65,7 +65,8 @@ SOURCES += main.cpp\
     OpenCVColorSource.cpp \
     AudioGenerator.cpp \
     ColorPreviewWidget.cpp \
-    KeyboardFilter.cpp
+    KeyboardFilter.cpp \
+    DesktopImageSource.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -82,7 +83,8 @@ HEADERS  += MainWindow.h \
     OpenCVColorSource.h \
     AudioGenerator.h \
     ColorPreviewWidget.h \
-    KeyboardFilter.h
+    KeyboardFilter.h \
+    DesktopImageSource.h
 
 FORMS    += MainWindow.ui
 

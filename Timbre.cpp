@@ -2,6 +2,18 @@
 
 Trumpet Trumpet::timbre;
 
+qreal Timbre::getTone(float angleInRadians)
+{
+	generateTone(angleInRadians);
+//	int cacheIndex = angleInRadians * 10000.0f;
+//	if (!toneCache.contains(cacheIndex))
+//	{
+//		toneCache[cacheIndex] = generateTone(angleInRadians);
+//	}
+	
+//	return toneCache[cacheIndex];
+}
+
 qreal Trumpet::generateTone(float phase)
 {
 	phase *= 10;
@@ -29,5 +41,5 @@ UkuleleTimbre UkuleleTimbre::timbre;
 qreal UkuleleTimbre::generateTone(float phase)
 {
 	phase *= 10;
-	return 0.2 * (0.914102564102564f*sin(0.0406f*phase) +1.0f*sin(0.0518f*phase) +0.624358974358974f*sin(0.0636f*phase) +0.683333333333333f*sin(0.1038f*phase) +0.638461538461538f*sin(0.1554f*phase) +0.4846153846153);
+	return 0.4 * (0.914102564102564f*sin(0.0406f*phase) +1.0f*sin(0.0518f*phase) +0.624358974358974f*sin(0.0636f*phase) +0.683333333333333f*sin(0.1038f*phase) +0.638461538461538f*sin(0.1554f*phase) +0.4846153846153);
 }
