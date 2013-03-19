@@ -65,7 +65,7 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
     unsigned char *ptr = reinterpret_cast<unsigned char *>(m_buffer.data());    
     QVector<qreal> channels;
     channels.resize(2);
-
+	
     while (length) {
         generateTone(channels[0], channels[1], frequency, qreal(m_sampleIndex) / qreal(format.sampleRate()), 1.0);
         //const qreal x = soundFunc(2 * M_PI * frequency * qreal(sampleIndex  ) / format.sampleRate());

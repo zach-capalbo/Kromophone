@@ -107,13 +107,21 @@ void RGBYWMode::ReceiveColor(Color P)
 	
 	l[3].pitch = 4.0f;
 	l[3].pan = 0.8f;
-	l[3].timbre = &UkuleleTimbre::timbre;
+	l[3].timbre = &Trumpet::timbre;
 	l[3].volume = yellow;
 	
 	l[4].pitch = 2.0f;
 	l[4].pan = 1.0f;
 	l[4].timbre = &SinTimbre::timbre;
 	l[4].volume = saturation;
+	
+//	for (int i = 0; i < l.size(); i++)
+//	{
+//		if (i != 1)
+//		{
+//			l[i].volume = 0;
+//		}
+//	}
 	
 	if (sweepEnabled)
 	{

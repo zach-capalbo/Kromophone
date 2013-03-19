@@ -10,8 +10,8 @@ const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 */
 
-const int DurationUSeconds = 5000;
-const int ToneFrequencyHz = 200;
+const int DurationUSeconds = 10000;
+const int ToneFrequencyHz = 100;
 const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 
