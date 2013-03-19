@@ -24,6 +24,7 @@ Generator::Generator(const QAudioFormat &format,
     ,   m_format(format)
     ,   m_durationUs(durationUs)
     ,   m_frequency(frequency)
+	,	m_sampleIndex(0)
 {
 
 }
@@ -61,13 +62,12 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
     Q_UNUSED(sampleBytes) // suppress warning in release builds
 
     m_buffer.resize(length);
-    unsigned char *ptr = reinterpret_cast<unsigned char *>(m_buffer.data());
-    int sampleIndex = 0;
+    unsigned char *ptr = reinterpret_cast<unsigned char *>(m_buffer.data());    
     QVector<qreal> channels;
     channels.resize(2);
 
     while (length) {
-        generateTone(channels[0], channels[1], frequency, qreal(sampleIndex) / qreal(format.sampleRate()), 1.0);
+        generateTone(channels[0], channels[1], frequency, qreal(m_sampleIndex) / qreal(format.sampleRate()), 1.0);
         //const qreal x = soundFunc(2 * M_PI * frequency * qreal(sampleIndex  ) / format.sampleRate());
         for (int i=0; i<format.channelCount(); ++i) {
             if (format.sampleSize() == 8 && format.sampleType() == QAudioFormat::UnSignedInt) {
@@ -93,7 +93,7 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
             ptr += channelBytes;
             length -= channelBytes;
         }
-        ++sampleIndex;
+        ++m_sampleIndex;
     }
 }
 

@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
 	QThread audioThread;
 	AudioEngine audio;
 	
-	ColorPreviewWidget* preview = new ColorPreviewWidget;
+//	ColorPreviewWidget* preview = new ColorPreviewWidget;
 	
-	preview->showFullScreen();
-	ls.widget()->show();
+//	preview->showFullScreen();
+//	ls.widget()->show();
 //	i.widget()->show();
 //	i.widget()->setProperty("Opacity", 0);
 //	i.widget()->setAttribute(Qt::WA_TranslucentBackground, true);
@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 	ImageColorSource* source = &ls;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
-	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
+//	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
 	QObject::connect(source, SIGNAL(doSweep(bool,QPointF)), &M_T, SLOT(setSweep(bool,QPointF)));
 	
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));

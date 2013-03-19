@@ -1,0 +1,6 @@
+#!/bin/sh
+modprobe uvcvideo
+modprobe snd-usb-audio
+#modprobe snd-bcm2835
+amixer set Speaker 22
+Kromophone -qws &

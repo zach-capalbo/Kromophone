@@ -22,7 +22,7 @@ rpi:CONFIG	 += multimediakit
 CONFIG   += mobility;
 
 
-target.path = /tmp/
+target.path = /usr/bin
 INSTALLS += target
 
 #INCLUDEPATH += /usr/include/QtMultimediaKit
@@ -66,7 +66,8 @@ SOURCES += main.cpp\
     AudioGenerator.cpp \
     ColorPreviewWidget.cpp \
     KeyboardFilter.cpp \
-    DesktopImageSource.cpp
+    DesktopImageSource.cpp \
+    GPIOWatcher.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -84,9 +85,17 @@ HEADERS  += MainWindow.h \
     AudioGenerator.h \
     ColorPreviewWidget.h \
     KeyboardFilter.h \
-    DesktopImageSource.h
+    DesktopImageSource.h \
+    GPIOWatcher.h
 
 FORMS    += MainWindow.ui
 
 RESOURCES += \
     Resources/resources.qrc
+
+OTHER_FILES += \
+    S30kromophone
+
+initscripts.files += S30kromophone
+initscripts.path = /etc/rc5.d
+INSTALLS += initscripts

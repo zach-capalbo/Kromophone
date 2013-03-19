@@ -33,6 +33,7 @@ protected:
     QAudioFormat m_format;
     qint64 m_durationUs;
     int m_frequency;
+	int m_sampleIndex;
 };
 
 class AudioGenerator : public Generator

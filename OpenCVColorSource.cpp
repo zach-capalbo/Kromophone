@@ -99,13 +99,16 @@ void LiveImageColorSource::updateImage(const QImage &image)
 	
 	cursor += sweepPos;
 	
-	QImage displayImage(image);
-	
-	drawCursor(displayImage);
-	
-	imageLabel->setPixmap(QPixmap::fromImage(displayImage));
-	
-	imageLabel->update();
+	if(displayWidget->isVisible())
+	{
+		QImage displayImage(image);
+		
+		drawCursor(displayImage);
+		
+		imageLabel->setPixmap(QPixmap::fromImage(displayImage));
+		
+		imageLabel->update();
+	}
 	
 	emit colorChanged(pickColor(image));	
 }
