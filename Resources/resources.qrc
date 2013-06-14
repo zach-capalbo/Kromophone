@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/Images">
-        <file>cow-in-space.jpg</file>
         <file>spectrum.jpg</file>
-        <file>Aesop.jpg</file>
-        <file>Anon.jpg</file>
     </qresource>
 </RCC>

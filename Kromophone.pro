@@ -10,9 +10,15 @@ contains(QMAKE_CXX, arm-poky-linux-gnueabi-g++): CONFIG+=rpi
 
 rpi: message(Making for raspberry pi)
 
-MOBILITY += multimedia
 QT       += core gui widgets
+
+contains(QT_VERSION, ^5\\.*\\..*) {
+QT	+= multimedia
+} 
+else {
 QT	 += mobility multimediakit
+MOBILITY += multimedia
+}
 win32: QT	 += multimedia
 rpi:QT	 += multimedia
 
