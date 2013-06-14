@@ -123,7 +123,7 @@ qint64 Generator::bytesAvailable() const
 }
 
 AudioGenerator::AudioGenerator(const QAudioFormat &format, qint64 durationUs, int frequency, QObject *parent)
-    : Generator(format,durationUs,frequency,parent)
+	: Generator(format,durationUs,frequency,parent), lastFloatRight(0.0f), lastFloatLeft(0.0f)
 {
     generateData(format, durationUs, frequency);
 }
@@ -181,6 +181,37 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
     left /= m_sounds.size();
 
     right /= m_sounds.size();
+	
+	const float threshold = 0.01;
+	
+	if (fabs(left - lastFloatLeft) > threshold)
+	{
+		if (left > lastFloatLeft)
+		{
+			left -= threshold;
+		}
+		else
+		{
+			left += threshold;
+		}
+	}
+	
+	if (fabs(right - lastFloatRight) > threshold)
+	{
+		if (right > lastFloatRight)
+		{
+			right -= threshold;
+		}
+		else
+		{
+			right += threshold;
+		}
+	}
+	
+	lastFloatLeft = left;
+	
+	lastFloatRight = right;
+	
 	m_mutex.unlock();
 }
 

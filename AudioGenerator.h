@@ -60,6 +60,8 @@ protected:
 	
 	QMutex m_mutex;
 	
+	float lastFloatRight, lastFloatLeft;
+	
 	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent);
 	qreal generateSine(int frequency, qreal angle);
 	qreal generateSweep(int frequency, qreal angle, float percent);
