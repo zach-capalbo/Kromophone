@@ -41,6 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	//Move the Source to it's own thread to prevent hanging
 	fileImageSource.moveToThread(&fileSourceThread);
+	cameraSource.moveToThread(&cameraSourceThread);
 	
 	//Connect the file source to the color source
 	connect(&fileImageSource, SIGNAL(update(QImage)), &staticColorSource, SLOT(updateImage(QImage)));
@@ -49,12 +50,14 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&staticColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 	
 	//OpenCV Source Specific Stuff
-	//Jon, your code goes here
+	connect(&cameraSource, SIGNAL(update(QImage)), &liveColorSource, SLOT(updateImage(QImage)));
+	connect(&liveColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 	
 	//Common to File & Camera
 	//Connect the output from the transform to the audio engine
 	connect(&colorToSoundTransform, SIGNAL(SoundGenerated(Sound)), &audioOutput, SLOT(PlaySound(Sound)));
 	connect(&colorToSoundTransform, SIGNAL(SoundsGenerated(SoundList)), &audioOutput, SLOT(PlaySounds(SoundList)));
+	
 	
 	
 	
@@ -82,6 +85,19 @@ MainWindow::~MainWindow()
 void MainWindow::on_cButton_clicked()
 {
     //START
+	if (! audioThread.isRunning())
+	{
+		audioThread.start(QThread::HighestPriority);
+	}
+	
+	if (! cameraSourceThread.isRunning() )
+	{
+		cameraSourceThread.start();
+	}
+	
+	liveColorSource.widget()->show();
+	
+	cameraSource.start();
 }
 
 void MainWindow::startImageSource(const QString& file)

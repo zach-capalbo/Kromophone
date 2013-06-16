@@ -46,7 +46,10 @@ private:
 	StaticImageColorSource staticColorSource;
 	
 	//Things we'll need for the camera
-	//Jon, add your stuff here
+	QThread cameraSourceThread;
+	LiveImageColorSource liveColorSource;
+	OpenCVImageSource cameraSource;
+	
 };
 
 #endif // MAINWINDOW_H
