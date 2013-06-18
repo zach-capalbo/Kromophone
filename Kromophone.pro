@@ -105,8 +105,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     S30kromophone \
-    README \
-    LICENSE
+    LICENSE \
+    README.md
 
 initscripts.files += S30kromophone
 initscripts.path = /etc/rc5.d
