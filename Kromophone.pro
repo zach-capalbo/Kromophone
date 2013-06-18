@@ -3,6 +3,10 @@
 # Project created by QtCreator 2012-09-08T16:11:25
 #
 #-------------------------------------------------
+
+# Change this to wherever you have OpenCV installed on windows
+OPENCV = C:\\opencv
+
 TARGET = Kromophone
 TEMPLATE = app
 
@@ -39,8 +43,8 @@ INSTALLS += target
 
 opencv:unix: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
-opencv:win32: INCLUDEPATH += C:\\opencv\\include C:\\opencv\\modules\\core\\include C:\\opencv\\modules\\video\\include C:\\opencv\\modules\\imgproc\\include C:\\opencv\\modules\\highgui\\include
-opencv:win32: LIBS += -LC:\\opencv\\build\\x86\\vc9\\lib
+opencv:win32: INCLUDEPATH += $$OPENCV\\include $$OPENCV\\modules\\core\\include $$OPENCV\\modules\\video\\include $$OPENCV\\modules\\imgproc\\include $$OPENCV\\modules\\highgui\\include
+opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc9\\lib
 opencv:win32: LIBS += -lopencv_core243 -lopencv_video243 -lopencv_highgui243
 #CONFIG(release, debug|release): CONFIG-=debug
 #message($$CONFIG)
@@ -100,8 +104,10 @@ RESOURCES += \
     Resources/resources.qrc
 
 OTHER_FILES += \
-    S30kromophone
+    S30kromophone \
+    README \
+    LICENSE
 
 initscripts.files += S30kromophone
 initscripts.path = /etc/rc5.d
-INSTALLS += initscripts
+rpi:INSTALLS += initscripts
