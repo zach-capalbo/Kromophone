@@ -44,6 +44,8 @@ private slots:
 
 	void on_spectrumButton_clicked();
 	
+	void on_actionAbout_triggered();
+	
 private:
 	Ui::MainWindow *ui;
 //    FileDialog *fileDialog;
