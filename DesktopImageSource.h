@@ -18,7 +18,7 @@
 #ifndef DESKTOPIMAGESOURCE_H
 #define DESKTOPIMAGESOURCE_H
 
-#include <ColorSource.h>
+#include "ColorSource.h"
 
 class DesktopImageSource : public ImageSource
 {

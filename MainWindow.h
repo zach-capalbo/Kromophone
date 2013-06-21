@@ -23,6 +23,7 @@
 #include "AudioEngine.h"
 #include "Transform.h"
 #include <QThread>
+#include "ColorSource.h"
 
 namespace Ui {
 class MainWindow;
@@ -64,10 +65,12 @@ private:
 	FileImageSource fileImageSource;
 	StaticImageColorSource staticColorSource;
 	
+#ifdef USE_OPENCV
 	//Things we'll need for the camera
 	QThread cameraSourceThread;
 	LiveImageColorSource liveColorSource;
 	OpenCVImageSource cameraSource;
+#endif
 	
 };
 

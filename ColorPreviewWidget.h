@@ -19,7 +19,7 @@
 #define COLORPREVIEWWIDGET_H
 
 #include <QWidget>
-#include <Color.h>
+#include "Color.h"
 
 class ColorPreviewWidget : public QWidget
 {

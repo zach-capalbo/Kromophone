@@ -21,7 +21,7 @@ Trumpet Trumpet::timbre;
 
 qreal Timbre::getTone(float angleInRadians)
 {
-	generateTone(angleInRadians);
+    return generateTone(angleInRadians);
 //	int cacheIndex = angleInRadians * 10000.0f;
 //	if (!toneCache.contains(cacheIndex))
 //	{

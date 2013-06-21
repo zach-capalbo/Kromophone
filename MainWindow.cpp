@@ -59,17 +59,19 @@ MainWindow::MainWindow(QWidget *parent) :
 	
 	//Move the Source to it's own thread to prevent hanging
 	fileImageSource.moveToThread(&fileSourceThread);
-	cameraSource.moveToThread(&cameraSourceThread);
 	
 	//Connect the file source to the color source
 	connect(&fileImageSource, SIGNAL(update(QImage)), &staticColorSource, SLOT(updateImage(QImage)));
 	
 	//Connect the color source to the color-to-sound transformation
 	connect(&staticColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
-	
+
+#ifdef USE_OPENCV
+    cameraSource.moveToThread(&cameraSourceThread);
 	//OpenCV Source Specific Stuff
 	connect(&cameraSource, SIGNAL(update(QImage)), &liveColorSource, SLOT(updateImage(QImage)));
 	connect(&liveColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
+#endif
 	
 	//Common to File & Camera
 	//Connect the output from the transform to the audio engine
@@ -107,7 +109,7 @@ void MainWindow::on_cButton_clicked()
 	{
 		audioThread.start(QThread::HighestPriority);
 	}
-	
+#ifdef USE_OPENCV
 	if (! cameraSourceThread.isRunning() )
 	{
 		cameraSourceThread.start();
@@ -116,6 +118,7 @@ void MainWindow::on_cButton_clicked()
 	liveColorSource.widget()->show();
 	
 	cameraSource.start();
+#endif
 }
 
 void MainWindow::startImageSource(const QString& file)
