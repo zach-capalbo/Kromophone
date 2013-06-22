@@ -27,7 +27,7 @@ win32: QT	 += multimedia
 rpi:QT	 += multimedia
 
 CONFIG   += console mobility
-#CONFIG	 += opencv
+CONFIG	 += opencv
 rpi:CONFIG	 += multimediakit
 CONFIG   += mobility;
 
@@ -44,8 +44,8 @@ INSTALLS += target
 opencv:unix: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
 opencv:win32: INCLUDEPATH += $$OPENCV\\include $$OPENCV\\modules\\core\\include $$OPENCV\\modules\\video\\include $$OPENCV\\modules\\imgproc\\include $$OPENCV\\modules\\highgui\\include
-opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc9\\lib
-opencv:win32: LIBS += -lopencv_core245 -lopencv_video245 -lopencv_highgui245
+opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc10\\lib
+CONFIG(debug, debug|release):opencv:win32: LIBS += -lopencv_core245d -lopencv_video245d -lopencv_highgui245d
 #CONFIG(release, debug|release): CONFIG-=debug
 #message($$CONFIG)
 

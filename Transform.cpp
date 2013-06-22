@@ -112,7 +112,7 @@ void RGBYWMode::ReceiveColor(Color P)
 	l[0].timbre = &Trumpet::timbre;
 	l[0].volume = P.Red - yellow - saturation;
 	
-	l[1].pitch = 3.0f;
+    l[1].pitch = 3.0f;
 	l[1].pan = 0.0f;
 	l[1].timbre = &OrganTimbre::timbre;
 	l[1].volume = P.Green - yellow - saturation;
