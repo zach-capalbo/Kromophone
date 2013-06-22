@@ -132,14 +132,6 @@ void RGBYWMode::ReceiveColor(Color P)
 	l[4].timbre = &SinTimbre::timbre;
 	l[4].volume = saturation;
 	
-//	for (int i = 0; i < l.size(); i++)
-//	{
-//		if (i != 1)
-//		{
-//			l[i].volume = 0;
-//		}
-//	}
-	
 	if (sweepEnabled)
 	{
 		for (int i = 0; i < l.size(); i++)

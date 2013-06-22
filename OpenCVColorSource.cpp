@@ -57,6 +57,7 @@ OpenCVImageSource::OpenCVImageSource(QObject *parent) :
 {
     timer = new QTimer(this);
     timer->setSingleShot(true);
+    camera = NULL;
 }
 
 void OpenCVImageSource::start()
@@ -88,8 +89,11 @@ void OpenCVImageSource::stop()
 void OpenCVImageSource::threadStop()
 {
     timer->stop();
-    cvReleaseCapture(&camera);
-    camera = 0;
+    if (camera != NULL)
+    {
+        cvReleaseCapture(&camera);
+        camera = 0;
+    }
 }
 
 void OpenCVImageSource::captureImage()
@@ -123,9 +127,6 @@ LiveImageColorSource::LiveImageColorSource()
 	
 	KeyboardFilter* keyboard = new KeyboardFilter(this);
 	displayWidget->installEventFilter(keyboard);
-	
-	//Show it on the screen
-	//displayWidget->show();
 }
 
 void LiveImageColorSource::updateImage(const QImage &image)

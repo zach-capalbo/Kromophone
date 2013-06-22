@@ -48,6 +48,7 @@ private slots:
 	void on_actionAbout_triggered();
 
 protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 	
 private:
 	Ui::MainWindow *ui;

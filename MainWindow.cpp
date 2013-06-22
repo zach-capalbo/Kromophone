@@ -77,7 +77,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+#ifdef USE_OPENCV
     cameraSource.stop();
+#endif
 
 	//Quit the audio
 	audioThread.quit();
@@ -114,6 +116,7 @@ void MainWindow::on_cButton_clicked()
 	}
 	
 	liveColorSource.widget()->show();
+    liveColorSource.widget()->installEventFilter(this);
 	
     cameraSource.start();
 #endif
@@ -136,6 +139,7 @@ void MainWindow::startImageSource(const QString& file)
 	
 	//Show the file Display widgets
 	staticColorSource.widget()->show();
+    staticColorSource.widget()->installEventFilter(this);
 	
 	//Load the file that we just got from the file dialog
 	fileImageSource.load(file);
@@ -186,4 +190,17 @@ void MainWindow::on_actionAbout_triggered()
 		    "along with this program.  If not, see <http://www.gnu.org/licenses/>.");
 	
 	QMessageBox::about(this, tr("Kromophone"), msg);
+}
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if ( event->type() == QEvent::Close )
+    {
+        audioThread.quit();
+        cameraSource.stop();
+        cameraSourceThread.quit();
+        fileSourceThread.quit();
+    }
+
+    return false;
 }
