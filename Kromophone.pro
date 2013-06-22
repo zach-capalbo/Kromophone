@@ -46,10 +46,13 @@ opencv: DEFINES += USE_OPENCV
 opencv:win32: INCLUDEPATH += $$OPENCV\\include $$OPENCV\\modules\\core\\include $$OPENCV\\modules\\video\\include $$OPENCV\\modules\\imgproc\\include $$OPENCV\\modules\\highgui\\include
 opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc10\\lib
 CONFIG(debug, debug|release):opencv:win32: LIBS += -lopencv_core245d -lopencv_video245d -lopencv_highgui245d
+CONFIG(release, debug|release):opencv:win32: LIBS += -lopencv_core245 -lopencv_video245 -lopencv_highgui245
 #CONFIG(release, debug|release): CONFIG-=debug
 #message($$CONFIG)
 
 #Release:CONFIG-=debug
+
+win32: RC_FILE = icon.rc
 
 CONFIG(release, debug|release) {
     DEFINES += QT_NO_DEBUG
@@ -106,7 +109,8 @@ RESOURCES += \
 OTHER_FILES += \
     S30kromophone \
     LICENSE \
-    README.md
+    README.md \
+    icon.rc
 
 initscripts.files += S30kromophone
 initscripts.path = /etc/rc5.d
