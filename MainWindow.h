@@ -46,6 +46,8 @@ private slots:
 	void on_spectrumButton_clicked();
 	
 	void on_actionAbout_triggered();
+
+protected:
 	
 private:
 	Ui::MainWindow *ui;

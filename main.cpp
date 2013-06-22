@@ -28,6 +28,7 @@
 #include "ColorPreviewWidget.h"
 #include "DesktopImageSource.h"
 #include <QRegion>
+#include <QDebug>
 
 int main(int argc, char *argv[])
 {
@@ -89,6 +90,8 @@ int main(int argc, char *argv[])
 #endif
 	
 	return a.exec();
+
+    qDebug() << "Got here";
 #ifndef DESKTOP
 	audioThread.quit();
 #endif

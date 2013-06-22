@@ -42,14 +42,21 @@ signals:
 public slots:
 	
 	void start();
+
+    void stop();
 	
 	void captureImage();
-	
+
+protected slots:
+    void threadStart();
+    void threadStop();
 protected:
-	
+
 	void drawCrosshairs(QImage& image);
 	
 	CvCapture* camera;
+
+    QTimer *timer;
 	
 };
 

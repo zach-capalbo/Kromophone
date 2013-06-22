@@ -64,6 +64,7 @@ class ImageSource : public QObject
 public slots:
 	
 	virtual void start() = 0;
+    virtual void stop() = 0;
 	
 signals:
 	
@@ -130,6 +131,8 @@ public:
 	void load(const QString& file);
 public slots:
 	void start() { emit update(image); }
+
+    void stop() { }
 	
 protected:
 	

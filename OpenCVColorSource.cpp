@@ -55,24 +55,43 @@ static QImage IplImage2QImage(const IplImage *iplImage)
 OpenCVImageSource::OpenCVImageSource(QObject *parent) :
 	ImageSource()
 {
-
+    timer = new QTimer(this);
+    timer->setSingleShot(true);
 }
 
 void OpenCVImageSource::start()
 {
-	camera = cvCaptureFromCAM( CV_CAP_ANY );
-	
-	Q_CHECK_PTR(camera);
-	
-	if (camera == NULL)
-	{
-		qFatal("Could not open camera.");
-		QApplication::exit(-1);
-	}
-	
-	QTimer *timer = new QTimer(this);
-	connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
-	timer->start(10);
+    QMetaObject::invokeMethod(this, "threadStart");
+}
+
+void OpenCVImageSource::threadStart()
+{
+    camera = cvCaptureFromCAM( CV_CAP_ANY );
+
+    Q_CHECK_PTR(camera);
+
+    if (camera == NULL)
+    {
+        qFatal("Could not open camera.");
+        QApplication::exit(-1);
+    }
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(captureImage()));
+    timer->start(10);
+}
+
+void OpenCVImageSource::stop()
+{
+    QMetaObject::invokeMethod(this, "threadStop");
+}
+
+void OpenCVImageSource::threadStop()
+{
+    timer->stop();
+
+    cvReleaseCapture(&camera);
+
+    camera = 0;
 }
 
 void OpenCVImageSource::captureImage()
@@ -86,6 +105,8 @@ void OpenCVImageSource::captureImage()
 	QImage image(IplImage2QImage(frame).mirrored(true,false));
 	
 	emit update(image);
+
+    timer->start(10);
 }
 
 LiveImageColorSource::LiveImageColorSource()

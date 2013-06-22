@@ -43,8 +43,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMainWindow(parent),
 	ui(new Ui::MainWindow)
 {
-	ui->setupUi(this);
-//    QObject::connect(ui->fButton1, SIGNAL(clicked()), , SLOT());
+    ui->setupUi(this);
 	
 	//Set up the audio engine
 	//Move the audio to a seperate thread so that it can run continually
@@ -54,8 +53,6 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMetaObject::invokeMethod(&audioOutput,"initalizeAudio");
 	
 	//Set up the connections for the pathway for the kromophone
-	
-	//File Source Specific stuff
 	
 	//Move the Source to it's own thread to prevent hanging
 	fileImageSource.moveToThread(&fileSourceThread);
@@ -67,8 +64,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(&staticColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 
 #ifdef USE_OPENCV
+    //OpenCV Source Specific Stuff
     cameraSource.moveToThread(&cameraSourceThread);
-	//OpenCV Source Specific Stuff
 	connect(&cameraSource, SIGNAL(update(QImage)), &liveColorSource, SLOT(updateImage(QImage)));
 	connect(&liveColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 #endif
@@ -77,14 +74,12 @@ MainWindow::MainWindow(QWidget *parent) :
 	//Connect the output from the transform to the audio engine
 	connect(&colorToSoundTransform, SIGNAL(SoundGenerated(Sound)), &audioOutput, SLOT(PlaySound(Sound)));
 	connect(&colorToSoundTransform, SIGNAL(SoundsGenerated(SoundList)), &audioOutput, SLOT(PlaySounds(SoundList)));
-	
-	
-	
-	
 }
 
 MainWindow::~MainWindow()
 {
+    cameraSource.stop();
+
 	//Quit the audio
 	audioThread.quit();
 	
@@ -96,10 +91,15 @@ MainWindow::~MainWindow()
 	
 	//Wait for it to clean up
 	fileSourceThread.wait();
+
+#ifdef USE_OPENCV
+    cameraSource.stop();
+    cameraSourceThread.quit();
+    cameraSourceThread.wait();
+#endif
 	
 	delete ui;
 }
-
 
 //start kromo with camera
 void MainWindow::on_cButton_clicked()
