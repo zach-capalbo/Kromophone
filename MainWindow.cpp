@@ -165,9 +165,12 @@ void MainWindow::on_spectrumButton_clicked()
 
 void MainWindow::on_actionAbout_triggered()
 {
-	QString msg = tr("The Kromophone. http://kromophone.com\n" \
+    QString msg = tr("The Kromophone version 0.1 http://kromophone.com\n" \
 					 "\n" \
 					 "Copyright 2008-2013 Zachary Capalbo\n" \
+                     "\n" \
+                     "This is ALPHA Software. It probably won't work right.\n" \
+                     "Report bugs at <https://github.com/zach-capalbo/Kromophone/issues>"
 			"\n" \
 		    "This program is free software: you can redistribute it and/or modify\n"\
 		    "it under the terms of the GNU General Public License as published by\n"\

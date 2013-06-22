@@ -20,21 +20,21 @@
       <item>
        <widget class="QPushButton" name="cButton">
         <property name="text">
-         <string>camera</string>
+         <string>Sonify the Webcam</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="fButton">
         <property name="text">
-         <string>Open an Image File</string>
+         <string>Sonify an Image File</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="spectrumButton">
         <property name="text">
-         <string>Spectrum</string>
+         <string>Sonify a spectrum</string>
         </property>
        </widget>
       </item>
