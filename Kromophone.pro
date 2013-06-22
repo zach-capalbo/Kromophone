@@ -26,10 +26,9 @@ MOBILITY += multimedia
 win32: QT	 += multimedia
 rpi:QT	 += multimedia
 
-CONFIG   += console mobility
+CONFIG   += mobility
 CONFIG	 += opencv
 rpi:CONFIG	 += multimediakit
-CONFIG   += mobility;
 
 
 target.path = /usr/bin

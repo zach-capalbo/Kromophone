@@ -88,9 +88,7 @@ void OpenCVImageSource::stop()
 void OpenCVImageSource::threadStop()
 {
     timer->stop();
-
     cvReleaseCapture(&camera);
-
     camera = 0;
 }
 

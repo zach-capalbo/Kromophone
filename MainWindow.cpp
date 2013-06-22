@@ -65,7 +65,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 #ifdef USE_OPENCV
     //OpenCV Source Specific Stuff
-    cameraSource.moveToThread(&cameraSourceThread);
 	connect(&cameraSource, SIGNAL(update(QImage)), &liveColorSource, SLOT(updateImage(QImage)));
 	connect(&liveColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 #endif
@@ -93,11 +92,10 @@ MainWindow::~MainWindow()
 	fileSourceThread.wait();
 
 #ifdef USE_OPENCV
-    cameraSource.stop();
     cameraSourceThread.quit();
     cameraSourceThread.wait();
 #endif
-	
+
 	delete ui;
 }
 
@@ -112,12 +110,12 @@ void MainWindow::on_cButton_clicked()
 #ifdef USE_OPENCV
 	if (! cameraSourceThread.isRunning() )
 	{
-		cameraSourceThread.start();
+        cameraSourceThread.start();
 	}
 	
 	liveColorSource.widget()->show();
 	
-	cameraSource.start();
+    cameraSource.start();
 #endif
 }
 
