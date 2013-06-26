@@ -23,3 +23,8 @@ ui_*
 moc_*.cpp
 debug/
 release/
+android/bin/dexedLibs/annotations-*.jar
+android/bin/build.prop
+android/bin/Kromophone.ap_
+android/bin/Kromophone-debug.apk
+android/bin/Kromophone-debug-unaligned.apk
