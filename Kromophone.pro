@@ -40,7 +40,8 @@ INSTALLS += target
 
 !rpi: DEFINES+= DESKTOP
 
-andoird: QMAKE_CXXFLAGS += -frtti -fexceptions
+android: QT += qml quick
+#android: QMAKE_CXXFLAGS += -frtti -fexceptions
 android: INCLUDEPATH += /home/zach/src/android/OpenCV-2.4.0/include
 android: LIBS += -L/home/zach/src/android/OpenCV-2.4.0/libs/armeabi-v7a/ -lopencv_highgui -lopencv_video -lopencv_imgproc -lopencv_androidcamera -lopencv_core -ljnigraphics
 android: LIBS += -L/home/zach/src/android/OpenCV-2.4.0/share/OpenCV/3rdparty/libs/armeabi-v7a/ -ltbb -llibjpeg -llibpng -llibtiff -llibjasper

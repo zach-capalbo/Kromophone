@@ -197,8 +197,10 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     if ( event->type() == QEvent::Close )
     {
         audioThread.quit();
+#ifdef USE_OPENCV
         cameraSource.stop();
         cameraSourceThread.quit();
+#endif
         fileSourceThread.quit();
     }
 
