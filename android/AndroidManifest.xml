@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<manifest android:versionName="1.0" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" package="com.zachcapalbo.kromophone">
-    <application android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtApplication">
+<manifest android:versionName="1.1" xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="2" package="com.zachcapalbo.kromophones">
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtApplication">
         <activity android:screenOrientation="unspecified" android:label="@string/app_name" android:name="org.qtproject.qt5.android.bindings.QtActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -33,6 +33,7 @@
     </application>
     <!-- %%INSERT_USES_SDK%% -->
     <supports-screens android:largeScreens="true" android:anyDensity="true" android:normalScreens="true" android:smallScreens="true"/>
+    <uses-sdk android:targetSdkVersion="15" android:minSdkVersion="15"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
