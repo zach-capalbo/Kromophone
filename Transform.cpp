@@ -58,14 +58,16 @@ void HSLMode::ReceiveColor(Color P)
 	
 	newSound.volume = luminosity;
 	
-	newSound.timbre = &SinTimbre::timbre; //&Trumpet::timbre;
+//	newSound.timbre = &SinTimbre::timbre; //&Trumpet::timbre;
 	
 	emit SoundGenerated(newSound);
 }
 
 RGBMode::RGBMode() : Transform()
 {
-	
+	redTimbre = new Trumpet;
+	greenTimbre = new OrganTimbre;
+	blueTimbre = new Trumpet;
 }
 
 void RGBMode::ReceiveColor(Color P)
@@ -76,25 +78,26 @@ void RGBMode::ReceiveColor(Color P)
 	
 	l[0].pitch = 5.0f;
 	l[0].pan = 1.0f;
-	l[0].timbre = &Trumpet::timbre;
+	l[0].timbre = redTimbre;
 	l[0].volume = P.Red * 0.8;
 	
 	l[1].pitch = 3.0f;
 	l[1].pan = 0.0f;
-	l[1].timbre = &UkuleleTimbre::timbre;
+	l[1].timbre = greenTimbre;
 	l[1].volume = P.Green;
 	
 	l[2].pitch = 1.0f;
 	l[2].pan = 0.5f;
-	l[2].timbre = &Trumpet::timbre;
+	l[2].timbre = blueTimbre;
 	l[2].volume = P.Blue;
 	
 	emit SoundsGenerated(l);
 }
 
 RGBYWMode::RGBYWMode() : RGBMode()
-{
-	
+{	
+	yellowTimbre = new UkuleleTimbre;
+	whiteTimbre = new SinTimbre;
 }
 
 void RGBYWMode::ReceiveColor(Color P)
@@ -109,27 +112,27 @@ void RGBYWMode::ReceiveColor(Color P)
 	
 	l[0].pitch = 5.0f;
 	l[0].pan = 1.0f;
-	l[0].timbre = &Trumpet::timbre;
+	l[0].timbre = redTimbre;
 	l[0].volume = P.Red - yellow - saturation;
 	
-    l[1].pitch = 1.0f;
+    l[1].pitch = 1.5f;
 	l[1].pan = 0.0f;
-	l[1].timbre = &OrganTimbre::timbre;
+	l[1].timbre = greenTimbre;
 	l[1].volume = P.Green - yellow - saturation;
 	
 	l[2].pitch = 1.0f;
 	l[2].pan = 0.5f;
-	l[2].timbre = &Trumpet::timbre;
+	l[2].timbre = blueTimbre;
 	l[2].volume = P.Blue - saturation;
 	
 	l[3].pitch = 4.0f;
 	l[3].pan = 0.8f;
-	l[3].timbre = &Trumpet::timbre;
+	l[3].timbre = yellowTimbre;
 	l[3].volume = yellow;
 	
 	l[4].pitch = 2.0f;
 	l[4].pan = 1.0f;
-	l[4].timbre = &SinTimbre::timbre;
+	l[4].timbre = whiteTimbre;
 	l[4].volume = saturation;
 	
 	if (sweepEnabled)

@@ -29,7 +29,7 @@ const int BufferSize      = 32768;
 
 const int DurationUSeconds = 10000;
 const int ToneFrequencyHz = 100;
-const int DataFrequencyHz = 44100;
+const int DataFrequencyHz = 48000;
 const int BufferSize      = 32768;
 
 AudioEngine::AudioEngine(QObject *parent) :

@@ -83,8 +83,10 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
     QVector<qreal> channels;
     channels.resize(2);
 	
+	initializeSounds();
+	
     while (length) {
-        generateTone(channels[0], channels[1], frequency, qreal(m_sampleIndex) / qreal(format.sampleRate()), 1.0);
+        generateTone(channels[0], channels[1], m_sampleIndex);
         //const qreal x = soundFunc(2 * M_PI * frequency * qreal(sampleIndex  ) / format.sampleRate());
         for (int i=0; i<format.channelCount(); ++i) {
             if (format.sampleSize() == 8 && format.sampleType() == QAudioFormat::UnSignedInt) {
@@ -178,7 +180,20 @@ void AudioGenerator::setSounds(const SoundList& sounds)
 	}
 }
 
-void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qreal angle, float percent)
+void AudioGenerator::initializeSounds()
+{
+	m_mutex.lock();
+    for(auto it = m_sounds.begin(); it != m_sounds.end(); ++it)
+    {
+		if (!it->timbre->initialized())
+		{
+			it->timbre->initialize(m_frequency * it->pitch, m_format.sampleRate());
+		}
+	}
+	m_mutex.unlock();
+}
+
+void AudioGenerator::generateTone(qreal &left, qreal &right, int sampleIndex)
 {
     left = 0.0f;
     right = 0.0f;
@@ -188,7 +203,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 	m_mutex.lock();
     foreach (const Sound& s, m_sounds)
     {
-        qreal sweep = generateTimbre(s, frequency, angle, percent);
+        qreal sweep = generateTimbre(s, sampleIndex);
 
         left += sweep * s.pan;
 
@@ -199,35 +214,6 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int frequency, qrea
 
     right /= m_sounds.size();
 	
-	const float threshold = 0.01;
-	
-	if (fabs(left - lastFloatLeft) > threshold)
-	{
-		if (left > lastFloatLeft)
-		{
-			left -= threshold;
-		}
-		else
-		{
-			left += threshold;
-		}
-	}
-	
-	if (fabs(right - lastFloatRight) > threshold)
-	{
-		if (right > lastFloatRight)
-		{
-			right -= threshold;
-		}
-		else
-		{
-			right += threshold;
-		}
-	}
-	
-	lastFloatLeft = left;
-	
-	lastFloatRight = right;
 	
 	m_mutex.unlock();
 }
@@ -244,12 +230,12 @@ qreal AudioGenerator::generateSweep(int frequency, qreal angle, float percent)
     return newsound;// * percent + oldsound * (1.0 - percent);
 }
 
-qreal AudioGenerator::generateTimbre(const Sound& sound, int frequency, qreal angle, float percent)
+qreal AudioGenerator::generateTimbre(const Sound& sound, int sampleIndex)
 {
-    if (sound.timbre == NULL)
+    if (sound.timbre == NULL || !sound.timbre->initialized())
     {
         return 0.0;
     }
 
-    return sound.volume * sound.timbre->getTone(2 * M_PI * (sound.pitch * /** 200 +*/ frequency) * angle);
+    return sound.volume * sound.timbre->getSample(sampleIndex);
 }

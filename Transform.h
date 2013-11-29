@@ -85,6 +85,11 @@ signals:
 public slots:
 	
 	virtual void ReceiveColor(Color P);
+	
+protected:
+	Timbre* redTimbre;
+	Timbre* greenTimbre;
+	Timbre* blueTimbre;
 };
 
 class RGBYWMode : public RGBMode
@@ -98,6 +103,10 @@ public:
 public slots:
 	
 	virtual void ReceiveColor(Color P);
+	
+protected:
+	Timbre* yellowTimbre;
+	Timbre* whiteTimbre;
 };
 
 #endif

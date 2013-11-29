@@ -20,16 +20,21 @@
 
 #include <qmath.h>
 #include <QHash>
+#include <QVector>
 
 class Timbre
 {
 public:
-	qreal getTone(float angleInRadians);
-	
-	QHash<int, float> toneCache;
+	void initialize(unsigned int frequency, unsigned int sampleRate);
+	bool initialized() { return !sampleBuffer.isEmpty(); }
+	qreal getSample(unsigned int sampleIndex);
 	
 protected:
 	virtual qreal generateTone(float angleInRadians)=0;
+	
+private:
+	void fillFloatBuffer(QVector<qreal>& buffer, unsigned int toneFrequency, unsigned int sampleRate);
+	QVector<qreal> sampleBuffer;
 };
 
 class Trumpet : public Timbre

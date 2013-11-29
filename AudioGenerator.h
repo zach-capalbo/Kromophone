@@ -39,7 +39,8 @@ public:
     qint64 bytesAvailable() const;
 
 protected:
-    virtual void generateTone(qreal &left, qreal &right, int frequency, qreal angle, float percent) = 0;
+    virtual void generateTone(qreal& left, qreal& right, int sampleIndex)=0;
+	virtual void initializeSounds()=0;
 
 protected:
     void generateData(const QAudioFormat &format, qint64 durationUs, int frequency);
@@ -79,10 +80,11 @@ protected:
 	
 	float lastFloatRight, lastFloatLeft;
 	
-	virtual void generateTone(qreal& left, qreal& right, int frequency, qreal angle, float percent);
+	virtual void generateTone(qreal& left, qreal& right, int sampleIndex);
+	virtual void initializeSounds();
 	qreal generateSine(int frequency, qreal angle);
 	qreal generateSweep(int frequency, qreal angle, float percent);
-	qreal generateTimbre(const Sound &sound, int frequency, qreal angle, float percent);
+	qreal generateTimbre(const Sound &sound, int sampleIndex);
 	
 	void timerEvent(QTimerEvent *);
 };
