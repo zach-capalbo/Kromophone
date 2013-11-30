@@ -63,15 +63,8 @@ void Timbre::fillFloatBuffer(QVector<qreal>& buffer, unsigned int toneFrequency,
 	int numberOfPoints = sampleRate / toneFrequency;
 	buffer.resize(numberOfPoints);
 	
-	printf("buff = [");
 	for (unsigned int i = 0; i < numberOfPoints; i++)
 	{
 		buffer[i] = generateTone((float) i / (float) (numberOfPoints));
-		printf("%5.5e");
-		
-		if (i != numberOfPoints - 1)
-			printf("; ");
 	}
-	printf("];\n");
-	
 }
