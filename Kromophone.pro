@@ -4,17 +4,18 @@
 #
 #-------------------------------------------------
 
-# Change this to wherever you have OpenCV installed on windows
-OPENCV = C:\\opencv
 
+# Common Configuration
 TARGET = Kromophone
 TEMPLATE = app
 
-contains(QMAKE_CXX, arm-poky-linux-gnueabi-g++): CONFIG+=rpi
-
-rpi: message(Making for raspberry pi)
-
 QT       += core gui widgets
+CONFIG	 += opencv
+
+#hurray for C++11
+QMAKE_CXXFLAGS += -std=c++0x
+
+contains(QMAKE_CXX, arm-poky-linux-gnueabi-g++): CONFIG+=rpi
 
 contains(QT_VERSION, ^5\\.*\\..*) {
 QT	+= multimedia
@@ -23,44 +24,52 @@ else {
 QT	 += mobility multimediakit
 MOBILITY += multimedia
 }
-win32: QT	 += multimedia
-rpi:QT	 += multimedia
 
-CONFIG   += mobility
-CONFIG	 += opencv
-rpi:CONFIG	 += multimediakit
+android {
+	OPENCV = /home/zach/src/android/OpenCV-2.4.6-android-sdk
+	QT       += core gui multimedia qml quick
+	INCLUDEPATH += $$OPENCV/sdk/native/jni/include
+	LIBS += -L$$OPENCV/sdk/native/libs/armeabi-v7a/ -lopencv_highgui -lopencv_video -lopencv_imgproc -lopencv_androidcamera -lopencv_core -ljnigraphics
+	LIBS += -L$$OPENCV/sdk/native/3rdparty/libs/armeabi-v7a -llibjpeg -llibpng -llibtiff -llibjasper -lIlmImf -ltbb
+	CONFIG += mobility
+	MOBILITY = 
+	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+	OTHER_FILES += \
+		android/AndroidManifest.xml
+	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libnative_camera_r4.1.1.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
+}
+else:unix {
+	target.path = /usr/bin
+	INSTALLS += target
+	opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 
+rpi {
+	QT	 += multimedia
+	message(Making for raspberry pi)
+	CONFIG	 += multimediakit
+	initscripts.files += S30kromophone
+	initscripts.path = /etc/rc5.d
+	INSTALLS += initscripts
+}
+else {
+	CONFIG   += mobility
+	DEFINES += DESKTOP
+}
+}
+else:win32 {
+	QT	 += multimedia
+	# Change this to wherever you have OpenCV installed on windows
+	OPENCV = C:\\opencv
+	DEFINES+= DESKTOP
+	opencv:win32: INCLUDEPATH += $$OPENCV\\include $$OPENCV\\modules\\core\\include $$OPENCV\\modules\\video\\include $$OPENCV\\modules\\imgproc\\include $$OPENCV\\modules\\highgui\\include
+	opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc10\\lib
+	CONFIG(debug, debug|release):opencv:win32: LIBS += -lopencv_core245d -lopencv_video245d -lopencv_highgui245d
+	CONFIG(release, debug|release):opencv:win32: LIBS += -lopencv_core245 -lopencv_video245 -lopencv_highgui245
+	RC_FILE = icon.rc
 
-target.path = /usr/bin
-INSTALLS += target
+}
 
-#INCLUDEPATH += /usr/include/QtMultimediaKit
-#INCLUDEPATH += $$OE_QMAKE_INCDIR_QT/QtMultimedia
-#LIBS += -lQtMultimediaKit
-
-#hurray for C++11
-QMAKE_CXXFLAGS += -std=c++0x
-
-!rpi: DEFINES+= DESKTOP
-
-android: QT += qml quick
-#android: QMAKE_CXXFLAGS += -frtti -fexceptions
-android: INCLUDEPATH += /home/zach/src/android/OpenCV-2.4.0/include
-android: LIBS += -L/home/zach/src/android/OpenCV-2.4.0/libs/armeabi-v7a/ -lopencv_highgui -lopencv_video -lopencv_imgproc -lopencv_androidcamera -lopencv_core -ljnigraphics
-android: LIBS += -L/home/zach/src/android/OpenCV-2.4.0/share/OpenCV/3rdparty/libs/armeabi-v7a/ -ltbb -llibjpeg -llibpng -llibtiff -llibjasper
-
-!android:opencv:unix: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 opencv: DEFINES += USE_OPENCV
-opencv:win32: INCLUDEPATH += $$OPENCV\\include $$OPENCV\\modules\\core\\include $$OPENCV\\modules\\video\\include $$OPENCV\\modules\\imgproc\\include $$OPENCV\\modules\\highgui\\include
-opencv:win32: LIBS += -L$$OPENCV\\build\\x86\\vc10\\lib
-CONFIG(debug, debug|release):opencv:win32: LIBS += -lopencv_core245d -lopencv_video245d -lopencv_highgui245d
-CONFIG(release, debug|release):opencv:win32: LIBS += -lopencv_core245 -lopencv_video245 -lopencv_highgui245
-#CONFIG(release, debug|release): CONFIG-=debug
-#message($$CONFIG)
-
-#Release:CONFIG-=debug
-
-win32: RC_FILE = icon.rc
 
 CONFIG(release, debug|release) {
     DEFINES += QT_NO_DEBUG
@@ -123,6 +132,3 @@ OTHER_FILES += \
     functovect.rb \
     playtimbre.m
 
-initscripts.files += S30kromophone
-initscripts.path = /etc/rc5.d
-rpi:INSTALLS += initscripts
