@@ -26,7 +26,8 @@
 
 class Generator : public QIODevice
 {
-    Q_OBJECT
+	Q_OBJECT
+	void generateData(const QAudioFormat& format, unsigned char* ptr, qint64 length);
 public:
     Generator(const QAudioFormat &format, qint64 durationUs, int frequency, QObject *parent);
     ~Generator();
