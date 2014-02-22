@@ -26,7 +26,7 @@ MOBILITY += multimedia
 }
 
 android {
-	OPENCV = /home/zach/src/android/OpenCV-2.4.6-android-sdk
+	OPENCV = $$OPENCV
 	QT       += core gui multimedia qml quick
 	INCLUDEPATH += $$OPENCV/sdk/native/jni/include
 	LIBS += -L$$OPENCV/sdk/native/libs/armeabi-v7a/ -lopencv_highgui -lopencv_video -lopencv_imgproc -lopencv_androidcamera -lopencv_core -ljnigraphics
@@ -36,7 +36,8 @@ android {
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 	OTHER_FILES += \
 		android/AndroidManifest.xml
-	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libnative_camera_r4.1.1.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
+
+	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
 }
 else:unix {
 	target.path = /tmp/usr/bin
@@ -131,4 +132,3 @@ OTHER_FILES += \
     icon.rc \ 
     functovect.rb \
     playtimbre.m
-

@@ -29,6 +29,7 @@
 #include "DesktopImageSource.h"
 #include <QRegion>
 #include <QDebug>
+#include <QPushButton>
 
 int main(int argc, char *argv[])
 {
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
 //	StaticImageColorSource i;
 //	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
 //	fs.start();
+	
 	
 	QThread acqthread;
 	OpenCVImageSource cv;
@@ -87,6 +89,11 @@ int main(int argc, char *argv[])
 	
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
 	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
+	
+	QPushButton quitButton("Quit");
+	quitButton.show();
+	quitButton.setGeometry(30,30,50, 50);
+	QObject::connect(&quitButton, SIGNAL(clicked()), &a, SLOT(quit()));
 #endif
 	
 	return a.exec();
