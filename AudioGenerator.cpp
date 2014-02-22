@@ -23,6 +23,9 @@
 #include <QtEndian>
 
 #include <QElapsedTimer>
+#include <QDebug>
+#include <QDateTime>
+
 void delay(unsigned int msecs)
 {
 	QElapsedTimer t;
@@ -88,10 +91,13 @@ void Generator::generateData(const QAudioFormat &format, qint64 durationUs, int 
 void Generator::generateData(const QAudioFormat& format, unsigned char* ptr, qint64 length)
 {
 	const int channelBytes = format.sampleSize() / 8;
-	
+	if (length <= 0)
+		return;
+m_mutex.lock();	
 	QVector<qreal> channels;
     channels.resize(2);
 	
+//	qDebug() << "generating Sounds" << QDateTime::currentDateTime() << length;
 	initializeSounds();
 	
     while (length) {
@@ -123,6 +129,8 @@ void Generator::generateData(const QAudioFormat& format, unsigned char* ptr, qin
         }
         ++m_sampleIndex;
     }
+	m_mutex.unlock();
+	
 }
 
 qint64 Generator::readData(char *data, qint64 len)
@@ -193,12 +201,12 @@ void AudioGenerator::setSounds(const SoundList& sounds)
 	{
 		m_sounds = sounds;
 		m_mutex.unlock();
+//		qDebug() << "Setting Sounds" << QDateTime::currentDateTime();
 	}
 }
 
 void AudioGenerator::initializeSounds()
 {
-	m_mutex.lock();
     for(auto it = m_sounds.begin(); it != m_sounds.end(); ++it)
     {
 		if (!it->timbre->initialized())
@@ -206,7 +214,6 @@ void AudioGenerator::initializeSounds()
 			it->timbre->initialize(m_frequency * it->pitch, m_format.sampleRate());
 		}
 	}
-	m_mutex.unlock();
 }
 
 void AudioGenerator::generateTone(qreal &left, qreal &right, int sampleIndex)
@@ -216,7 +223,7 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int sampleIndex)
 
     //left = right = generateTimbre(m_sound, frequency, angle, percent);
 
-	m_mutex.lock();
+	
     foreach (const Sound& s, m_sounds)
     {
         qreal sweep = generateTimbre(s, sampleIndex);
@@ -231,7 +238,6 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int sampleIndex)
     right /= m_sounds.size();
 	
 	
-	m_mutex.unlock();
 }
 
 qreal AudioGenerator::generateSine(int frequency, qreal angle)

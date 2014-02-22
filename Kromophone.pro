@@ -39,22 +39,22 @@ android {
 	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libnative_camera_r4.1.1.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
 }
 else:unix {
-	target.path = /usr/bin
+	target.path = /tmp/usr/bin
 	INSTALLS += target
 	opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
 
-rpi {
-	QT	 += multimedia
-	message(Making for raspberry pi)
-	CONFIG	 += multimediakit
-	initscripts.files += S30kromophone
-	initscripts.path = /etc/rc5.d
-	INSTALLS += initscripts
-}
-else {
-	CONFIG   += mobility
-	DEFINES += DESKTOP
-}
+	rpi {
+		QT	 += multimedia
+		message(Making for raspberry pi)
+		CONFIG	 += mobility
+		initscripts.files += S30kromophone
+		initscripts.path = /etc/rc5.d
+#		INSTALLS += initscripts
+	}
+	else {
+		CONFIG   += mobility
+		DEFINES += DESKTOP
+	}
 }
 else:win32 {
 	QT	 += multimedia

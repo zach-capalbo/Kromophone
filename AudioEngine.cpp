@@ -27,10 +27,10 @@ const int DataFrequencyHz = 44100;
 const int BufferSize      = 32768;
 */
 
-const int DurationUSeconds = 10000;
+const int DurationUSeconds = 100;
 const int ToneFrequencyHz = 100;
 const int DataFrequencyHz = 48000;
-const int BufferSize      = 32768;
+const int BufferSize      = 32768/2;
 
 AudioEngine::AudioEngine(QObject *parent) :
 	SoundOut(),  m_pullTimer(new QTimer(this)), m_buffer(BufferSize, 0), m_output(NULL)
@@ -41,7 +41,7 @@ void AudioEngine::initalizeAudio()
 {
     connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
 
-    m_pullMode = false;
+    m_pullMode = true;
 
     m_format.setSampleRate(DataFrequencyHz);
     m_format.setChannelCount(2);
@@ -49,6 +49,12 @@ void AudioEngine::initalizeAudio()
     m_format.setCodec("audio/pcm");
     m_format.setByteOrder(QAudioFormat::LittleEndian);
     m_format.setSampleType(QAudioFormat::SignedInt);
+	
+	qDebug() << "Available devices";
+	foreach (QAudioDeviceInfo out, QAudioDeviceInfo::availableDevices(QAudio::AudioOutput))
+	{
+			qDebug() << out.deviceName();
+	}
 
     QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
     qDebug() << "Default: " << info.deviceName();
@@ -66,6 +72,8 @@ void AudioEngine::initalizeAudio()
     }
 
     m_audioOutput = new QAudioOutput(m_device, m_format, this);
+	
+	m_audioOutput->setBufferSize(BufferSize);
 
     connect(m_audioOutput, SIGNAL(notify()), SLOT(notified()));
     connect(m_audioOutput, SIGNAL(stateChanged(QAudio::State)), SLOT(stateChanged(QAudio::State)));
@@ -76,17 +84,17 @@ void AudioEngine::initalizeAudio()
 
     m_generator->moveToThread(generatorThread);
 
-    connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
-    connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
+//    connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
+//    connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
 
     generatorThread->start(QThread::HighPriority);
 
     m_generator->start();
 
-    //m_pullTimer->start(200);
+    m_pullTimer->start(1);
 
-    //m_output = m_audioOutput->start();
-    m_audioOutput->start(m_generator);
+    m_output = m_audioOutput->start();
+//    m_audioOutput->start(m_generator);
 
 
 }
@@ -120,6 +128,7 @@ void AudioEngine::PlaySounds(const SoundList &InputSounds)
 {
 	emit updateSounds(InputSounds);
 	m_generator->setSounds(InputSounds);
+//	pullTimerExpired();
 }
 
 void AudioEngine::notify()

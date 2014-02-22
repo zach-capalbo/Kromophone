@@ -190,8 +190,8 @@ void ImageColorSource::decreaseAverage()
 
 void ImageColorSource::drawCursor(QImage& image)
 {
-	int posx = cursor.x();
-	int posy = cursor.y();
+	int posx = qMax(0, cursor.x());
+	int posy = qMax(0,cursor.y());
 	
 	int cwidth = cursorSize.width();
 	int cheight = cursorSize.height();
