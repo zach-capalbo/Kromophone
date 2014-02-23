@@ -203,7 +203,7 @@ void AudioGenerator::setSounds(const SoundList& sounds)
 		m_sounds = sounds;
 		m_mutex.unlock();
 //		qDebug() << "Setting Sounds" << QDateTime::currentDateTime();
-	}
+    }
 }
 
 void AudioGenerator::initializeSounds()

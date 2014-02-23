@@ -31,7 +31,7 @@ const int BufferSize      = 32768;
 const int DurationUSeconds = 100;
 const int ToneFrequencyHz = 100;
 const int DataFrequencyHz = 48000;
-const int BufferSize      = 32768/2;
+const int BufferSize      = 3276*4;
 
 AudioEngine::AudioEngine(QObject *parent) :
 	SoundOut(),  m_pullTimer(new QTimer(this)), m_buffer(BufferSize, 0), m_output(NULL)
@@ -102,6 +102,7 @@ void AudioEngine::initalizeAudio()
 
 void AudioEngine::pullTimerExpired()
 {	
+//    qDebug() << "pull timer" << m_audioOutput->periodSize();
     if (m_audioOutput && m_audioOutput->state() != QAudio::StoppedState) {
         int chunks = m_audioOutput->bytesFree()/m_audioOutput->periodSize();
         while (chunks) {
