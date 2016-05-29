@@ -45,16 +45,9 @@ int main(int argc, char *argv[])
     w.show();
 #else
 
-//	FileImageSource fs(":/Images/spectrum.jpg");
-//	DesktopImageSource fs;
-//	StaticImageColorSource i;
-//	QObject::connect(&fs, SIGNAL(update(QImage)), &i, SLOT(updateImage(QImage)));	
-//	fs.start();
-	
-	
 	QThread acqthread;
 	QmlCameraSource cv;
-//	cv.moveToThread(&acqthread);
+	cv.moveToThread(&acqthread);
 	acqthread.start();	
 	LiveImageColorSource ls;
 	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
@@ -64,19 +57,6 @@ int main(int argc, char *argv[])
 
 	QThread audioThread;
 	AudioEngine audio;
-	
-	ColorPreviewWidget* preview = new ColorPreviewWidget;
-	
-//	preview->showFullScreen();
-//	ls.widget()->show();
-//	i.widget()->show();
-//	i.widget()->setProperty("Opacity", 0);
-//	i.widget()->setAttribute(Qt::WA_TranslucentBackground, true);
-//	i.widget()->setAttribute( Qt::WA_NoSystemBackground, true );
-//	i.widget()->setAttribute( Qt::WA_TransparentForMouseEvents, true);
-//	i.widget()->setWindowOpacity(0);
-//	i.widget()->setMask(QRegion(0,0,0,0));
-	
 	audio.moveToThread(&audioThread);
 	
 	QMetaObject::invokeMethod(&audio,"initalizeAudio");
@@ -86,21 +66,18 @@ int main(int argc, char *argv[])
 	ImageColorSource* source = &ls;
 	
 	QObject::connect(source, SIGNAL(colorChanged(Color)), &M_T, SLOT(ReceiveColor(Color)));
-	QObject::connect(source, SIGNAL(colorChanged(Color)), preview, SLOT(setColor(Color)));
 	QObject::connect(source, SIGNAL(doSweep(bool,QPointF)), &M_T, SLOT(setSweep(bool,QPointF)));
 	
 	QObject::connect(&M_T, SIGNAL(SoundGenerated(Sound)), &audio, SLOT(PlaySound(Sound)));
 	QObject::connect(&M_T, SIGNAL(SoundsGenerated(SoundList)), &audio, SLOT(PlaySounds(SoundList)));
-	
-//	QPushButton quitButton("Quit");
-//	quitButton.show();
-//	quitButton.setGeometry(30,30,50, 50);
-//	QObject::connect(&quitButton, SIGNAL(clicked()), &a, SLOT(quit()));
 #endif
 	
 	return a.exec();
 #ifndef DESKTOP
 	audioThread.quit();
+    acqthread.quit();
+    audioThread.wait();
+    acqthread.wait();
 #endif
 
 }

@@ -31,4 +31,18 @@ Rectangle {
         source: camera
         autoOrientation: true
     }
+    
+    Rectangle {
+        id: crosshair1
+        color: "white"
+        anchors.centerIn: parent
+        width: 1
+        height: Math.min(parent.width, parent.height) * 0.05
+    }
+    Rectangle {
+        color: "white"
+        anchors.centerIn: parent
+        width: crosshair1.height
+        height: 1
+    }
 }

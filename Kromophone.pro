@@ -24,7 +24,7 @@ MOBILITY += multimedia
 }
 
 android {
-	QT       += core gui multimedia qml quick
+	QT       += core gui multimedia qml quick androidextras
 	CONFIG += mobility
 	MOBILITY = 
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
@@ -122,6 +122,7 @@ DISTFILES += \
     android/res/values/libs.xml \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
-    android/gradlew.bat
+    android/gradlew.bat \
+    android/src/KeepOnActivity.java
 
 include(video/video.pri)

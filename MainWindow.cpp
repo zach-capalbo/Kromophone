@@ -54,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	QMetaObject::invokeMethod(&audioOutput,"initalizeAudio");
 	
 	//Set up the connections for the pathway for the kromophone
+    cameraSource.moveToThread(&cameraSourceThread);
 	
 	//Move the Source to it's own thread to prevent hanging
 	fileImageSource.moveToThread(&fileSourceThread);
