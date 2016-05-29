@@ -29,6 +29,7 @@ class ColorSource : public QObject
 {
 	Q_OBJECT
 public:	
+    explicit ColorSource(QObject* parent = 0) : QObject(parent) {}
     virtual const Color color()=0;
 signals:
     void colorChanged(const Color& color);
@@ -61,6 +62,9 @@ public slots:
 class ImageSource : public QObject
 {
 	Q_OBJECT
+    
+public:
+    explicit ImageSource(QObject* parent = 0) : QObject(parent) {}
 	
 public slots:
 	
@@ -97,7 +101,7 @@ protected slots:
 	void sweep();
 	
 protected:
-	ImageColorSource();
+	ImageColorSource(QObject* parent = 0);
 	
 	void drawCursor(QImage& displayImage);
 	

@@ -36,7 +36,7 @@
 #include <QMessageBox>
 #include <QMetaType>
 
-#include "OpenCVColorSource.h"
+#include "LiveImageColorSource.h"
 #include "AudioEngine.h"
 #include "ColorPreviewWidget.h"
 
@@ -64,11 +64,9 @@ MainWindow::MainWindow(QWidget *parent) :
 	//Connect the color source to the color-to-sound transformation
 	connect(&staticColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
 
-#ifdef USE_OPENCV
     //OpenCV Source Specific Stuff
 	connect(&cameraSource, SIGNAL(update(QImage)), &liveColorSource, SLOT(updateImage(QImage)));
 	connect(&liveColorSource, SIGNAL(colorChanged(Color)), &colorToSoundTransform, SLOT(ReceiveColor(Color)));
-#endif
 	
 	//Common to File & Camera
 	//Connect the output from the transform to the audio engine
@@ -78,9 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-#ifdef USE_OPENCV
     cameraSource.stop();
-#endif
 
 	//Quit the audio
 	audioThread.quit();
@@ -94,10 +90,8 @@ MainWindow::~MainWindow()
 	//Wait for it to clean up
 	fileSourceThread.wait();
 
-#ifdef USE_OPENCV
     cameraSourceThread.quit();
     cameraSourceThread.wait();
-#endif
 
 	delete ui;
 }
@@ -110,7 +104,7 @@ void MainWindow::on_cButton_clicked()
 	{
 		audioThread.start(QThread::HighestPriority);
 	}
-#ifdef USE_OPENCV
+
 	if (! cameraSourceThread.isRunning() )
 	{
         cameraSourceThread.start();
@@ -120,7 +114,6 @@ void MainWindow::on_cButton_clicked()
     liveColorSource.widget()->installEventFilter(this);
 	
     cameraSource.start();
-#endif
 }
 
 void MainWindow::startImageSource(const QString& file)
@@ -172,7 +165,7 @@ void MainWindow::on_actionAbout_triggered()
 {
     QString msg = tr("The Kromophone version 0.2 http://kromophone.com\n" \
 					 "\n" \
-					 "Copyright 2008-2014 Zachary Capalbo\n" \
+					 "Copyright 2008-2016 Zachary Capalbo\n" \
                      "\n" \
                      "This is ALPHA Software. It probably won't work right.\n" \
                      "Report bugs at <https://github.com/zach-capalbo/Kromophone/issues>"

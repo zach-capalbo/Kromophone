@@ -20,7 +20,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "OpenCVColorSource.h"
+#include "LiveImageColorSource.h"
 #include "AudioEngine.h"
 #include "Transform.h"
 #include <QThread>
@@ -70,13 +70,10 @@ private:
 	FileImageSource fileImageSource;
 	StaticImageColorSource staticColorSource;
 	
-#ifdef USE_OPENCV
 	//Things we'll need for the camera
 	QThread cameraSourceThread;
 	LiveImageColorSource liveColorSource;
-	QtCameraSource cameraSource;
-#endif
-	
+	QtCameraSource cameraSource;	
 };
 
 #endif // MAINWINDOW_H

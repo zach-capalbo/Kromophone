@@ -24,7 +24,7 @@
 #include "SoundOut.h"
 #include <QThread>
 #include <QMetaType>
-#include "OpenCVColorSource.h"
+#include "LiveImageColorSource.h"
 #include "AudioEngine.h"
 #include "ColorPreviewWidget.h"
 #include "DesktopImageSource.h"

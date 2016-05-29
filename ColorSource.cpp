@@ -34,7 +34,6 @@ RandomColorSource::RandomColorSource()
 
 const Color RandomColorSource::color()
 {
-    int randomGen = rand() % 255;
     Color randomColor(rand()%255,rand()%255,rand()%255);
 
     return randomColor;
@@ -150,8 +149,8 @@ void StaticImageColorSource::updateImage(const QImage &newImage)
 	displayWidget->setMaximumSize(imageLabel->minimumSize());	
 }
 
-ImageColorSource::ImageColorSource()
-	: ColorSource(), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200)
+ImageColorSource::ImageColorSource(QObject* parent)
+	: ColorSource(parent), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200)
 {
 	sweepTimer = new QTimer(this);
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
