@@ -31,6 +31,7 @@
 #include <QRegion>
 #include <QDebug>
 #include <QPushButton>
+#include "QmlCameraSource.h"
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 	
 	
 	QThread acqthread;
-	QtCameraSource cv;
+	QmlCameraSource cv;
 //	cv.moveToThread(&acqthread);
 	acqthread.start();	
 	LiveImageColorSource ls;

@@ -101,7 +101,8 @@ SOURCES += main.cpp\
     KeyboardFilter.cpp \
     DesktopImageSource.cpp \
     GPIOWatcher.cpp \
-    QtCameraSource.cpp
+    QtCameraSource.cpp \
+    QmlCameraSource.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -121,7 +122,8 @@ HEADERS  += MainWindow.h \
     KeyboardFilter.h \
     DesktopImageSource.h \
     GPIOWatcher.h \
-    QtCameraSource.h
+    QtCameraSource.h \
+    QmlCameraSource.h
 
 FORMS    += MainWindow.ui
 

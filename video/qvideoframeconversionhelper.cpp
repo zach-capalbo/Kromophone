@@ -399,6 +399,7 @@ static VideoFrameConvertFunc qConvertFuncs[QVideoFrame::NPixelFormats] = {
 
 static void qInitConvertFuncsAsm()
 {
+#if 0
 #ifdef QT_COMPILER_SUPPORTS_SSE2
     extern void QT_FASTCALL qt_convert_BGRA32_to_ARGB32_sse2(const QVideoFrame&, uchar*);
     if (qCpuHasFeature(SSE2)){
@@ -423,6 +424,7 @@ static void qInitConvertFuncsAsm()
         qConvertFuncs[QVideoFrame::Format_BGR32] = qt_convert_BGRA32_to_ARGB32_avx2;
     }
 #endif
+#endif    
 }
 
 /*!

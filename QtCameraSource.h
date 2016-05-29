@@ -7,7 +7,6 @@
 #include <QImage>
 #include <QCamera>
 #include <QAbstractVideoSurface>
-#include <QVideoProbe>
 
 class CallbackVideoSurface : public QAbstractVideoSurface
 {
@@ -30,16 +29,9 @@ public slots:
     void start();
     
     void stop();
-    
-protected slots:
-    void onError(QCamera::Error);
-    void onFrame(const QVideoFrame& frame);
-    
 private:
     QCamera* camera;
     CallbackVideoSurface* surface;
-    QVideoProbe probe;
-    int frameNum;
 };
 
 #endif // QTCAMERASOURCE_H
