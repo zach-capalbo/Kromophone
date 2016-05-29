@@ -24,6 +24,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QRgb>
+#include <QDebug>
 #include "KeyboardFilter.h"
 
 RandomColorSource::RandomColorSource()
@@ -150,7 +151,7 @@ void StaticImageColorSource::updateImage(const QImage &newImage)
 }
 
 ImageColorSource::ImageColorSource()
-	: ColorSource(), cursorSize(5,5), averageEnabled(true), sweepPos(0,0), sweepSize(200, 200)
+	: ColorSource(), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200)
 {
 	sweepTimer = new QTimer(this);
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
@@ -222,7 +223,9 @@ Color &ImageColorSource::pickColor(const QImage& image)
 	}
 	else
 	{
-		lastColor = image.pixel(cursor);
+//		lastColor = image.pixel(cursor);
+//        qDebug() << image.isNull() << image.width() << image.height();
+        lastColor = image.pixel(image.width() / 2, image.height() / 2);
 	}
 	
 	return lastColor;

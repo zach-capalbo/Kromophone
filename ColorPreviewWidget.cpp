@@ -17,6 +17,7 @@
 	
 */
 #include "ColorPreviewWidget.h"
+#include <QDebug>
 
 ColorPreviewWidget::ColorPreviewWidget(QWidget *parent) :
 	QWidget(parent)

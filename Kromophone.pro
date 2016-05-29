@@ -9,7 +9,7 @@
 TARGET = Kromophone
 TEMPLATE = app
 
-QT       += core gui widgets
+QT       += core gui widgets quick qml
 CONFIG	 += opencv
 
 #hurray for C++11
@@ -143,3 +143,5 @@ DISTFILES += \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat
+
+include(video/video.pri)

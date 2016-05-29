@@ -66,8 +66,8 @@ int main(int argc, char *argv[])
 	
 	ColorPreviewWidget* preview = new ColorPreviewWidget;
 	
-	preview->showFullScreen();
-	ls.widget()->show();
+//	preview->showFullScreen();
+//	ls.widget()->show();
 //	i.widget()->show();
 //	i.widget()->setProperty("Opacity", 0);
 //	i.widget()->setAttribute(Qt::WA_TranslucentBackground, true);
