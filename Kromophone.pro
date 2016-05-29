@@ -100,7 +100,8 @@ SOURCES += main.cpp\
     ColorPreviewWidget.cpp \
     KeyboardFilter.cpp \
     DesktopImageSource.cpp \
-    GPIOWatcher.cpp
+    GPIOWatcher.cpp \
+    QtCameraSource.cpp
 
 HEADERS  += MainWindow.h \
     Camera.h \
@@ -119,7 +120,8 @@ HEADERS  += MainWindow.h \
     ColorPreviewWidget.h \
     KeyboardFilter.h \
     DesktopImageSource.h \
-    GPIOWatcher.h
+    GPIOWatcher.h \
+    QtCameraSource.h
 
 FORMS    += MainWindow.ui
 

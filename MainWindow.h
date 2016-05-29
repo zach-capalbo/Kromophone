@@ -25,6 +25,7 @@
 #include "Transform.h"
 #include <QThread>
 #include "ColorSource.h"
+#include "QtCameraSource.h"
 
 namespace Ui {
 class MainWindow;
@@ -73,7 +74,7 @@ private:
 	//Things we'll need for the camera
 	QThread cameraSourceThread;
 	LiveImageColorSource liveColorSource;
-	OpenCVImageSource cameraSource;
+	QtCameraSource cameraSource;
 #endif
 	
 };
