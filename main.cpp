@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
 	
 	QThread acqthread;
 	OpenCVImageSource cv;
-	cv.moveToThread(&acqthread);
+//	cv.moveToThread(&acqthread);
 	acqthread.start();	
 	LiveImageColorSource ls;
-	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
+//	QObject::connect(&cv,SIGNAL(update(QImage)), &ls, SLOT(updateImage(QImage)));
 	cv.start();
 	
 	RGBYWMode M_T;

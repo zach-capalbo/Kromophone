@@ -26,18 +26,19 @@ MOBILITY += multimedia
 }
 
 android {
-	OPENCV = $$OPENCV
+	OPENCV = ../../android/OpenCV-android-sdk
 	QT       += core gui multimedia qml quick
 	INCLUDEPATH += $$OPENCV/sdk/native/jni/include
-	LIBS += -L$$OPENCV/sdk/native/libs/armeabi-v7a/ -lopencv_highgui -lopencv_video -lopencv_imgproc -lopencv_androidcamera -lopencv_core -ljnigraphics
-	LIBS += -L$$OPENCV/sdk/native/3rdparty/libs/armeabi-v7a -llibjpeg -llibpng -llibtiff -llibjasper -lIlmImf -ltbb
+	LIBS += -L$$OPENCV/sdk/native/libs/armeabi-v7a/ -lopencv_highgui -lopencv_videoio -lopencv_video  -lopencv_photo -lopencv_imgcodecs -lopencv_imgproc -lopencv_core -ljnigraphics
+	LIBS += -L$$OPENCV/sdk/native/3rdparty/libs/armeabi-v7a -llibwebp -llibjpeg -llibpng -llibtiff -llibjasper -lIlmImf -ltbb
 	CONFIG += mobility
 	MOBILITY = 
 	ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 	OTHER_FILES += \
 		android/AndroidManifest.xml
 
-	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java.so $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
+	ANDROID_EXTRA_LIBS = $$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_java3.so #$$OPENCV/sdk/native/libs/armeabi-v7a/libopencv_info.so
+#	ANDROID_EXTRA_LIBS += $$OPENCV/sdk/native/libs/armeabi-v7a/libnative_camera_r4.4.0.so
 }
 else:unix {
 	target.path = /tmp/usr/bin
@@ -132,3 +133,11 @@ OTHER_FILES += \
     icon.rc \ 
     functovect.rb \
     playtimbre.m
+
+DISTFILES += \
+    android/gradle/wrapper/gradle-wrapper.jar \
+    android/gradlew \
+    android/res/values/libs.xml \
+    android/build.gradle \
+    android/gradle/wrapper/gradle-wrapper.properties \
+    android/gradlew.bat

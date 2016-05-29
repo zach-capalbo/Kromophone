@@ -68,9 +68,9 @@ void OpenCVImageSource::start()
 
 void OpenCVImageSource::threadStart()
 {
-    camera = cvCaptureFromCAM( CV_CAP_ANY );
+    camera = cvCreateCameraCapture( 0 );
 
-    Q_CHECK_PTR(camera);
+//    Q_CHECK_PTR(camera);
 
     if (camera == NULL)
     {
