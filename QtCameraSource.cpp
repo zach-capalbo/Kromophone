@@ -3,7 +3,7 @@
 
 QtCameraSource::QtCameraSource(QObject* parent)
 {
-    camera = new QCamera(QCamera::BackFace);
+    camera = new QCamera(QCamera::FrontFace);
     q_check_ptr(camera);
     surface = new CallbackVideoSurface;
     connect(surface, &CallbackVideoSurface::update, this, &QtCameraSource::update);
@@ -29,6 +29,11 @@ void QtCameraSource::start()
 void QtCameraSource::stop()
 {
     camera->stop();
+}
+
+void QtCameraSource::onError(QCamera::Error e)
+{
+    qWarning() << e << camera->errorString();
 }
 
 QList<QVideoFrame::PixelFormat> CallbackVideoSurface::supportedPixelFormats(QAbstractVideoBuffer::HandleType handleType) const

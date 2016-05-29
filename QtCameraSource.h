@@ -29,6 +29,10 @@ public slots:
     void start();
     
     void stop();
+    
+protected slots:
+    void onError(QCamera::Error);
+    
 private:
     QCamera* camera;
     CallbackVideoSurface* surface;
