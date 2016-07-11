@@ -3,10 +3,6 @@ import QtMultimedia 5.4
 
 Rectangle {
     id : cameraUI
-
-    anchors.fill: parent
-
-    color: "green"
     Camera {
         id: camera
     
@@ -15,8 +11,6 @@ Rectangle {
              resolution: "640x480"
         }
         captureMode: Camera.CaptureViewfinder
-        Component.onCompleted: {
-        }
     }
 
     

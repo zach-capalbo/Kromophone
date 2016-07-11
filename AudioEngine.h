@@ -44,7 +44,7 @@ public slots:
 	
 	virtual void PlaySounds(const SoundList &InputSounds);
 	
-	void initalizeAudio();
+	void initializeAudio();
 	
 	void pullTimerExpired();
 	

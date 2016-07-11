@@ -20,17 +20,62 @@
 #define KROMOPHONE_H
 
 #include <QObject>
+#include <QQuickView>
+#include <QThread>
+
+#include "ColorSource.h"
+#include "AudioEngine.h"
+#include "Transform.h"
+#include "Settings.h"
+#include "ColorSource.h"
+
+#include <memory>
 
 class Kromophone : public QObject
 {
 	Q_OBJECT
+    Q_PROPERTY(bool isAndroid READ isAndroid NOTIFY startupComplete)
+    Q_PROPERTY(QObject* settings READ settings NOTIFY startupComplete)
+    Q_PROPERTY(QColor color READ color NOTIFY colorChanged)
+    
 public:
 	explicit Kromophone(QObject *parent = 0);
-	
+    bool isAndroid();
+    QObject* settings();
+	QColor color();
+    
 signals:
+    void startupComplete();
+    void colorChanged(QColor color);
 	
 public slots:
+    void startup();
+    void startup(const QStringList arguments);
+    void startFileSonification(const QString& path);
+    
+    void onMouseImageHover(int x, int y);
+    
+    void onColorChanged(Color newColor);
+    
+private:
+    void initializeAudio();
+    void createInitialTransform();
+    void createDisplay();
+    
+    //Some things we need to get this working
+	//Things we'll need for file and camera
+	AudioEngine* audioEngine;
+	QThread audioThread;
+	Transform* colorToSoundTransform;
 	
+	//Color source things
+	QThread imageSourceThread;
+	ImageSource* imageSource; // TODO: smart pointers
+	ColorSource* colorSource;
+    
+    // GUI Stuff
+    QQuickView* quickView;
+    QColor lastColor;
 };
 
 #endif // KROMOPHONE_H

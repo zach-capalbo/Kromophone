@@ -68,45 +68,34 @@ SOURCES += main.cpp\
         MainWindow.cpp \
     Camera.cpp \
     Kromophone.cpp \
-    ColorSource.cpp \
-    AudioEngine.cpp \
     Sound.cpp \
     Timbre.cpp \
     Color.cpp \
-        SoundOut.cpp \
     Transform.cpp \
-    AudioGenerator.cpp \
     ColorPreviewWidget.cpp \
     KeyboardFilter.cpp \
-    DesktopImageSource.cpp \
     GPIOWatcher.cpp \
-    QtCameraSource.cpp \
-    QmlCameraSource.cpp \
-    LiveImageColorSource.cpp
+    Settings.cpp
+
 
 HEADERS  += MainWindow.h \
     Camera.h \
     Kromophone.h \
-    ColorSource.h \
-    AudioEngine.h \
     Sound.h \
     Timbre.h \
-    SoundOut.h \
-        Color.h \
+    Color.h \
     Transform.h \
-    AudioGenerator.h \
     ColorPreviewWidget.h \
     KeyboardFilter.h \
     DesktopImageSource.h \
     GPIOWatcher.h \
-    QtCameraSource.h \
-    QmlCameraSource.h \
-    LiveImageColorSource.h
+    Settings.h
 
+    
 FORMS    += MainWindow.ui
 
 RESOURCES += \
-    Resources/resources.qrc
+    resources.qrc
 
 OTHER_FILES += \
     S30kromophone \
@@ -123,6 +112,8 @@ DISTFILES += \
     android/build.gradle \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat \
-    android/src/KeepOnActivity.java
+    android/src/KeepOnActivity.java \ 
 
 include(video/video.pri)
+include(sources.pri)
+include(audio.pri)

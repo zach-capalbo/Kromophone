@@ -38,7 +38,7 @@ AudioEngine::AudioEngine(QObject *parent) :
 {
 }
 
-void AudioEngine::initalizeAudio()
+void AudioEngine::initializeAudio()
 {
     connect(m_pullTimer, SIGNAL(timeout()), SLOT(pullTimerExpired()));
 

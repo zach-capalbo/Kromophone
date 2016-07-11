@@ -46,6 +46,8 @@ public:
 	void hsl(float& hue, float& saturation, float& luminosity) const;
 	
 	const QString toHex() const;
+    
+    operator QColor();
 
 };
 

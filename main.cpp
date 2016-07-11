@@ -33,6 +33,8 @@
 #include <QPushButton>
 #include "QmlCameraSource.h"
 
+#include "Kromophone.h"
+
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
@@ -40,9 +42,8 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<Sound>();
 	qRegisterMetaType<SoundList>();
 #ifdef DESKTOP
-    MainWindow w;
-
-    w.show();
+    Kromophone app;
+    app.startup();
 #else
 
 	QThread acqthread;

@@ -19,7 +19,7 @@
 #ifndef OPENCVCOLORSOURCE_H
 #define OPENCVCOLORSOURCE_H
 
-#include "ColorSource.h"
+#include "ImageColorSource.h"
 #include "Color.h"
 
 #include <QImage>

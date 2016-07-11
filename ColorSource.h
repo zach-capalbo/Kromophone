@@ -20,10 +20,11 @@
 #define COLORSOURCE_H
 
 #include <QObject>
-#include "Color.h"
 #include <QImage>
 #include <QPoint>
 #include <QLabel>
+#include "Color.h"
+#include "Settings.h"
 
 class ColorSource : public QObject
 {
@@ -76,56 +77,6 @@ signals:
 	void update(const QImage& image);
 };
 
-class ImageColorSource : public ColorSource
-{
-	Q_OBJECT
-	
-public slots:
-	
-	void setAverage(bool enabled = true);
-	
-	void toggleAverage();
-	
-	void increaseAverage();
-	
-	void decreaseAverage();
-	
-	void toggleSweep();
-	
-	virtual void updateColor() {}
-	
-signals:
-	void doSweep(bool enabled, QPointF sweepPct);
-	
-protected slots:
-	void sweep();
-	
-protected:
-	ImageColorSource(QObject* parent = 0);
-	
-	void drawCursor(QImage& displayImage);
-	
-	Color& pickColor(const QImage& image);
-	
-	void average(const QImage& image);
-	
-	QPoint cursor;
-	
-	QPoint sweepPos;
-	
-	QSize sweepSize;
-	
-	bool sweepDirectionIsRight;
-	
-	QSize cursorSize;
-	
-	Color lastColor;
-	
-	bool averageEnabled;
-	
-	QTimer* sweepTimer;
-};
-
 class FileImageSource : public ImageSource
 {
 	Q_OBJECT
@@ -141,33 +92,6 @@ public slots:
 	
 protected:
 	
-	QImage image;
-};
-
-class StaticImageColorSource : public ImageColorSource
-{
-	Q_OBJECT
-public:
-	StaticImageColorSource();
-	
-	const Color color();
-	
-	QWidget* widget() { return displayWidget; }
-	
-public slots:
-	void updateImage(const QImage& newImage);
-	
-	void updateColor();
-	
-protected:
-	bool eventFilter(QObject *, QEvent *);
-	
-signals:
-	void colorChanged(Color color);
-	
-private:
-	QWidget* displayWidget;
-	QLabel* imageLabel;
 	QImage image;
 };
 

@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/Images">
-        <file>spectrum.jpg</file>
-    </qresource>
-    <qresource prefix="/">
-        <file>CameraCapture.qml</file>
-    </qresource>
-</RCC>

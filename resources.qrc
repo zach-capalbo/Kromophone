@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/Images">
+        <file>Resources/spectrum.jpg</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>kromophone-ui/kromophone-ui.qml</file>
+        <file>kromophone-ui/Components/CameraCapture.qml</file>
+        <file>kromophone-ui/Components/ColorPreview.qml</file>
+        <file>kromophone-ui/Components/SettingButton.qml</file>
+        <file>kromophone-ui/Components/Sidebar.qml</file>
+        <file>kromophone-ui/Components/TextButton.qml</file>
+        <file>kromophone-ui/dummydata/app.qml</file>
+        <file>kromophone-ui/Forms/FormBase.qml</file>
+        <file>kromophone-ui/Forms/SonificationForm.qml</file>
+        <file>kromophone-ui/Forms/StartupForm.qml</file>
+        <file>kromophone-ui/Singletons/Controller.qml</file>
+        <file>kromophone-ui/Singletons/qmldir</file>
+        <file>kromophone-ui/Singletons/Style.qml</file>
+        <file>kromophone-ui/KromophoneContainer.qml</file>
+        <file>kromophone-ui/Images/spectrum.jpg</file>
+        <file>kromophone-ui/kromophone-ui.qmlproject</file>
+        <file>kromophone-ui/kromophone-ui.qmlproject.user</file>
+        <file>kromophone-ui/Forms/ImageSonificationForm.qml</file>
+        <file>kromophone-ui/Forms/SpectrumSonificationForm.qml</file>
+    </qresource>
+</RCC>

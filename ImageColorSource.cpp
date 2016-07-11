@@ -1,0 +1,164 @@
+#include "ImageColorSource.h"
+#include <QTimer>
+
+ImageColorSource::ImageColorSource(QObject* parent)
+	: ColorSource(parent), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200)
+{
+	sweepTimer = new QTimer(this);
+	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
+    
+    connect(&Settings::sweep(), &Setting::valueChanged, this, &ImageColorSource::toggleSweep);
+}
+
+void ImageColorSource::setAverage(bool enabled)
+{
+	averageEnabled = enabled;
+	
+	if (!enabled)
+	{
+		cursorSize = QSize(5,5);
+	}	
+	
+	updateColor();
+}
+
+void ImageColorSource::toggleAverage()
+{
+	setAverage(!averageEnabled);
+	
+	updateColor();
+}
+
+void ImageColorSource::increaseAverage()
+{
+	cursorSize += QSize(5,5);
+	
+	updateColor();
+}
+
+void ImageColorSource::decreaseAverage()
+{
+	cursorSize -= QSize(5,5);
+	
+	updateColor();
+}
+
+void ImageColorSource::drawCursor(QImage& image)
+{
+	int posx = qMax(0, cursor.x());
+	int posy = qMax(0,cursor.y());
+	
+	int cwidth = cursorSize.width();
+	int cheight = cursorSize.height();
+	
+	for (int x = posx - cwidth; x < posx + cwidth; x++ )
+	{
+		if (x > 0 && x < image.width())
+		{
+			image.setPixel(x,posy,qRgb(255, 255, 255));
+		}
+	}
+
+	for (int y = posy - cheight; y < posy + cheight; y++)
+	{
+		if (y > 0 && y < image.height())
+		{
+			image.setPixel(posx,y,qRgb(255, 255, 255));
+		}
+	}
+}
+
+Color &ImageColorSource::pickColor(const QImage& image)
+{	
+	if (averageEnabled)
+	{
+		average(image);	
+	}
+	else
+	{
+		lastColor = image.pixel(cursor);
+//        qDebug() << image.isNull() << image.width() << image.height();
+//        lastColor = image.pixel(image.width() / 2, image.height() / 2);
+	}
+	
+	return lastColor;
+}
+
+void ImageColorSource::average(const QImage& image)
+{
+	unsigned int sumr = 0;
+	
+	unsigned int sumg = 0;
+	
+	unsigned int sumb = 0;
+	
+	int startX = cursor.x() - cursorSize.width();
+	startX = qMax(startX, 0);
+	
+	int endX = cursor.x() + cursorSize.width();
+	endX = qMin(endX, image.width());
+	
+	int startY = cursor.y() - cursorSize.height();
+	startY = qMax(startY, 0);
+	
+	int endY = cursor.y() + cursorSize.height();
+	endY = qMin(endY, image.height());
+	
+	for (int x = startX; x < endX; x++)
+	{
+		for (int y = startY; y < endY; y++)
+		{
+			QRgb rgb = image.pixel(x,y);
+			
+			sumr += qRed(rgb);
+			
+			sumg += qGreen(rgb);
+			
+			sumb += qBlue(rgb);
+		}
+	}
+	float r = (float) sumr / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	lastColor.Red = r;
+	lastColor.Green = (float) sumg / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+	lastColor.Blue = (float) sumb / ( (float) cursorSize.width() * cursorSize.height() * 4 ) / 255.0f;
+}
+
+void ImageColorSource::sweep()
+{
+	if (sweepDirectionIsRight)
+	{
+		sweepPos += QPoint(20,0);
+		cursor += QPoint(20,0);
+	}
+	else
+	{
+		sweepPos += QPoint(-20,0);
+		cursor += QPoint(-20,0);
+	}
+	
+	if (sweepDirectionIsRight && sweepPos.x() >= sweepSize.width())
+	{
+		sweepDirectionIsRight = false;
+	}
+	else if (!sweepDirectionIsRight && sweepPos.x() <= -sweepSize.width())
+	{
+		sweepDirectionIsRight = true;
+	}
+	
+	emit doSweep(true, QPointF((sweepSize.width() + sweepPos.x()) / ( (float) sweepSize.width()*2.0f ), sweepPos.y() / (float) sweepSize.height() ));		
+	
+	updateColor();
+}
+
+void ImageColorSource::toggleSweep()
+{
+	if (sweepTimer->isActive())
+	{
+		sweepTimer->stop();
+		sweepPos = QPoint(0,0);
+	}
+	else
+	{
+		sweepTimer->start(10);
+	}
+}

@@ -26,6 +26,7 @@
 #include <QThread>
 #include "ColorSource.h"
 #include "QtCameraSource.h"
+#include "StaticImageColorSource.h"
 
 namespace Ui {
 class MainWindow;
