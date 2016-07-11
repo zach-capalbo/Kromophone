@@ -75,7 +75,8 @@ SOURCES += main.cpp\
     ColorPreviewWidget.cpp \
     KeyboardFilter.cpp \
     GPIOWatcher.cpp \
-    Settings.cpp
+    Settings.cpp \
+    PreviewImageProvider.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -89,7 +90,8 @@ HEADERS  += MainWindow.h \
     KeyboardFilter.h \
     DesktopImageSource.h \
     GPIOWatcher.h \
-    Settings.h
+    Settings.h \
+    PreviewImageProvider.h
 
     
 FORMS    += MainWindow.ui

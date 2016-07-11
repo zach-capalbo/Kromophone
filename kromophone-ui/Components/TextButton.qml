@@ -10,6 +10,7 @@ Rectangle {
     height: t.height + padding
     signal clicked()
     color: Style.normalBg
+    clip: true
     
     border {
         width: Style.borderWidth
@@ -21,6 +22,7 @@ Rectangle {
         anchors.centerIn: parent
         color: Style.normalFg
         font.pixelSize: Style.fontSize
+        wrapMode: Text.WrapAtWordBoundaryOrAnywhere
     }
     
     MouseArea {

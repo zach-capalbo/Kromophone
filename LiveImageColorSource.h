@@ -36,6 +36,9 @@ public:
 	virtual const Color color() { return lastColor; }
 	
 	QWidget* widget() { return displayWidget; }
+    
+signals:
+    void previewImageChanged(const QImage& image);
 
 public slots:
 	void updateImage(const QImage& image);
@@ -55,7 +58,7 @@ public:
 	LiveImageHeadlessColorSource();
 	
 	virtual const Color color() { return lastColor; }
-
+    
 public slots:
 	void updateImage(const QImage& image);
 };

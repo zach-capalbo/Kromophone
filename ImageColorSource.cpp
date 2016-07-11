@@ -8,37 +8,33 @@ ImageColorSource::ImageColorSource(QObject* parent)
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
     
     connect(&Settings::sweep(), &Setting::valueChanged, this, &ImageColorSource::toggleSweep);
+    connect(&Settings::sweepSize(), &Setting::valueChanged, this, &ImageColorSource::sweepSizeChanged);
+    connect(&Settings::average(), &Setting::valueChanged, this, &ImageColorSource::setAverage);
+    connect(&Settings::averageSize(), &Setting::valueChanged, this, &ImageColorSource::averageSizeChanged);
 }
 
-void ImageColorSource::setAverage(bool enabled)
+void ImageColorSource::setAverage(const QVariant& value)
 {
-	averageEnabled = enabled;
+    bool enabled = value.toBool();
+    averageEnabled = enabled;
 	
 	if (!enabled)
 	{
+        // Reset to small cursor
 		cursorSize = QSize(5,5);
-	}	
+	}
+    else
+    {
+        int averageSize = Settings::averageSize().value().toInt();
+        cursorSize = QSize(averageSize, averageSize);
+    }
 	
-	updateColor();
+    updateColor();
 }
 
 void ImageColorSource::toggleAverage()
 {
 	setAverage(!averageEnabled);
-	
-	updateColor();
-}
-
-void ImageColorSource::increaseAverage()
-{
-	cursorSize += QSize(5,5);
-	
-	updateColor();
-}
-
-void ImageColorSource::decreaseAverage()
-{
-	cursorSize -= QSize(5,5);
 	
 	updateColor();
 }
@@ -127,13 +123,13 @@ void ImageColorSource::sweep()
 {
 	if (sweepDirectionIsRight)
 	{
-		sweepPos += QPoint(20,0);
-		cursor += QPoint(20,0);
+		sweepPos += QPoint(1,0);
+		cursor += QPoint(1,0);
 	}
 	else
 	{
-		sweepPos += QPoint(-20,0);
-		cursor += QPoint(-20,0);
+		sweepPos += QPoint(-1,0);
+		cursor += QPoint(-1,0);
 	}
 	
 	if (sweepDirectionIsRight && sweepPos.x() >= sweepSize.width())
@@ -160,5 +156,16 @@ void ImageColorSource::toggleSweep()
 	else
 	{
 		sweepTimer->start(10);
-	}
+    }
+}
+
+void ImageColorSource::averageSizeChanged(const QVariant& value)
+{
+    int size = value.toInt();
+    this->cursorSize = QSize(size, size);
+}
+
+void ImageColorSource::sweepSizeChanged(const QVariant& value)
+{
+    this->sweepSize.setWidth(value.toInt());
 }

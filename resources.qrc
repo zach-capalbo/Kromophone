@@ -22,5 +22,8 @@
         <file>kromophone-ui/kromophone-ui.qmlproject.user</file>
         <file>kromophone-ui/Forms/ImageSonificationForm.qml</file>
         <file>kromophone-ui/Forms/SpectrumSonificationForm.qml</file>
+        <file>kromophone-ui/Forms/SelectImageForm.qml</file>
+        <file>kromophone-ui/Forms/CameraSonificationForm.qml</file>
+        <file>kromophone-ui/Components/ImagePreview.qml</file>
     </qresource>
 </RCC>

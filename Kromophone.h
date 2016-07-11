@@ -28,6 +28,7 @@
 #include "Transform.h"
 #include "Settings.h"
 #include "ColorSource.h"
+#include "PreviewImageProvider.h"
 
 #include <memory>
 
@@ -37,12 +38,14 @@ class Kromophone : public QObject
     Q_PROPERTY(bool isAndroid READ isAndroid NOTIFY startupComplete)
     Q_PROPERTY(QObject* settings READ settings NOTIFY startupComplete)
     Q_PROPERTY(QColor color READ color NOTIFY colorChanged)
+    Q_PROPERTY(QStringList settingList READ settingList NOTIFY startupComplete)
     
 public:
 	explicit Kromophone(QObject *parent = 0);
     bool isAndroid();
     QObject* settings();
 	QColor color();
+    QStringList settingList();
     
 signals:
     void startupComplete();
@@ -52,10 +55,12 @@ public slots:
     void startup();
     void startup(const QStringList arguments);
     void startFileSonification(const QString& path);
+    void startCameraSonification();
     
     void onMouseImageHover(int x, int y);
     
     void onColorChanged(Color newColor);
+    void onImageChanged(const QImage& image);
     
 private:
     void initializeAudio();
@@ -76,6 +81,7 @@ private:
     // GUI Stuff
     QQuickView* quickView;
     QColor lastColor;
+    PreviewImageProvider previewProvider;
 };
 
 #endif // KROMOPHONE_H

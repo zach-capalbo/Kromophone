@@ -60,7 +60,13 @@ FileImageSource::FileImageSource(const QString &file)
 
 void FileImageSource::load(const QString &file)
 {
-	image = QImage(file);
+    QString parsedPath = file;
+    
+    if (file.startsWith("file://")) {
+        parsedPath = QUrl(file).toLocalFile();
+    }
+    
+	image = QImage(parsedPath);
     
     if (image.isNull())
     {

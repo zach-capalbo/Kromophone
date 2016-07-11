@@ -1,11 +1,15 @@
-import QtQuick 2.0
+import QtQuick 2.2
+import QtQuick.Dialogs 1.0
 import "../Components"
+import "../Singletons"
 
-FormBase {
+SonificationForm {
+    id: form
     property alias source: image.source
     Image {
         id: image
         anchors.centerIn: parent
+        source: Controller.image
         
         MouseArea {
             width: parent.width - 1
@@ -14,10 +18,5 @@ FormBase {
             cursorShape: Qt.CrossCursor
             onPositionChanged: app.onMouseImageHover(mouse.x, mouse.y)
         }
-    }
-    
-    Sidebar {        
-        anchors.left: image.right
-        anchors.right: parent.right
     }
 }

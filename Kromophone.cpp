@@ -22,6 +22,9 @@
 
 #include "Kromophone.h"
 #include "StaticImageColorSource.h"
+#include "LiveImageColorSource.h"
+#include "QtCameraSource.h"
+#include "QmlCameraSource.h"
 #include "Transform.h"
 
 Kromophone::Kromophone(QObject *parent) :
@@ -51,6 +54,11 @@ QObject* Kromophone::settings()
 QColor Kromophone::color()
 {
     return lastColor;
+}
+
+QStringList Kromophone::settingList()
+{
+    return SettingsCreator::qmlSettingMap()->keys();
 }
 
 void Kromophone::startup()
@@ -85,6 +93,23 @@ void Kromophone::startFileSonification(const QString& path)
     audioThread.start();
 }
 
+void Kromophone::startCameraSonification()
+{
+    this->imageSource = new QtCameraSource;
+    LiveImageColorSource* imageColorSource = new LiveImageColorSource;
+    
+    this->colorSource = imageColorSource;
+    
+    connect(imageSource, SIGNAL(update(QImage)), imageColorSource, SLOT(updateImage(QImage)));
+    connect(imageColorSource, SIGNAL(previewImageChanged(QImage)), this, SLOT(onImageChanged(QImage)));
+    connect(imageColorSource, SIGNAL(doSweep(bool,QPointF)), this->colorToSoundTransform, SLOT(setSweep(bool,QPointF)));
+    connect(colorSource, SIGNAL(colorChanged(Color)), colorToSoundTransform, SLOT(ReceiveColor(Color)));
+    connect(colorSource, SIGNAL(colorChanged(Color)), this, SLOT(onColorChanged(Color)));
+    
+    imageSource->start();
+    audioThread.start();
+}
+
 void Kromophone::onMouseImageHover(int x, int y)
 {
     StaticImageColorSource* imageColorSource = qobject_cast<StaticImageColorSource*>(this->colorSource);
@@ -99,6 +124,11 @@ void Kromophone::onColorChanged(Color newColor)
 {
     lastColor = newColor;
     emit colorChanged(lastColor);
+}
+
+void Kromophone::onImageChanged(const QImage& image)
+{
+    this->previewProvider.setImage(image);
 }
 
 void Kromophone::initializeAudio()
@@ -125,7 +155,10 @@ void Kromophone::createDisplay()
 {
     quickView = new QQuickView;
     quickView->rootContext()->setContextProperty("app", this);
+    quickView->engine()->addImageProvider("preview", &previewProvider);
     quickView->setSource(QUrl("qrc:///kromophone-ui/KromophoneContainer.qml"));
+    quickView->setWidth(800);
+    quickView->setHeight(600);
     
     if (isAndroid())
     {

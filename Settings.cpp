@@ -36,8 +36,14 @@ void SettingsCreator::cppChanged(const QVariant& newValue)
     propertyMap.insert(setting->name(), newValue);
 }
 
+void SettingsCreator::qmlChanged(const QString& setting, const QVariant& newValue)
+{
+    settings[setting]->set(newValue);
+}
+
 SettingsCreator::SettingsCreator() : QObject()
 {
+    connect(&propertyMap, SIGNAL(valueChanged(QString,QVariant)), this, SLOT(qmlChanged(QString,QVariant)));
 }
 
 SettingsCreator& SettingsCreator::Instance()

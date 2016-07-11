@@ -50,13 +50,17 @@ void LiveImageColorSource::updateImage(const QImage &image)
 	cursor.setY(image.height()/2);
 	
 	cursor += sweepPos;
+    
+    sweepSize.setWidth(qMin(sweepSize.width(), image.width() / 2));
 	
-	if(displayWidget->isVisible())
-	{
-		QImage displayImage(image);
-		
-		drawCursor(displayImage);
-		
+	
+	QImage displayImage(image);
+	drawCursor(displayImage);
+    
+    emit previewImageChanged(displayImage);
+    
+    if(displayWidget->isVisible())
+    {	
 		imageLabel->setPixmap(QPixmap::fromImage(displayImage));
 		
 		imageLabel->update();

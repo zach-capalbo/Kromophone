@@ -14,8 +14,8 @@ FormBase {
         
         Repeater {
             model: ListModel {
-                ListElement { desc: "Sonify Camera"; target: "SonificationForm" }
-                ListElement { desc: "Sonify Image File"; target: "ImageSonificationForm" }
+                ListElement { desc: "Sonify Camera"; target: "CameraSonificationForm" }
+                ListElement { desc: "Sonify Image File"; target: "SelectImageForm" }
                 ListElement { desc: "Sonify Color Spectrum"; target: "SpectrumSonificationForm" }
             }
             

@@ -13,6 +13,10 @@ Item {
         onTriggered: color = Qt.rgba(Math.random(255), Math.random(255), Math.random(255), 1)
     }
     
+    function onMouseImageHover(x, y) {}
+    
+    function startFileSonification(p) {}
+    
     QtObject {
         id: _setting
         

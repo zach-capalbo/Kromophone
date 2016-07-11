@@ -10,17 +10,16 @@ class ImageColorSource : public ColorSource
 	
 public slots:
 	
-	void setAverage(bool enabled = true);
+    void setAverage(const QVariant& value);
 	
 	void toggleAverage();
-	
-	void increaseAverage();
-	
-	void decreaseAverage();
 	
 	void toggleSweep();
 	
 	virtual void updateColor() {}
+    
+    void averageSizeChanged(const QVariant& value);
+    void sweepSizeChanged(const QVariant& value);
 	
 signals:
 	void doSweep(bool enabled, QPointF sweepPct);

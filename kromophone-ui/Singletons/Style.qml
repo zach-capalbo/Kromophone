@@ -8,4 +8,5 @@ QtObject {
     property color normalFg: "#eee"
     property color engagedBg: "#544"
     property color activeBg: "#111"
+    property color darkenedBg: "#000"
 }
