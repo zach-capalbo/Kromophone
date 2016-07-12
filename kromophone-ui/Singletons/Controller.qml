@@ -1,10 +1,11 @@
 import QtQuick 2.0
 pragma Singleton
 
-QtObject {
+Item {
     property Loader mainLoader
     property string currentForm: "StartupForm"
     property string _previousForm
+    property string image: ":/Images/Resources/spectrum.jpg"
     
     onCurrentFormChanged: {
         console.log("Navigating from " + _previousForm + " to " + currentForm)
@@ -19,6 +20,20 @@ QtObject {
         
         _previousForm = currentForm
     }
-    
-    property string image: ":/Images/Resources/spectrum.jpg"
+
+    Connections {
+        target: app
+        onCameraSonificationStarted: currentForm = "CameraSonificationForm"
+        onFileSonificationStarted: {
+            if (file[0] == ':') {
+                image = "qrc" + file;
+            }
+            else
+            {
+                image = file
+            }
+
+            currentForm = "ImageSonificationForm"
+        }
+    }   
 }

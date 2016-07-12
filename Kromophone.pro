@@ -35,6 +35,11 @@ else:unix {
 	target.path = /tmp/usr/bin
 	INSTALLS += target
 
+#	CONFIG += opencv
+
+	opencv: DEFINES += USE_OPENCV
+	opencv: LIBS += -lopencv_core -lopencv_video -lopencv_highgui
+
 	rpi {
 		QT	 += multimedia
 		message(Making for raspberry pi)
@@ -76,7 +81,9 @@ SOURCES += main.cpp\
     KeyboardFilter.cpp \
     GPIOWatcher.cpp \
     Settings.cpp \
-    PreviewImageProvider.cpp
+    PreviewImageProvider.cpp \
+    Platform.cpp \
+    ArgParser.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -91,7 +98,9 @@ HEADERS  += MainWindow.h \
     DesktopImageSource.h \
     GPIOWatcher.h \
     Settings.h \
-    PreviewImageProvider.h
+    PreviewImageProvider.h \
+    Platform.h \
+    ArgParser.h
 
     
 FORMS    += MainWindow.ui

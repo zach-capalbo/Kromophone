@@ -6,13 +6,18 @@ Setting::Setting(const SettingName &name, const QVariant &defaultValue)
     name_ = name;
 }
 
-Setting& SettingsCreator::create(const SettingName& setting, const QVariant& defaultValue)
+Setting& SettingsCreator::create(const SettingName& setting, const QVariant& defaultValue, bool display)
 {
     auto& settings = SettingsCreator::Instance().settings;
     // Should do locking etc here...
     if (!settings.contains(setting)) {
         settings[setting] = new Setting(setting, defaultValue);
         Instance().propertyMap.insert(setting, defaultValue);
+        
+        if (display)
+        {
+            Instance().displayedSettings_.append(setting);
+        }
         
         QObject::connect(settings[setting], SIGNAL(valueChanged(QVariant)), &Instance(), SLOT(cppChanged(QVariant)));
     }
@@ -28,6 +33,11 @@ Setting& SettingsCreator::get(const SettingName& setting)
 QQmlPropertyMap* SettingsCreator::qmlSettingMap()
 {
     return &SettingsCreator::Instance().propertyMap;
+}
+
+QStringList SettingsCreator::displayedSettings()
+{
+    return Instance().displayedSettings_;
 }
 
 void SettingsCreator::cppChanged(const QVariant& newValue)

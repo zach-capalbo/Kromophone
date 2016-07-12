@@ -63,9 +63,15 @@ void AudioEngine::initializeAudio()
     for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
     {
         qDebug() << it->deviceName();
+        if (it->deviceName() == "default" && info.deviceName().isEmpty())
+        {
+            info = *it;
+        }
     }
 
     m_device = info;
+    
+    qDebug() << "Using: " << m_device.deviceName();
 
     if (!info.isFormatSupported(m_format)) {
         qWarning() << "Default format not supported - trying to use nearest";

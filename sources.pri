@@ -5,7 +5,10 @@ SOURCES += \
   QmlCameraSource.cpp \
   LiveImageColorSource.cpp \
   ImageColorSource.cpp \
-  StaticImageColorSource.cpp
+  StaticImageColorSource.cpp \
+    $$PWD/OpenCVImageSource.cpp \
+    $$PWD/v4lcamera_raw.c \
+    $$PWD/V4L2ImageSource.cpp
 
 HEADERS += \
   ColorSource.h \
@@ -14,4 +17,7 @@ HEADERS += \
   QmlCameraSource.h \
   LiveImageColorSource.h \
   ImageColorSource.h \
-  StaticImageColorSource.h 
+  StaticImageColorSource.h \ 
+    $$PWD/OpenCVImageSource.h \
+    $$PWD/V4L2ImageSource.h \
+    $$PWD/v4lcamera_raw.h

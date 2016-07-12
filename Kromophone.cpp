@@ -27,6 +27,8 @@
 #include "QmlCameraSource.h"
 #include "Transform.h"
 
+#include "V4L2ImageSource.h"
+
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
     audioEngine(nullptr), 
@@ -35,6 +37,7 @@ Kromophone::Kromophone(QObject *parent) :
     colorSource(nullptr),
     quickView(nullptr)
 {
+    _platform = new Platform;
 }
 
 bool Kromophone::isAndroid()
@@ -58,7 +61,12 @@ QColor Kromophone::color()
 
 QStringList Kromophone::settingList()
 {
-    return SettingsCreator::qmlSettingMap()->keys();
+    return SettingsCreator::displayedSettings();
+}
+
+QObject*Kromophone::platform()
+{
+    return _platform;
 }
 
 void Kromophone::startup()
@@ -68,18 +76,40 @@ void Kromophone::startup()
 
 void Kromophone::startup(const QStringList arguments)
 {
-    // Will be used later maybe probably
-    Q_UNUSED(arguments);
+    args.parse(arguments);
     
     initializeAudio();
     createInitialTransform();
-    createDisplay();
+    
+    if (!Settings::headless().value().toBool())
+    {
+        createDisplay();
+    }
+    
+    if (args.contains("camera"))
+    {
+        startCameraSonification();
+    }
+    else if (args.contains("spectrum"))
+    {
+        startFileSonification(":/Images/Resources/spectrum.jpg");
+    }
+    else if (args.contains("file"))
+    {
+        startFileSonification(args["file"].toString());
+    }
     
     emit startupComplete();
 }
 
 void Kromophone::startFileSonification(const QString& path)
 {
+    if (imageSource != nullptr || colorSource != nullptr)
+    {
+        qDebug() << "Cannot start file with sonification already in progress";
+        return;
+    }
+    
     this->imageSource = new FileImageSource(path);
     StaticImageColorSource* imageColorSource = new StaticImageColorSource;
     this->colorSource = imageColorSource;
@@ -91,11 +121,18 @@ void Kromophone::startFileSonification(const QString& path)
     
     imageSource->start();
     audioThread.start();
+    emit fileSonificationStarted(path);
 }
 
 void Kromophone::startCameraSonification()
 {
-    this->imageSource = new QtCameraSource;
+    if (imageSource != nullptr || colorSource != nullptr)
+    {
+        qDebug() << "Cannot start camera with sonification already in progress";
+        return;
+    }
+    
+    this->imageSource = _platform->isEmbedded() ? (ImageSource*) new V4L2ImageSource : (ImageSource*) new QtCameraSource;
     LiveImageColorSource* imageColorSource = new LiveImageColorSource;
     
     this->colorSource = imageColorSource;
@@ -108,6 +145,7 @@ void Kromophone::startCameraSonification()
     
     imageSource->start();
     audioThread.start();
+    emit cameraSonificationStarted();
 }
 
 void Kromophone::onMouseImageHover(int x, int y)

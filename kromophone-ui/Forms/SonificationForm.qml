@@ -41,17 +41,23 @@ FormBase {
         {
             app.settings.hiddenDisplay = !app.settings.hiddenDisplay
         }
+        else if (event.text == "x")
+        {
+            app.settings.autoExposure = !app.settings.autoExposure
+        }
 
         console.log(event.text);
     }
     
     Keys.onUpPressed: {
         app.settings.averageSize += 3
+//        app.settings.saturation += 3
     }
     
     Keys.onDownPressed: {
         if (app.settings.averageSize > 3)
             app.settings.averageSize -= 3
+//        app.settings.saturation -= 3
     }
     
     Keys.onRightPressed: {

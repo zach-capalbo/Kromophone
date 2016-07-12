@@ -38,9 +38,10 @@ class SettingsCreator : public QObject
 {
     Q_OBJECT
 public:
-    static Setting& create(const SettingName& setting, const QVariant& defaultValue = QVariant());
+    static Setting& create(const SettingName& setting, const QVariant& defaultValue = QVariant(), bool display = false);
     static Setting& get(const SettingName& setting);
     static QQmlPropertyMap* qmlSettingMap();
+    static QStringList displayedSettings();
     
 private slots:
     void cppChanged(const QVariant& newValue);
@@ -49,19 +50,28 @@ private slots:
 private:
     SettingsCreator();
     static SettingsCreator& Instance();
+    QStringList displayedSettings_;
     QHash<SettingName, Setting*> settings;
     QQmlPropertyMap propertyMap;
 };
 
-#define KROMOPHONE_SETTING(n, d) inline Setting& n() { return SettingsCreator::create(QStringLiteral(#n), d); } \
+#define BASE_KROMOPHONE_SETTING(n, d, v) inline Setting& n() { return SettingsCreator::create(QStringLiteral(#n), d, v); } \
     namespace { Setting& _ ## n = n(); }
+
+#define KROMOPHONE_SETTING(n, d) BASE_KROMOPHONE_SETTING(n, d, true)
+
+#define HIDDEN_KROMOPHONE_SETTING(n, d) BASE_KROMOPHONE_SETTING(n, d, false)
 
 namespace Settings {
     KROMOPHONE_SETTING(sweep, false)
     KROMOPHONE_SETTING(sweepSize, 100)
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
-    KROMOPHONE_SETTING(hiddenDisplay, false)
+    KROMOPHONE_SETTING(saturation, 16)
+    KROMOPHONE_SETTING(autoExposure, true)
+    
+    HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
+    HIDDEN_KROMOPHONE_SETTING(headless, false)
 }
 
 #endif // SETTINGS_H
