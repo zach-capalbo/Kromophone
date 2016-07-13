@@ -99,6 +99,8 @@ void Kromophone::startup(const QStringList arguments)
         startFileSonification(args["file"].toString());
     }
     
+    wiiController.start();
+    
     emit startupComplete();
 }
 

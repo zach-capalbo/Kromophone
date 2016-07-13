@@ -31,6 +31,7 @@
 #include "PreviewImageProvider.h"
 #include "Platform.h"
 #include "ArgParser.h"
+#include "WiiMote.h"
 
 #include <memory>
 
@@ -93,6 +94,7 @@ private:
     // App Stuff
     Platform* _platform;
     ArgParser args;
+    WiiMoteInputController wiiController;
 };
 
 #endif // KROMOPHONE_H

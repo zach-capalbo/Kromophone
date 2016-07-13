@@ -17,9 +17,10 @@ Rectangle {
         color: Style.normalFg
     }
     
-    Text {
+    StandardText {
         id: t
         anchors.centerIn: parent
+        horizontalAlignment: Text.AlignHCenter
         color: Style.normalFg
         font.pixelSize: Style.fontSize
         wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -30,6 +31,10 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         onClicked: r.clicked()
+    }
+    
+    Behavior on color {
+        ColorAnimation { duration: 100; }
     }
     
     states: [

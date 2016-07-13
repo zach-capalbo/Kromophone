@@ -22,6 +22,9 @@ public:
     const SettingName& name() const { return name_; }
     
     void set(const QVariant& value) { value_ = value; emit valueChanged(value_);}
+    void toggle() { value_ = !value_.toBool(); emit valueChanged(value_); }
+    void increment(int amount) { value_ = value_.toInt() + amount; emit valueChanged(value_); }
+    void decrement(int amount) { increment(- amount); }
         
 signals:
     void valueChanged(const QVariant& value);
@@ -67,7 +70,7 @@ namespace Settings {
     KROMOPHONE_SETTING(sweepSize, 100)
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
-    KROMOPHONE_SETTING(saturation, 16)
+    HIDDEN_KROMOPHONE_SETTING(saturation, 16)
     KROMOPHONE_SETTING(autoExposure, true)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)

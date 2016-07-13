@@ -3,7 +3,8 @@ pragma Singleton
 
 QtObject {
     property int fontSize: 20
-    property int borderWidth: 2
+    property string fontFamily: "Open Sans"
+    property int borderWidth: 1
     property color normalBg: "#333"
     property color normalFg: "#eee"
     property color engagedBg: "#544"

@@ -7,11 +7,19 @@ Rectangle {
     border.width: Style.borderWidth
     border.color: Style.normalFg
     color: Style.normalBg
-    z: 10000
+    
+    default property alias extra: c.data
     Column {
-        anchors.fill: parent
+        id: c
+        width: parent.width
+    }
+    
+    Column {
+        anchors.top: c.bottom
+        width: parent.width
         ColorPreview { 
-            width: parent.width
+            width: parent.width - Style.borderWidth * 2
+            x: Style.borderWidth
         }
         
         Repeater {

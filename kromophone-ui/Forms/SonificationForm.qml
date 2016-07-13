@@ -25,10 +25,26 @@ FormBase {
     Sidebar {
         id: sidebar
         anchors.right: parent.right
+        z: 1000
+        
+        TextButton {
+            text: "Show Hot Keys"
+            width: parent.width
+            onClicked: {
+                help.visible = !help.visible
+            }
+        }
+    }
+    
+    HotKeyOverlay {
+        id: help
+        visible: false
+        z: 2000
     }
     
     Keys.enabled: true
     Keys.onReleased: {
+        console.log(event.key)
         if (event.text == "s")
         {
             app.settings.sweep = !app.settings.sweep
@@ -45,19 +61,21 @@ FormBase {
         {
             app.settings.autoExposure = !app.settings.autoExposure
         }
+        else if (event.text == "?")
+        {
+            help.visible = !help.visible
+        }
 
         console.log(event.text);
     }
     
     Keys.onUpPressed: {
         app.settings.averageSize += 3
-//        app.settings.saturation += 3
     }
     
     Keys.onDownPressed: {
         if (app.settings.averageSize > 3)
             app.settings.averageSize -= 3
-//        app.settings.saturation -= 3
     }
     
     Keys.onRightPressed: {

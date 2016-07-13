@@ -25,5 +25,6 @@
         <file>kromophone-ui/Forms/SelectImageForm.qml</file>
         <file>kromophone-ui/Forms/CameraSonificationForm.qml</file>
         <file>kromophone-ui/Components/ImagePreview.qml</file>
+        <file>kromophone-ui/Components/HotKeyOverlay.qml</file>
     </qresource>
 </RCC>

@@ -83,7 +83,8 @@ SOURCES += main.cpp\
     Settings.cpp \
     PreviewImageProvider.cpp \
     Platform.cpp \
-    ArgParser.cpp
+    ArgParser.cpp \
+    WiiMote.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -100,7 +101,8 @@ HEADERS  += MainWindow.h \
     Settings.h \
     PreviewImageProvider.h \
     Platform.h \
-    ArgParser.h
+    ArgParser.h \
+    WiiMote.h
 
     
 FORMS    += MainWindow.ui
