@@ -65,6 +65,10 @@ FormBase {
         {
             help.visible = !help.visible
         }
+        else if (event.text == "q")
+        {
+            Controller.stopSonification()
+        }
 
         console.log(event.text);
     }

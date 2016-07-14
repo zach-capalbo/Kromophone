@@ -90,10 +90,6 @@ void AudioEngine::initializeAudio()
     QThread* generatorThread = new QThread();
 
     m_generator->moveToThread(generatorThread);
-
-//    connect(this, SIGNAL(updateSound(Sound)), m_generator, SLOT(setSound(Sound)));
-//    connect(this, SIGNAL(updateSounds(SoundList)), m_generator, SLOT(setSounds(SoundList)));
-
     generatorThread->start(QThread::HighPriority);
 
     m_generator->start();
@@ -136,7 +132,11 @@ void AudioEngine::PlaySounds(const SoundList &InputSounds)
 {
 	emit updateSounds(InputSounds);
 	m_generator->setSounds(InputSounds);
-//	pullTimerExpired();
+}
+
+void AudioEngine::addSoundEffect(std::unique_ptr<SoundEffect> soundEffect)
+{
+    m_generator->addSoundEffect(std::move(soundEffect));
 }
 
 void AudioEngine::notify()

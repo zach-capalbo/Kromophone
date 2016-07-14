@@ -26,12 +26,13 @@ Item {
                 "s - Toggle Horizontal Sweep",
                 "a - Toggle Color Averaging",
                 "h - Hide Display",
-                "x - Toggle Autoexposure (RPI only)",
+                "x - Lock or Unlock Camera Exposure",
                 "Up - Increase Color Average Size",
                 "Down - Decrease Color Average Size",
                 "Left - Decrease Sweep Area",
                 "Right - Increase Sweep Area",
-                "? - Toggle this help"
+                "? - Toggle this help",
+                "q - Back to main menu"
             ]
             
             StandardText {

@@ -21,8 +21,10 @@
 
 #include <QIODevice>
 #include <QAudioFormat>
-#include "Sound.h"
 #include <QMutex>
+#include <memory>
+#include "Sound.h"
+#include "SoundEffect.h"
 
 
 class Generator : public QIODevice
@@ -64,7 +66,9 @@ public:
 	explicit AudioGenerator(const QAudioFormat &format, qint64 durationUs, int frequency, QObject *parent);
 	
 	virtual void start();
-	
+    
+    void addSoundEffect(std::unique_ptr<SoundEffect> soundEffect);
+
 signals:
 	
 public slots:
@@ -79,6 +83,7 @@ protected:
 	
 	SoundList m_sounds;
 	
+    std::unique_ptr<SoundEffect> m_soundEffect;
 	
 	float lastFloatRight, lastFloatLeft;
 	

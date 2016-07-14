@@ -17,21 +17,8 @@
 	
 */
 #include <QApplication>
-#include "MainWindow.h"
-#include "ColorSource.h"
 #include "Color.h"
-#include "Transform.h"
-#include "SoundOut.h"
-#include <QThread>
-#include <QMetaType>
-#include "LiveImageColorSource.h"
-#include "AudioEngine.h"
-#include "ColorPreviewWidget.h"
-#include "DesktopImageSource.h"
-#include <QRegion>
-#include <QDebug>
-#include <QPushButton>
-#include "QmlCameraSource.h"
+#include "Sound.h""
 
 #include "Kromophone.h"
 

@@ -32,6 +32,7 @@
 #include "Platform.h"
 #include "ArgParser.h"
 #include "WiiMote.h"
+#include "SoundEffectGenerator.h"
 
 #include <memory>
 
@@ -58,18 +59,20 @@ signals:
     
     void cameraSonificationStarted();
     void fileSonificationStarted(const QString& file);
+    void sonificationEnded();
 	
 public slots:
     void startup();
     void startup(const QStringList arguments);
     void startFileSonification(const QString& path);
     void startCameraSonification();
+    void stopSonification();
     
     void onMouseImageHover(int x, int y);
     
     void onColorChanged(Color newColor);
     void onImageChanged(const QImage& image);
-    
+        
 private:
     void initializeAudio();
     void createInitialTransform();
@@ -95,6 +98,7 @@ private:
     Platform* _platform;
     ArgParser args;
     WiiMoteInputController wiiController;
+    SoundEffectGenerator* effectGenerator;
 };
 
 #endif // KROMOPHONE_H

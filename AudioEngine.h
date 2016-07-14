@@ -32,7 +32,8 @@ class AudioEngine : public SoundOut
 	
 public:
 	explicit AudioEngine(QObject *parent = 0);
-	
+    
+    void addSoundEffect(std::unique_ptr<SoundEffect> soundEffect);
 signals:
 	
 	void updateSound(const Sound& sound);
@@ -51,7 +52,6 @@ public slots:
 	void stateChanged(QAudio::State newState);
 	
 	void notify();
-	
 private:
 	Sound currentSound;
 	

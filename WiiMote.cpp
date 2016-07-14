@@ -89,13 +89,13 @@ void WiiMoteInputController::onReleased(int code)
     switch (code)
     {
     case 304: //A Button
-        Settings::average().toggle();
+        Settings::autoExposure().toggle();
         break;
     case 305: // B Trigger
         Settings::sweep().toggle();
         break;
     case 316: // Home Button
-        Settings::autoExposure().toggle();
+        Settings::average().toggle();
         break;
     }
     

@@ -20,6 +20,11 @@ Item {
         
         _previousForm = currentForm
     }
+    
+    function stopSonification() {
+        app.stopSonification()
+        currentForm = "StartupForm"
+    }
 
     Connections {
         target: app

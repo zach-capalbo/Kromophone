@@ -206,6 +206,13 @@ void AudioGenerator::setSounds(const SoundList& sounds)
     }
 }
 
+void AudioGenerator::addSoundEffect(std::unique_ptr<SoundEffect> soundEffect)
+{
+    QMutexLocker lock(&m_mutex);
+    m_soundEffect = std::move(soundEffect);
+    m_soundEffect->fillBuffer(m_format.sampleRate());
+}
+
 void AudioGenerator::initializeSounds()
 {
     for(auto it = m_sounds.begin(); it != m_sounds.end(); ++it)
@@ -223,7 +230,19 @@ void AudioGenerator::generateTone(qreal &left, qreal &right, int sampleIndex)
     right = 0.0f;
 
     //left = right = generateTimbre(m_sound, frequency, angle, percent);
-
+    
+    if (m_soundEffect)
+    {
+        left = m_soundEffect->getSample();
+        right = left;
+        
+        if (m_soundEffect->isDone())
+        {
+            m_soundEffect = nullptr;
+        }
+        
+        return;
+    }
 	
     foreach (const Sound& s, m_sounds)
     {

@@ -35,7 +35,8 @@ Kromophone::Kromophone(QObject *parent) :
     colorToSoundTransform(nullptr), 
     imageSource(nullptr), 
     colorSource(nullptr),
-    quickView(nullptr)
+    quickView(nullptr),
+    effectGenerator(nullptr)
 {
     _platform = new Platform;
 }
@@ -117,8 +118,8 @@ void Kromophone::startFileSonification(const QString& path)
     this->colorSource = imageColorSource;
         
     connect(imageSource, SIGNAL(update(QImage)), imageColorSource, SLOT(updateImage(QImage)));
+    connect(imageColorSource, SIGNAL(doSweep(bool,QPointF)), this->colorToSoundTransform, SLOT(setSweep(bool,QPointF)));
     connect(colorSource, SIGNAL(colorChanged(Color)), colorToSoundTransform, SLOT(ReceiveColor(Color)));
-    
     connect(colorSource, SIGNAL(colorChanged(Color)), this, SLOT(onColorChanged(Color)));
     
     imageSource->start();
@@ -150,6 +151,25 @@ void Kromophone::startCameraSonification()
     emit cameraSonificationStarted();
 }
 
+void Kromophone::stopSonification()
+{
+    if (imageSource != nullptr)
+    {
+        imageSource->deleteLater();
+        imageSource = nullptr;
+    }
+    
+    if (colorSource != nullptr)
+    {
+        colorSource->deleteLater();
+        colorSource = nullptr;
+    }
+    
+    audioThread.exit();
+    
+    emit sonificationEnded();
+}
+
 void Kromophone::onMouseImageHover(int x, int y)
 {
     StaticImageColorSource* imageColorSource = qobject_cast<StaticImageColorSource*>(this->colorSource);
@@ -179,9 +199,10 @@ void Kromophone::initializeAudio()
     }
     
     audioEngine = new AudioEngine;
+    effectGenerator = new SoundEffectGenerator(audioEngine);
+    
     audioEngine->moveToThread(&audioThread);
     QMetaObject::invokeMethod(audioEngine, "initializeAudio");
-
 }
 
 void Kromophone::createInitialTransform()
