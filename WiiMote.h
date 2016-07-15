@@ -10,6 +10,9 @@ class WiiMote : public QObject
     Q_OBJECT
 public:
     WiiMote(const QString& device, QObject* parent = nullptr);
+    ~WiiMote();
+    
+    static WiiMote* find();
     
 signals:
     void pressed(int code);

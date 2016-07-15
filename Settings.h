@@ -70,11 +70,12 @@ namespace Settings {
     KROMOPHONE_SETTING(sweepSize, 100)
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
-    HIDDEN_KROMOPHONE_SETTING(saturation, 16)
     KROMOPHONE_SETTING(autoExposure, true)
     
+    HIDDEN_KROMOPHONE_SETTING(saturation, 16)
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)
+    HIDDEN_KROMOPHONE_SETTING(audioDevice, "default")
 }
 
 #endif // SETTINGS_H

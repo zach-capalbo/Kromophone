@@ -21,6 +21,9 @@
 #include <QDebug>
 #include <QThread>
 
+#include "Settings.h"
+
+
 /*
 const int DurationSeconds = 1;
 const int ToneFrequencyHz = 131;
@@ -57,16 +60,21 @@ void AudioEngine::initializeAudio()
 			qDebug() << out.deviceName();
 	}
 
-    QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
+    QAudioDeviceInfo info;
     qDebug() << "Default: " << info.deviceName();
     QList<QAudioDeviceInfo> il = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
     {
         qDebug() << it->deviceName();
-        if (it->deviceName() == "default" && info.deviceName().isEmpty())
+        if (it->deviceName() == Settings::audioDevice().value().toString())
         {
             info = *it;
         }
+    }
+    
+    if (info.deviceName().isEmpty())
+    {
+        info = QAudioDeviceInfo::defaultOutputDevice();
     }
 
     m_device = info;

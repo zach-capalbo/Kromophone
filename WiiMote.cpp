@@ -19,8 +19,49 @@
 #include <termios.h>
 #include <signal.h>
 
-WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(), valid(false), shouldStop(false)
+#include <QDir>
+
+WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(), valid(false), shouldStop(false), fd(-1)
 {
+}
+
+WiiMote::~WiiMote()
+{
+    if (fd != -1)
+    {
+        close(fd);
+    }
+}
+
+WiiMote*WiiMote::find()
+{
+    QDir dir("/dev/input");
+    
+    foreach(const QString& entry, dir.entryList(QStringList {"event*"}, QDir::System | QDir::AllEntries | QDir::Hidden))
+    {
+        int fd = open(QString("/dev/input/%1").arg(entry).toLocal8Bit(), O_RDONLY);
+        
+        if (fd != -1)
+        {
+            continue;
+        }
+        
+        char rawname[256];
+        ioctl (fd, EVIOCGNAME (sizeof (rawname)), rawname);
+        
+        QString name = QString::fromLatin1(rawname);
+        
+        if (name != "Nintendo Wii Remote")
+        {
+            continue;
+        }
+        
+        close(fd);
+        
+        return new WiiMote(QString("/dev/input/%1").arg(entry));
+    }
+    
+    return nullptr;
 }
 
 void WiiMote::loop()
@@ -77,7 +118,19 @@ WiiMoteInputController::WiiMoteInputController(QObject* parent) : QObject(parent
 
 void WiiMoteInputController::start()
 {
-    wiimote = new WiiMote("/dev/input/event16");
+    if (wiimote != nullptr)
+    {
+        delete wiimote;
+    }
+    
+    wiimote = WiiMote::find();
+    
+    if (wiimote == nullptr)
+    {
+        qDebug() << "Could not find wiimote.";
+        return;
+    }
+    
     wiimote->moveToThread(&loopthread);
     connect(wiimote, &WiiMote::released, this, &WiiMoteInputController::onReleased);
     connect(&loopthread, &QThread::started, wiimote, &WiiMote::loop);
