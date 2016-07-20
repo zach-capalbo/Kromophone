@@ -19,15 +19,13 @@
 #include <QMetaType>
 #include <QApplication>
 #include <QQmlContext>
+#include <QDebug>
 
 #include "Kromophone.h"
 #include "StaticImageColorSource.h"
 #include "LiveImageColorSource.h"
-#include "QtCameraSource.h"
-#include "QmlCameraSource.h"
 #include "Transform.h"
-
-#include "V4L2ImageSource.h"
+#include "CameraFactory.h"
 
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
@@ -135,7 +133,7 @@ void Kromophone::startCameraSonification()
         return;
     }
     
-    this->imageSource = _platform->isEmbedded() ? (ImageSource*) new V4L2ImageSource : (ImageSource*) new QtCameraSource;
+    this->imageSource = CameraFactory::create(this);
     LiveImageColorSource* imageColorSource = new LiveImageColorSource;
     
     this->colorSource = imageColorSource;
@@ -229,4 +227,6 @@ void Kromophone::createDisplay()
     {
         quickView->show();
     }
+    
+    SettingsCreator::qmlSettingMap()->moveToThread(quickView->engine()->thread());
 }

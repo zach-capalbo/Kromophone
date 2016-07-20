@@ -7,13 +7,13 @@
 #include <QImage>
 #include <QCamera>
 #include <QVideoProbe>
-
+#include <QQuickView>
 
 class QmlCameraSource  : public ImageSource
 {
     Q_OBJECT
 public:
-    explicit QmlCameraSource(QObject* parent = nullptr);
+    explicit QmlCameraSource(QQuickView* view, QObject* parent = nullptr);
     
 public slots:
     void start();
@@ -24,6 +24,7 @@ protected slots:
     
 private:
     QCamera* camera;
+    QQuickView* view;
     QVideoProbe probe;
     int frameNum;
 };

@@ -30,23 +30,41 @@ static void keepScreenOn()
 static void keepScreenOn() {}
 #endif
 
-QmlCameraSource::QmlCameraSource(QObject* parent)
+QmlCameraSource::QmlCameraSource(QQuickView* view, QObject* parent)
 {
+    this->view = view;
     frameNum = 0;
 }
 
 void QmlCameraSource::start()
 {
-    QQuickView* v = new QQuickView;
-    v->setSource(QUrl("qrc:///CameraCapture.qml"));
-    v->showFullScreen();
-    QObject *qmlCamera = v->rootObject()->findChild<QObject*>("qrCameraQML");
+    if (view == nullptr)
+    {
+        qWarning() << "No view. Cannot find QML Camera";
+        return;
+    }
+    
+    QObject *qmlCamera = view->rootObject()->findChild<QObject*>("qrCameraQML");
+    
+    if (qmlCamera == nullptr)
+    {
+        qWarning() << "Cannot find QML camera object";
+        return;
+    }
+    
     camera = qvariant_cast<QCamera*>(qmlCamera->property("mediaObject"));
+    
+    if (camera == nullptr)
+    {
+        qWarning() << "Cannot retrieve camera from qml object";
+        return;
+    }
+    
     qDebug() << camera->supportedViewfinderResolutions();
     qDebug() << camera->viewfinderSettings().resolution();
     connect(&probe,SIGNAL(videoFrameProbed(QVideoFrame)),this,SLOT(onFrame(QVideoFrame)));
     probe.setSource(camera);
-    connect(v, SIGNAL(closing(QQuickCloseEvent)), qApp, SLOT(quit()));
+    connect(view, SIGNAL(closing(QQuickCloseEvent)), qApp, SLOT(quit()));
 }
 
 void QmlCameraSource::stop()

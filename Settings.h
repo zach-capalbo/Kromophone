@@ -53,9 +53,10 @@ private slots:
 private:
     SettingsCreator();
     static SettingsCreator& Instance();
+    QQmlPropertyMap* createPropertyMap();
     QStringList displayedSettings_;
     QHash<SettingName, Setting*> settings;
-    QQmlPropertyMap propertyMap;
+    QQmlPropertyMap* propertyMap;
 };
 
 #define BASE_KROMOPHONE_SETTING(n, d, v) inline Setting& n() { return SettingsCreator::create(QStringLiteral(#n), d, v); } \
@@ -70,12 +71,14 @@ namespace Settings {
     KROMOPHONE_SETTING(sweepSize, 100)
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
-    KROMOPHONE_SETTING(autoExposure, true)
+    KROMOPHONE_SETTING(lockExposure, false)
+    KROMOPHONE_SETTING(saturation, 16)
     
-    HIDDEN_KROMOPHONE_SETTING(saturation, 16)
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)
     HIDDEN_KROMOPHONE_SETTING(audioDevice, "default")
+    HIDDEN_KROMOPHONE_SETTING(v4lDevice, "/dev/video0")
+    HIDDEN_KROMOPHONE_SETTING(forceCameraDriver, false)
 }
 
 #endif // SETTINGS_H

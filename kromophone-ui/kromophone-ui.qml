@@ -4,8 +4,11 @@ import QtQuick.Dialogs 1.2
 
 ApplicationWindow {
     visible: true
-    width: 640
-    height: 480
+//    width: 640
+//    height: 480
+    
+    width: 1080
+    height: 1920
     title: qsTr("Hello World")
     
     menuBar: MenuBar {

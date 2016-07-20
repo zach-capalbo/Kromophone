@@ -24,7 +24,6 @@ FormBase {
                 anchors.horizontalCenter: parent.horizontalCenter
                 onClicked: Controller.currentForm = target
             }
-        }
-        
+        }        
     }
 }

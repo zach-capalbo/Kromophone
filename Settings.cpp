@@ -12,7 +12,7 @@ Setting& SettingsCreator::create(const SettingName& setting, const QVariant& def
     // Should do locking etc here...
     if (!settings.contains(setting)) {
         settings[setting] = new Setting(setting, defaultValue);
-        Instance().propertyMap.insert(setting, defaultValue);
+        
         
         if (display)
         {
@@ -32,7 +32,11 @@ Setting& SettingsCreator::get(const SettingName& setting)
 
 QQmlPropertyMap* SettingsCreator::qmlSettingMap()
 {
-    return &SettingsCreator::Instance().propertyMap;
+    // For android, the settings map needs to be in the QML Engine's thread, and
+    // we can't use move to thread to get it there, so we'll create it when it's
+    // called for by qml.
+    static QQmlPropertyMap* qmlMap = SettingsCreator::Instance().createPropertyMap();
+    return SettingsCreator::Instance().propertyMap;
 }
 
 QStringList SettingsCreator::displayedSettings()
@@ -43,7 +47,11 @@ QStringList SettingsCreator::displayedSettings()
 void SettingsCreator::cppChanged(const QVariant& newValue)
 {
     Setting* setting = (Setting*) QObject::sender();
-    propertyMap.insert(setting->name(), newValue);
+    
+    if (propertyMap != nullptr)
+    {
+        propertyMap->insert(setting->name(), newValue);
+    }
 }
 
 void SettingsCreator::qmlChanged(const QString& setting, const QVariant& newValue)
@@ -51,13 +59,27 @@ void SettingsCreator::qmlChanged(const QString& setting, const QVariant& newValu
     settings[setting]->set(newValue);
 }
 
-SettingsCreator::SettingsCreator() : QObject()
+SettingsCreator::SettingsCreator() : QObject(), propertyMap(nullptr)
 {
-    connect(&propertyMap, SIGNAL(valueChanged(QString,QVariant)), this, SLOT(qmlChanged(QString,QVariant)));
 }
 
 SettingsCreator& SettingsCreator::Instance()
 {
     static SettingsCreator* instance = new SettingsCreator;
     return *instance;
+}
+
+QQmlPropertyMap* SettingsCreator::createPropertyMap()
+{
+    QQmlPropertyMap* map = new QQmlPropertyMap;
+    
+    foreach (const Setting* setting, settings.values())
+    {
+        map->insert(setting->name(), setting->value());
+    }
+    
+    this->propertyMap = map;
+    
+    connect(propertyMap, SIGNAL(valueChanged(QString,QVariant)), this, SLOT(qmlChanged(QString,QVariant)));
+    return map;
 }

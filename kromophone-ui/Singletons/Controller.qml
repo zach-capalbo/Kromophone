@@ -6,6 +6,8 @@ Item {
     property string currentForm: "StartupForm"
     property string _previousForm
     property string image: ":/Images/Resources/spectrum.jpg"
+    property bool landscape: false
+    property bool isPortrait: !landscape
     
     onCurrentFormChanged: {
         console.log("Navigating from " + _previousForm + " to " + currentForm)
@@ -15,7 +17,7 @@ Item {
         } else if (currentForm == "ImageSonificationForm") {
             app.startFileSonification(image)
         } else if (currentForm == "CameraSonificationForm") {
-            app.startCameraSonification()
+            startCameraTimer.start()
         }
         
         _previousForm = currentForm
@@ -24,6 +26,14 @@ Item {
     function stopSonification() {
         app.stopSonification()
         currentForm = "StartupForm"
+    }
+    
+    Timer {
+        id: startCameraTimer
+        interval: 1
+        repeat: false
+        running: false
+        onTriggered: app.startCameraSonification()
     }
 
     Connections {
@@ -40,5 +50,5 @@ Item {
 
             currentForm = "ImageSonificationForm"
         }
-    }   
+    }
 }

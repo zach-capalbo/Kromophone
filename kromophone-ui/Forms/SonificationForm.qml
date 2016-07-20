@@ -24,7 +24,6 @@ FormBase {
     
     Sidebar {
         id: sidebar
-        anchors.right: parent.right
         z: 1000
         
         TextButton {
@@ -59,7 +58,7 @@ FormBase {
         }
         else if (event.text == "x")
         {
-            app.settings.autoExposure = !app.settings.autoExposure
+            app.settings.lockExposure = !app.settings.lockExposure
         }
         else if (event.text == "?")
         {

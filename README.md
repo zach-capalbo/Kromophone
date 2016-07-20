@@ -13,44 +13,62 @@ Installation and Setup
 
 The required dependencies are:
 
- * Qt 5.0
- * OpenCV
+ * [Qt 5.6][qt]
 
 ### Compiling
 
 #### Windows, Linux, or Mac
+Just like any other Qt project, run
 
-*If you are on Windows*, edit Kromophone.pro and change the OPENCV variable to point to your installation of OpenCV, or pass OPENCV=C:/PATH/TO/OPENCV as a qmake argument.
-
-*All desktop platforms:*
-
-	    qmake -r Kromophone.pro
-	    make
+```
+qmake -r Kromophone.pro
+make
+```
 
 or use QtCreator to build it.
 
 #### Android
 
-Compiling for Android is a little tricky. The dependencies are Qt 5.2.1 for Android and OpenCV-2.4.6-android-sdk. 
+ 1. Make sure you have [Qt for Android][qt] installed
+ 2. Open `Kromophone.pro` with QtCreator, and configure the project for the Android target.
+ 
+Alternatively, you can find a prebuilt version on the [Google Play Store][play].
 
-Using Qt Creator to build:
+#### Raspberry Pi
 
- 1) Open Kromophone.pro
- 2) Add the Android for armeabi-v7 kit
- 3) In the qmake build step, add OPENCV=/path/to/OpenCV-2.4.6-android-sdk as an additional argument (replacing /path/to with whereever you unpackaged the openCV sdk)
- 4) Click Run and cross your fingers.
+Building everything for the raspberry pi is a little tricky, but can be done!
+
+ 1. Start with a [Raspbian Jesse Lite image][raspbian]
+ 2. Follow the guide [RaspberryPi2EGLFS guide][wikiguide] on the Qt Wiki for cross compiling Qt for raspberry pi
+ 3. Also build and deploy the following QT submodules: `qtmultimedia, qtquickcontrols2, qtdeclarative,  qtquickcontrols,  qtwebsockets`
+ 4. Use the qmake from step 2 to build Kromophone.pro
+ 
+**Caveats for Raspberry Pi:**
+
+ - The Kromophone on Raspberry pi uses a hacky V4L capture module, which only supports USB UVC cameras. YMMV
+ - The Kromophone sounds awful with the on board sound card. Get a USB sound card and use the `--audioDevice plughw:CARD=Device,DEV=0` option.
+ 
+If you are interested in purchasing a made Raspberry Pi sdcard pre-loaded with the Kromophone software, please contact us.
 
 ### Running
 
-Unix:
+#### Unix:
 
 	./Kromophone
 	
-Windows: Double click Kromophone.exe
+#### Windows: 
+
+Double click Kromophone.exe
 
 
 Issues
 ------
 
-**THIS IS ALPHA SOFTWARE.** This is pretty much just a demo release. There's a lot of features missing, and a lot left to do. If it doesn't work, you can let us know by submitting an issue at: https://github.com/zach-capalbo/Kromophone/issues
+**THIS IS ALPHA SOFTWARE.**  
+
+If it doesn't work, you can let us know by submitting an issue at: https://github.com/zach-capalbo/Kromophone/issues
     
+[qt]: https://www.qt.io/download-open-source/
+[play]: https://play.google.com/store/apps/details?id=com.zachcapalbo.kromophones
+[wikiguide]: https://wiki.qt.io/RaspberryPi2EGLFS
+[raspbian]: https://www.raspberrypi.org/downloads/raspbian/

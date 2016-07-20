@@ -38,6 +38,7 @@
 
 class Kromophone : public QObject
 {
+    friend class CameraFactory;
 	Q_OBJECT
     Q_PROPERTY(bool isAndroid READ isAndroid NOTIFY startupComplete)
     Q_PROPERTY(QObject* settings READ settings NOTIFY startupComplete)

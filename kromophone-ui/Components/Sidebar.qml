@@ -2,7 +2,9 @@ import QtQuick 2.0
 import "../Singletons"
 
 Rectangle {
-    width: 200
+    id: sidebar
+    width: Style.sidebarSize
+    anchors.right: parent.right
     height: parent.height
     border.width: Style.borderWidth
     border.color: Style.normalFg
@@ -30,4 +32,20 @@ Rectangle {
             }
         }
     }
+    
+    states: [
+        State {
+            when: false && Controller.landscape
+            PropertyChanges {
+                target: sidebar
+                width: sidebar.parent.width
+                height: Style.sidebarSize
+            }
+            AnchorChanges {
+                target: sidebar
+                anchors.right: null
+                anchors.bottom: parent.bottom
+            }
+        }
+    ]
 }

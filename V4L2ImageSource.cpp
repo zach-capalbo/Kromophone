@@ -6,7 +6,7 @@
 
 extern "C" void process_image(void* data);
 
-void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b) {
+void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* b, unsigned char* g, unsigned char* r) {
 	int tmp;
 	tmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
 	if (tmp >255)
@@ -59,13 +59,18 @@ void process_image(void * d) {
 V4L2ImageSource::V4L2ImageSource()
 {
     connect(&Settings::saturation(), &Setting::valueChanged, this, &V4L2ImageSource::onSaturationChanged);
-    connect(&Settings::autoExposure(), &Setting::valueChanged, this, &V4L2ImageSource::onAutoExposureChanged);
+    connect(&Settings::lockExposure(), &Setting::valueChanged, this, &V4L2ImageSource::onLockExposureChanged);
+}
+
+V4L2ImageSource::~V4L2ImageSource()
+{
+    stop();
 }
 
 void V4L2ImageSource::start()
 {
-    init_camera(0, nullptr);
-    set_saturation(0);
+    init_camera(Settings::v4lDevice().value().toString().toLocal8Bit());
+    set_saturation(Settings::saturation().value().toInt());
     
     QTimer* timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(getImage()));
@@ -91,7 +96,7 @@ void V4L2ImageSource::onSaturationChanged(const QVariant& value)
     set_saturation(value.toInt());
 }
 
-void V4L2ImageSource::onAutoExposureChanged(const QVariant& value)
+void V4L2ImageSource::onLockExposureChanged(const QVariant& value)
 {
-    set_auto_exposure(value.toBool() ? 1 : 0);
+    set_auto_exposure(value.toBool() ? 0 : 1);
 }

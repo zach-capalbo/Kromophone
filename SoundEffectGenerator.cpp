@@ -7,7 +7,7 @@ SoundEffectGenerator::SoundEffectGenerator(AudioEngine* engine, QObject *parent)
 {
     connect(&Settings::average(), &Setting::valueChanged, this, &SoundEffectGenerator::settingChanged);
     connect(&Settings::sweep(), &Setting::valueChanged, this, &SoundEffectGenerator::settingChanged);
-    connect(&Settings::autoExposure(), &Setting::valueChanged, this, &SoundEffectGenerator::settingChanged);
+    connect(&Settings::lockExposure(), &Setting::valueChanged, this, &SoundEffectGenerator::settingChanged);
 }
 
 void SoundEffectGenerator::beepOn()

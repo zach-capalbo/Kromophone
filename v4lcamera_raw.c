@@ -39,8 +39,8 @@
 
 extern void process_image(void*);
 
-int CAMERA_WIDTH;
-int CAMERA_HEIGHT;
+int CAMERA_WIDTH = 320;
+int CAMERA_HEIGHT = 240;
 typedef enum {
 	IO_METHOD_READ,
 	IO_METHOD_MMAP,
@@ -588,6 +588,25 @@ init_device                     (void)
 		init_userp (fmt.fmt.pix.sizeimage);
 		break;
 	}
+    
+#if 0
+    struct v4l2_frmivalenum fr;
+    
+    CLEAR(fr);
+    
+    int err = 0;
+    int idx = 0;
+    
+    while (err == 0)
+    {
+        fr.index = idx++;
+        fr.pixel_format = fmt.fmt.pix.pixelformat;
+        fr.width = CAMERA_WIDTH;
+        fr.height = CAMERA_HEIGHT;
+        err = xioctl(fd, VIDIOC_ENUM_FRAMEINTERVALS, &fr);
+        printf("Framerate: %d\n", fr.discrete.numerator);
+    }
+#endif
 }
 
 static void
@@ -654,52 +673,10 @@ long_options [] = {
 };
 
 int
-init_camera  (int                    argc,
-                                 char **                argv)
+init_camera  (const char* dev)
 {
-        dev_name = "/dev/video0";
+        dev_name = dev;
 
-/*        for (;;) {
-                int index;
-                int c;
-               
-                c = getopt_long (argc, argv,
-                                 short_options, long_options,
-                                 &index);
-
-                if (-1 == c)
-                        break;
-
-                switch (c) {
-                case 0:
-                        break;
-
-                case 'd':
-                        dev_name = optarg;
-                        break;
-
-                case 'h':
-                        usage (stdout, argc, argv);
-                        exit (EXIT_SUCCESS);
-
-                case 'm':
-                        io = IO_METHOD_MMAP;
-			break;
-
-                case 'r':
-                        io = IO_METHOD_READ;
-			break;
-
-                case 'u':
-                        io = IO_METHOD_USERPTR;
-			break;
-
-                default:
-                        usage (stderr, argc, argv);
-                        exit (EXIT_FAILURE);
-                }
-        }
-*/
         open_device ();
 
         init_device ();
