@@ -6,7 +6,7 @@
 
 extern "C" void process_image(void* data);
 
-void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* b, unsigned char* g, unsigned char* r) {
+void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b) {
 	int tmp;
 	tmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
 	if (tmp >255)

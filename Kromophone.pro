@@ -32,7 +32,7 @@ android {
 		android/AndroidManifest.xml
 }
 else:unix {
-	target.path = /tmp/usr/bin
+	target.path = /home/pi/kromophone
 	INSTALLS += target
 
 #	CONFIG += opencv
@@ -84,7 +84,9 @@ SOURCES += main.cpp\
     PreviewImageProvider.cpp \
     Platform.cpp \
     ArgParser.cpp \
-    WiiMote.cpp
+    WiiMote.cpp \
+    WiiBluetoothConnector.cpp \
+    WiiMoteInputController.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -102,7 +104,9 @@ HEADERS  += MainWindow.h \
     PreviewImageProvider.h \
     Platform.h \
     ArgParser.h \
-    WiiMote.h
+    WiiMote.h \
+    WiiBluetoothConnector.h \
+    WiiMoteInputController.h
 
     
 FORMS    += MainWindow.ui

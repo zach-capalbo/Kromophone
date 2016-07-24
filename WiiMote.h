@@ -2,7 +2,6 @@
 #define WIIMOTE_H
 
 #include <QObject>
-#include <QThread>
 #include <atomic>
 
 class WiiMote : public QObject
@@ -28,22 +27,9 @@ private:
     bool valid;
     std::atomic<bool> shouldStop;
     QString name;
+    QString device;
 };
 
-class WiiMoteInputController : public QObject
-{
-    Q_OBJECT
-public:
-    WiiMoteInputController(QObject* parent = nullptr);
-    
-public slots:
-    void start();
-    
-    void onReleased(int code);
-    
-private:
-    WiiMote* wiimote;
-    QThread loopthread;
-};
+
 
 #endif // WIIMOTE_H

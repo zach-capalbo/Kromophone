@@ -54,10 +54,10 @@ void AudioEngine::initializeAudio()
     m_format.setByteOrder(QAudioFormat::LittleEndian);
     m_format.setSampleType(QAudioFormat::SignedInt);
 	
-	qDebug() << "Available devices";
+//	qDebug() << "Available devices";
 	foreach (QAudioDeviceInfo out, QAudioDeviceInfo::availableDevices(QAudio::AudioOutput))
 	{
-			qDebug() << out.deviceName();
+//			qDebug() << out.deviceName();
 	}
 
     QAudioDeviceInfo info;
@@ -65,7 +65,7 @@ void AudioEngine::initializeAudio()
     QList<QAudioDeviceInfo> il = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
     {
-        qDebug() << it->deviceName();
+//        qDebug() << it->deviceName();
         if (it->deviceName() == Settings::audioDevice().value().toString())
         {
             info = *it;

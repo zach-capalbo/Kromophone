@@ -31,7 +31,7 @@
 #include "PreviewImageProvider.h"
 #include "Platform.h"
 #include "ArgParser.h"
-#include "WiiMote.h"
+#include "WiiMoteInputController.h"
 #include "SoundEffectGenerator.h"
 
 #include <memory>

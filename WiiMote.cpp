@@ -21,7 +21,7 @@
 
 #include <QDir>
 
-WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(), valid(false), shouldStop(false), fd(-1)
+WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(parent), valid(false), shouldStop(false), fd(-1), device(device)
 {
 }
 
@@ -33,7 +33,7 @@ WiiMote::~WiiMote()
     }
 }
 
-WiiMote*WiiMote::find()
+WiiMote* WiiMote::find()
 {
     QDir dir("/dev/input");
     
@@ -41,8 +41,10 @@ WiiMote*WiiMote::find()
     {
         int fd = open(QString("/dev/input/%1").arg(entry).toLocal8Bit(), O_RDONLY);
         
-        if (fd != -1)
+        if (fd == -1)
         {
+            int err = errno;
+            qDebug() << "Could not open " << entry << " becase " << err << strerror(err);
             continue;
         }
         
@@ -66,7 +68,7 @@ WiiMote*WiiMote::find()
 
 void WiiMote::loop()
 {
-    int fd = open("/dev/input/event16", O_RDONLY);
+    int fd = open(device.toLocal8Bit(), O_RDONLY);
     
     if (fd != -1)
     {
@@ -91,7 +93,8 @@ void WiiMote::loop()
     {
         if (read (fd, ev, size * 64) < size)
         {
-            qDebug() << "Error reading from input";
+            int err = errno;
+            qDebug() << "Error reading from input" << err << strerror(err);
             emit error();
             return;
         }
@@ -110,65 +113,4 @@ void WiiMote::loop()
 void WiiMote::quit()
 {
     shouldStop = true;
-}
-
-WiiMoteInputController::WiiMoteInputController(QObject* parent) : QObject(parent), wiimote(nullptr)
-{
-}
-
-void WiiMoteInputController::start()
-{
-    if (wiimote != nullptr)
-    {
-        delete wiimote;
-    }
-    
-    wiimote = WiiMote::find();
-    
-    if (wiimote == nullptr)
-    {
-        qDebug() << "Could not find wiimote.";
-        return;
-    }
-    
-    wiimote->moveToThread(&loopthread);
-    connect(wiimote, &WiiMote::released, this, &WiiMoteInputController::onReleased);
-    connect(&loopthread, &QThread::started, wiimote, &WiiMote::loop);
-    loopthread.start();
-}
-
-void WiiMoteInputController::onReleased(int code)
-{
-    switch (code)
-    {
-    case 304: //A Button
-        Settings::lockExposure().toggle();
-        break;
-    case 305: // B Trigger
-        Settings::sweep().toggle();
-        break;
-    case 316: // Home Button
-        Settings::average().toggle();
-        break;
-    }
-    
-    // If we have a window, then these are already mapped to keypresses
-    if (Settings::headless().value().toBool())
-    {
-        switch (code)
-        {
-        case 106: //right
-            Settings::sweepSize().increment(3);
-            break;
-        case 105: //left
-            Settings::sweepSize().decrement(3);
-            break;
-        case 103: // up
-            Settings::averageSize().increment(3);
-            break;
-        case 108: // down
-            Settings::averageSize().decrement(3);
-            break;
-        }
-    }
 }
