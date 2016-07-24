@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QDebug>
 
+#ifdef Q_OS_LINUX
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,6 +21,8 @@
 #include <termios.h>
 #include <signal.h>
 
+#endif
+
 #include <QDir>
 
 WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(parent), valid(false), shouldStop(false), fd(-1), device(device)
@@ -27,14 +31,17 @@ WiiMote::WiiMote(const QString& device, QObject* parent) : QObject(parent), vali
 
 WiiMote::~WiiMote()
 {
+#ifdef Q_OS_LINUX
     if (fd != -1)
     {
         close(fd);
     }
+#endif
 }
 
 WiiMote* WiiMote::find()
 {
+#ifdef Q_OS_LINUX
     QDir dir("/dev/input");
     
     foreach(const QString& entry, dir.entryList(QStringList {"event*"}, QDir::System | QDir::AllEntries | QDir::Hidden))
@@ -62,12 +69,14 @@ WiiMote* WiiMote::find()
         
         return new WiiMote(QString("/dev/input/%1").arg(entry));
     }
+#endif
     
     return nullptr;
 }
 
 void WiiMote::loop()
 {
+#ifdef Q_OS_LINUX
     int fd = open(device.toLocal8Bit(), O_RDONLY);
     
     if (fd != -1)
@@ -108,6 +117,7 @@ void WiiMote::loop()
             emit released(ev[0].code);
         }
     }
+#endif
 }
 
 void WiiMote::quit()

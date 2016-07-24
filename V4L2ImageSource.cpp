@@ -48,12 +48,14 @@ void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height) {
 static QImage v4limage;
 
 void process_image(void * d) {
+#ifdef Q_OS_LINUX
     uchar* b = (uchar*) malloc(CAMERA_WIDTH * CAMERA_HEIGHT * 3 * 2);
     yuyvtorgb((unsigned char*) d, (unsigned char*) b, CAMERA_WIDTH, CAMERA_HEIGHT);
    
     v4limage = QImage(b, CAMERA_WIDTH, CAMERA_HEIGHT, QImage::Format_RGB888, [](void* v){
         free(v);
     }, (void*) b);
+#endif
 }
  
 V4L2ImageSource::V4L2ImageSource()
@@ -69,6 +71,7 @@ V4L2ImageSource::~V4L2ImageSource()
 
 void V4L2ImageSource::start()
 {
+#ifdef Q_OS_LINUX
     init_camera(Settings::v4lDevice().value().toString().toLocal8Bit());
     set_saturation(Settings::saturation().value().toInt());
     
@@ -76,27 +79,36 @@ void V4L2ImageSource::start()
     connect(timer, SIGNAL(timeout()), this, SLOT(getImage()));
     timer->setInterval(0);
     timer->start();
+#endif
 }
 
 void V4L2ImageSource::stop()
 {
+#ifdef Q_OS_LINUX
     terminate_camera();
+#endif
 }
 
 void V4L2ImageSource::getImage()
 {
+#ifdef Q_OS_LINUX
     camera_main_iteration();
     QImage newImage(v4limage);
     newImage.detach();
     emit update(newImage);
+#endif
 }
 
 void V4L2ImageSource::onSaturationChanged(const QVariant& value)
 {
+#ifdef Q_OS_LINUX
     set_saturation(value.toInt());
+#endif
 }
 
 void V4L2ImageSource::onLockExposureChanged(const QVariant& value)
 {
+#ifdef Q_OS_LINUX
     set_auto_exposure(value.toBool() ? 0 : 1);
+#endif
 }

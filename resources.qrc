@@ -19,7 +19,6 @@
         <file>kromophone-ui/KromophoneContainer.qml</file>
         <file>kromophone-ui/Images/spectrum.jpg</file>
         <file>kromophone-ui/kromophone-ui.qmlproject</file>
-        <file>kromophone-ui/kromophone-ui.qmlproject.user</file>
         <file>kromophone-ui/Forms/ImageSonificationForm.qml</file>
         <file>kromophone-ui/Forms/SpectrumSonificationForm.qml</file>
         <file>kromophone-ui/Forms/SelectImageForm.qml</file>
