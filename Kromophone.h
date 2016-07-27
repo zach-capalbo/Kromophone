@@ -41,6 +41,7 @@ class Kromophone : public QObject
     friend class CameraFactory;
 	Q_OBJECT
     Q_PROPERTY(bool isAndroid READ isAndroid NOTIFY startupComplete)
+    Q_PROPERTY(QString version READ version NOTIFY startupComplete)
     Q_PROPERTY(QObject* settings READ settings NOTIFY startupComplete)
     Q_PROPERTY(QObject* platform READ platform NOTIFY startupComplete)
     Q_PROPERTY(QColor color READ color NOTIFY colorChanged)
@@ -53,6 +54,7 @@ public:
 	QColor color();
     QStringList settingList();
     QObject* platform();
+    QString version();
     
 signals:
     void startupComplete();

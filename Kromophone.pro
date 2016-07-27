@@ -106,7 +106,8 @@ HEADERS  += MainWindow.h \
     ArgParser.h \
     WiiMote.h \
     WiiBluetoothConnector.h \
-    WiiMoteInputController.h
+    WiiMoteInputController.h \
+    version.h
 
     
 FORMS    += MainWindow.ui

@@ -26,6 +26,7 @@
 #include "LiveImageColorSource.h"
 #include "Transform.h"
 #include "CameraFactory.h"
+#include "version.h"
 
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
@@ -66,6 +67,11 @@ QStringList Kromophone::settingList()
 QObject*Kromophone::platform()
 {
     return _platform;
+}
+
+QString Kromophone::version()
+{
+    return QString(KROMOPHONE_VERSION);
 }
 
 void Kromophone::startup()

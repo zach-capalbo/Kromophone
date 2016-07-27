@@ -26,5 +26,8 @@
         <file>kromophone-ui/Components/ImagePreview.qml</file>
         <file>kromophone-ui/Components/HotKeyOverlay.qml</file>
         <file>kromophone-ui/Components/StandardText.qml</file>
+        <file>kromophone-ui/Components/TitleText.qml</file>
+        <file>kromophone-ui/Forms/AboutForm.qml</file>
+        <file>kromophone-ui/Images/Kromophone.png</file>
     </qresource>
 </RCC>

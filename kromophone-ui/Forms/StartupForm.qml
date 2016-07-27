@@ -17,6 +17,7 @@ FormBase {
                 ListElement { desc: "Sonify Camera"; target: "CameraSonificationForm" }
                 ListElement { desc: "Sonify Image File"; target: "SelectImageForm" }
                 ListElement { desc: "Sonify Color Spectrum"; target: "SpectrumSonificationForm" }
+                ListElement { desc: "About"; target: "AboutForm" }
             }
             
             TextButton {

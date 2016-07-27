@@ -4,6 +4,7 @@ Item {
     property color color: "green"
     property QtObject settings: _setting
     property var settingList: { var l = []; for (var prop in _setting) { l.push(prop); }; return l; }
+    property string version: "6.6.6"
     
     Behavior on color { ColorAnimation {  duration: 200  } }
     Timer {
