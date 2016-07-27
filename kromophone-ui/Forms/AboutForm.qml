@@ -11,6 +11,8 @@ FormBase {
         height: 120
     }
 
+    BackButton {}
+
     Column {
         width: parent.width
         anchors.top: parent.top
@@ -32,7 +34,12 @@ FormBase {
         TextButton {
             text: "This program is free software\nView License (GPL)"
             anchors.horizontalCenter: parent.horizontalCenter
+            onClicked: Controller.currentForm = "LicenseForm"
         }
     }
+
+    Keys.onEscapePressed: Controller.currentForm = "StartupForm"
+    focus: true
+    Component.onCompleted: forceActiveFocus()
 
 }

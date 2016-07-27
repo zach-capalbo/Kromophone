@@ -29,5 +29,7 @@
         <file>kromophone-ui/Components/TitleText.qml</file>
         <file>kromophone-ui/Forms/AboutForm.qml</file>
         <file>kromophone-ui/Images/Kromophone.png</file>
+        <file>kromophone-ui/Forms/LicenseForm.qml</file>
+        <file>kromophone-ui/Components/BackButton.qml</file>
     </qresource>
 </RCC>
