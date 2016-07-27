@@ -1,5 +1,6 @@
 #include "WiiMoteInputController.h"
 #include "Settings.h"
+#include "Platform.h"
 
 #include <QDebug>
 
@@ -22,6 +23,12 @@ void WiiMoteInputController::start()
 
 void WiiMoteInputController::findWiiMote()
 {
+    if (!Platform::currentPlatform().isEmbedded())
+    {
+        // Currently, we only support finding the wiimote for RPI
+        return;
+    }
+
     if (wiimote != nullptr)
     {
         qDebug() << "Already found wii mote";

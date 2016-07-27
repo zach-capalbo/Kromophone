@@ -7,7 +7,13 @@ Platform::Platform(QObject *parent) : QObject(parent)
     
 }
 
-bool Platform::isAndroid()
+const Platform &Platform::currentPlatform()
+{
+    static Platform platform;
+    return platform;
+}
+
+bool Platform::isAndroid() const
 {
 #ifdef Q_OS_ANDROID
     return true;
@@ -16,7 +22,7 @@ bool Platform::isAndroid()
 #endif
 }
 
-bool Platform::isEmbedded()
+bool Platform::isEmbedded() const
 {
 #ifndef Q_OS_ANDROID
     static bool embedded = QSysInfo::buildCpuArchitecture().startsWith("arm");
@@ -26,7 +32,7 @@ bool Platform::isEmbedded()
 #endif
 }
 
-bool Platform::isUnix()
+bool Platform::isUnix() const
 {
 #ifdef Q_OS_UNIX
     return true;
@@ -35,7 +41,7 @@ bool Platform::isUnix()
 #endif
 }
 
-bool Platform::isWindows()
+bool Platform::isWindows() const
 {
 #ifdef Q_OS_WIN
     return true;
@@ -44,7 +50,7 @@ bool Platform::isWindows()
 #endif
 }
 
-bool Platform::isDesktop()
+bool Platform::isDesktop() const
 {
     return !isEmbedded() && !isAndroid();
 }

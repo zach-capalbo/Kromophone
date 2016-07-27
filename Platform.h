@@ -12,12 +12,13 @@ class Platform : public QObject
     Q_PROPERTY(bool isWindows READ isEmbedded NOTIFY started)
 public:
     explicit Platform(QObject *parent = 0);
+    static const Platform& currentPlatform();
     
-    bool isAndroid();
-    bool isEmbedded();
-    bool isUnix();
-    bool isWindows();
-    bool isDesktop();
+    bool isAndroid() const;
+    bool isEmbedded() const;
+    bool isUnix() const;
+    bool isWindows() const;
+    bool isDesktop() const;
     
 signals:
     void started();
