@@ -59,8 +59,13 @@ private:
     QQmlPropertyMap* propertyMap;
 };
 
-#define BASE_KROMOPHONE_SETTING(n, d, v) inline Setting& n() { return SettingsCreator::create(QStringLiteral(#n), d, v); } \
-    namespace { Setting& _ ## n = n(); }
+#define BASE_KROMOPHONE_SETTING_DECL(n, d, v) inline Setting& n() { return SettingsCreator::create(QStringLiteral(#n), d, v); }
+
+#ifdef KROMOPHONE_IMPLEMENT_SETTING
+#define BASE_KROMOPHONE_SETTING(n, d, v) BASE_KROMOPHONE_SETTING_DECL(n, d, v) namespace { Setting& _ ## n = n(); }
+#else
+#define BASE_KROMOPHONE_SETTING(n, d, v) BASE_KROMOPHONE_SETTING_DECL(n, d, v)
+#endif
 
 #define KROMOPHONE_SETTING(n, d) BASE_KROMOPHONE_SETTING(n, d, true)
 
@@ -72,13 +77,14 @@ namespace Settings {
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
     KROMOPHONE_SETTING(lockExposure, false)
-    KROMOPHONE_SETTING(saturation, 16)
+    KROMOPHONE_SETTING(saturation, 25)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)
     HIDDEN_KROMOPHONE_SETTING(audioDevice, "default")
     HIDDEN_KROMOPHONE_SETTING(v4lDevice, "/dev/video0")
     HIDDEN_KROMOPHONE_SETTING(forceCameraDriver, false)
+    HIDDEN_KROMOPHONE_SETTING(bgr, false)
 }
 
 #endif // SETTINGS_H

@@ -6,14 +6,23 @@
 
 extern "C" void process_image(void* data);
 
-void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b) {
+void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b, bool bgr) {
 	int tmp;
+    if (y < 16)
+        y = 16;
+    
+    if (v < 128)
+        v = 128;
+    
+    if (u < 128)
+        u = 128;
+    
 	tmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
-	*r = tmp;
+	*(bgr ? b : r) = tmp;
 	tmp = (298*(y-16) - 100*(u-128)-208*(v-128) + 128) >> 8;
 	if (tmp >255)
 		tmp=255;
@@ -25,10 +34,10 @@ void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned cha
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
-	*b = tmp;
+	*(bgr ? r : b) = tmp;
 }
 
-void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height) {
+void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height, bool bgr) {
 	int i,n=0;
 	unsigned char y0,u,y1,v,r,g,b;
 	
@@ -39,10 +48,63 @@ void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height) {
 		y1=yuv[2];
 		v=yuv[3];
 		yuv+=4;
-		yuvtorgb_pixel(y0,u,v,&rgb[n++],&rgb[n++],&rgb[n++]);
-		yuvtorgb_pixel(y1,u,v,&rgb[n++],&rgb[n++],&rgb[n++]);
+		yuvtorgb_pixel(y0,u,v,&rgb[n++],&rgb[n++],&rgb[n++], bgr);
+		yuvtorgb_pixel(y1,u,v,&rgb[n++],&rgb[n++],&rgb[n++], bgr);
         i++;
 	}
+}
+
+void yuyvtorgb_new(unsigned char* yuyv_image, unsigned char* rgb_image, int width, int height) {
+    int y;
+    int cr;
+    int cb;
+    
+    double r;
+    double g;
+    double b;
+    
+    for (int i = 0, j = 0; i < width * height * 3; i+=6, j+=4) {
+        //first pixel
+        y = yuyv_image[j];
+        cb = yuyv_image[j+1];
+        cr = yuyv_image[j+3];
+    
+        r = y + (1.4065 * (cr - 128));
+        g = y - (0.3455 * (cb - 128)) - (0.7169 * (cr - 128));
+        b = y + (1.7790 * (cb - 128));
+    
+        //This prevents colour distortions in your rgb image
+        if (r < 0) r = 0;
+        else if (r > 255) r = 255;
+        if (g < 0) g = 0;
+        else if (g > 255) g = 255;
+        if (b < 0) b = 0;
+        else if (b > 255) b = 255;
+    
+        rgb_image[i] = (unsigned char)r;
+        rgb_image[+1] = (unsigned char)g;
+        rgb_image[i+2] = (unsigned char)b;
+    
+        //second pixel
+        y = yuyv_image[j+2];
+        cb = yuyv_image[j+1];
+        cr = yuyv_image[j+3];
+    
+        r = y + (1.4065 * (cr - 128));
+        g = y - (0.3455 * (cb - 128)) - (0.7169 * (cr - 128));
+        b = y + (1.7790 * (cb - 128));
+    
+        if (r < 0) r = 0;
+        else if (r > 255) r = 255;
+        if (g < 0) g = 0;
+        else if (g > 255) g = 255;
+        if (b < 0) b = 0;
+        else if (b > 255) b = 255;
+    
+        rgb_image[i+3] = (unsigned char)r;
+        rgb_image[+4] = (unsigned char)g;
+        rgb_image[i+5] = (unsigned char)b;
+    }
 }
 
 static QImage v4limage;
@@ -50,7 +112,7 @@ static QImage v4limage;
 void process_image(void * d) {
 #ifdef Q_OS_LINUX
     uchar* b = (uchar*) malloc(CAMERA_WIDTH * CAMERA_HEIGHT * 3 * 2);
-    yuyvtorgb((unsigned char*) d, (unsigned char*) b, CAMERA_WIDTH, CAMERA_HEIGHT);
+    yuyvtorgb((unsigned char*) d, (unsigned char*) b, CAMERA_WIDTH, CAMERA_HEIGHT, Settings::bgr().value().toBool());
    
     v4limage = QImage(b, CAMERA_WIDTH, CAMERA_HEIGHT, QImage::Format_RGB888, [](void* v){
         free(v);

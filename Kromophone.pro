@@ -98,7 +98,6 @@ HEADERS  += MainWindow.h \
     Transform.h \
     ColorPreviewWidget.h \
     KeyboardFilter.h \
-    DesktopImageSource.h \
     GPIOWatcher.h \
     Settings.h \
     PreviewImageProvider.h \

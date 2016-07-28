@@ -1,3 +1,4 @@
+#define KROMOPHONE_IMPLEMENT_SETTING
 #include "Settings.h"
 
 Setting::Setting(const SettingName &name, const QVariant &defaultValue)

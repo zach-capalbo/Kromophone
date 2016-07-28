@@ -60,6 +60,14 @@ FormBase {
         {
             app.settings.lockExposure = !app.settings.lockExposure
         }
+        else if (event.text == "k")
+        {
+            app.settings.saturation += 3
+        }
+        else if (event.text == "j")
+        {
+            app.settings.saturation -= 3
+        }
         else if (event.text == "?")
         {
             help.visible = !help.visible
