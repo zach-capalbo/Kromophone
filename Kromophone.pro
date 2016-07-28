@@ -131,6 +131,8 @@ DISTFILES += \
     android/gradle/wrapper/gradle-wrapper.properties \
     android/gradlew.bat \
     android/src/KeepOnActivity.java \ 
+    package_for_windows.bat \
+    Kromophone.iss
 
 include(video/video.pri)
 include(sources.pri)
