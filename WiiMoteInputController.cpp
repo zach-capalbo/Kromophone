@@ -72,6 +72,16 @@ void WiiMoteInputController::onReleased(int code)
     case 316: // Home Button
         Settings::average().toggle();
         break;
+     case 407: //Plus
+        Settings::saturation().increment(1);
+        break;
+    case 412: //Minus
+        Settings::saturation().decrement(1);
+        break;
+    case 257: //One
+        break;
+    case 258: //Two
+        break;
     }
     
     // If we have a window, then these are already mapped to keypresses
