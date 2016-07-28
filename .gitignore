@@ -24,3 +24,4 @@ moc_*.cpp
 debug/
 release/
 Kromophone-bitrock.xml.backup
+Output/*.exe
