@@ -89,6 +89,10 @@ FormBase {
         app.settings.sweepSize -= 3
     }
 
+    Keys.onEscapePressed: {
+        Controller.stopSonification()
+    }
+
     focus: true
     
     Component.onCompleted: {
