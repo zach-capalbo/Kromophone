@@ -9,7 +9,7 @@
 TARGET = Kromophone
 TEMPLATE = app
 
-QT       += core gui widgets quick qml
+QT       += core gui widgets quick qml websockets
 #hurray for C++11
 QMAKE_CXXFLAGS += -std=c++0x
 
@@ -86,7 +86,8 @@ SOURCES += main.cpp\
     ArgParser.cpp \
     WiiMote.cpp \
     WiiBluetoothConnector.cpp \
-    WiiMoteInputController.cpp
+    WiiMoteInputController.cpp \
+    WebSocketServer.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -106,7 +107,8 @@ HEADERS  += MainWindow.h \
     WiiMote.h \
     WiiBluetoothConnector.h \
     WiiMoteInputController.h \
-    version.h
+    version.h \
+    WebSocketServer.h
 
     
 FORMS    += MainWindow.ui

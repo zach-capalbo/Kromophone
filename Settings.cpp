@@ -45,6 +45,11 @@ QStringList SettingsCreator::displayedSettings()
     return Instance().displayedSettings_;
 }
 
+QList<Setting *> SettingsCreator::settingsList()
+{
+    return Instance().settings.values();
+}
+
 void SettingsCreator::cppChanged(const QVariant& newValue)
 {
     Setting* setting = (Setting*) QObject::sender();

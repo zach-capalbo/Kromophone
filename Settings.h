@@ -45,6 +45,7 @@ public:
     static Setting& get(const SettingName& setting);
     static QQmlPropertyMap* qmlSettingMap();
     static QStringList displayedSettings();
+    static QList<Setting *> settingsList();
     
 private slots:
     void cppChanged(const QVariant& newValue);

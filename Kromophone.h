@@ -33,6 +33,7 @@
 #include "ArgParser.h"
 #include "WiiMoteInputController.h"
 #include "SoundEffectGenerator.h"
+#include "WebSocketServer.h"
 
 #include <memory>
 
@@ -102,6 +103,7 @@ private:
     ArgParser args;
     WiiMoteInputController wiiController;
     SoundEffectGenerator* effectGenerator;
+    WebSocketServer* webSocketServer;
 };
 
 #endif // KROMOPHONE_H

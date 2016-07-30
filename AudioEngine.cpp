@@ -111,7 +111,7 @@ void AudioEngine::initializeAudio()
 }
 
 void AudioEngine::pullTimerExpired()
-{	
+{
 //    qDebug() << "pull timer" << m_audioOutput->periodSize();
     if (m_audioOutput && m_audioOutput->state() != QAudio::StoppedState) {
         int chunks = m_audioOutput->bytesFree()/m_audioOutput->periodSize();

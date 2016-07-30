@@ -35,7 +35,8 @@ Kromophone::Kromophone(QObject *parent) :
     imageSource(nullptr), 
     colorSource(nullptr),
     quickView(nullptr),
-    effectGenerator(nullptr)
+    effectGenerator(nullptr),
+    webSocketServer(nullptr)
 {
     _platform = new Platform;
 }
@@ -103,6 +104,8 @@ void Kromophone::startup(const QStringList arguments)
     {
         startFileSonification(args["file"].toString());
     }
+
+    webSocketServer = new WebSocketServer(this);
     
     wiiController.start();
     
