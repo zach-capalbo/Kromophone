@@ -22,5 +22,6 @@ Item {
         id: _setting
         
         property bool sweep: false
+        property bool hiddenDisplay: false
     }
 }

@@ -20,6 +20,7 @@ public slots:
 protected slots:
     void onTextMessageReceived(const QString& message);
     void onError(QAbstractSocket::SocketError error);
+    void onSettingChanged(const QVariant& value);
 
 private:
     QWebSocket* socket;

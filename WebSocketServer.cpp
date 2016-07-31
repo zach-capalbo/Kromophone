@@ -1,8 +1,9 @@
 #include "WebSocketServer.h"
 #include "Kromophone.h"
 #include "Settings.h"
-#include <QWebSocket>
 #include "Logger.h"
+#include "Settings.h"
+#include <QWebSocket>
 #include <QJsonDocument>
 
 WebSocketServer::WebSocketServer(QObject *parent)
@@ -18,11 +19,10 @@ WebSocketServer::WebSocketServer(QObject *parent)
     }
     else
     {
-        qWarning() << "Could not start websocket server";
+        LOG_WARNING() << "Could not start websocket server";
     }
 
     Kromophone* app = qobject_cast<Kromophone*>(parent);
-
     if (app != nullptr)
     {
         connect(app, &Kromophone::colorChanged, this, &WebSocketServer::onColorChanged);
@@ -36,12 +36,12 @@ WebSocketServer::WebSocketServer(QObject *parent)
 
 void WebSocketServer::processTextMessage(const QString &message)
 {
-    LOG_INFO() << "Msg: " << message;
+    LOG_TRACE() << "Msg: " << message;
 }
 
 void WebSocketServer::processBinaryMessage(const QByteArray &message)
 {
-    LOG_INFO() << "BMsg: " << message.toHex();
+    LOG_TRACE() << "BMsg: " << message.toHex();
 }
 
 void WebSocketServer::onNewConnection()
@@ -51,6 +51,8 @@ void WebSocketServer::onNewConnection()
     connect(socket, &QWebSocket::textMessageReceived, this, &WebSocketServer::processTextMessage);
     connect(socket, &QWebSocket::binaryMessageReceived, this, &WebSocketServer::processBinaryMessage);
     clients << socket;
+
+    sendSettings(socket);
 }
 
 void WebSocketServer::onConnectionClosed()
@@ -76,9 +78,10 @@ void WebSocketServer::onSettingChanged(const QVariant &value)
     Setting* setting = qobject_cast<Setting*>(sender());
 
     QVariantMap msg {
-        {"type", "setting"},
-        {"name", setting->name()},
-        {"value", value}
+        {"type", "settings"},
+        {"settings", QVariantMap{
+            {setting->name(), value}
+        }}
     };
 
     broadcast(msg);
@@ -93,3 +96,19 @@ void WebSocketServer::broadcast(const QVariantMap &msg)
     }
 }
 
+void WebSocketServer::sendSettings(QWebSocket *client)
+{
+    QVariantMap settings;
+    foreach (auto setting, SettingsCreator::displayedSettings())
+    {
+        settings[setting] = SettingsCreator::get(setting).value();
+    }
+
+    QVariantMap msg {
+        {"type", "settings"},
+        {"settings", settings}
+    };
+
+    QByteArray json = QJsonDocument::fromVariant(msg).toJson();
+    client->sendTextMessage(json);
+}

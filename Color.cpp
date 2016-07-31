@@ -26,6 +26,13 @@ Color::Color()
 
 }
 
+Color::Color(const QColor &color)
+{
+    Red = color.redF();
+    Green = color.greenF();
+    Blue = color.blueF();
+}
+
 Color& Color::operator=(const QRgb& qrgb)
 {
 	Red = qRed(qrgb) / 255.0f;

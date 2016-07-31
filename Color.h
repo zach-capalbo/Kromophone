@@ -32,6 +32,7 @@ public:
     Color();
 
     Color(ColorType r, ColorType g, ColorType b) { Red = r; Green = g; Blue = b; }
+    Color(const QColor& color);
 
     ColorType Red;
     ColorType Green;

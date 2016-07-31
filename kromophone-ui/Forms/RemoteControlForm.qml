@@ -2,12 +2,9 @@ import QtQuick 2.0
 import "../Components"
 import "../Singletons"
 
-FormBase {
-    Row {
-        ColorPreview {
-            width: 200
-            height: 200
-        }
+SonificationForm {
+    TitleText {
+        anchors.centerIn: parent
+        text: "Connected to: "
     }
-
 }

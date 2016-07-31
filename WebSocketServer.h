@@ -26,6 +26,7 @@ protected slots:
 
 protected:
     void broadcast(const QVariantMap& msg);
+    void sendSettings(QWebSocket* client);
 
 private:
     QWebSocketServer* server;

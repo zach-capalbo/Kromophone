@@ -1,6 +1,8 @@
 #include "RemoteController.h"
 #include "WebSocketServer.h"
 #include "Logger.h"
+#include "Kromophone.h"
+#include "Settings.h"
 
 #include <QJsonDocument>
 #include <QColor>
@@ -9,7 +11,6 @@ RemoteController::RemoteController(QObject *parent)
     : QObject(parent),
       socket(nullptr)
 {
-
 }
 
 void RemoteController::connectTo(const QString &address)
@@ -37,15 +38,33 @@ void RemoteController::onTextMessageReceived(const QString &message)
     QJsonDocument json = QJsonDocument::fromJson(message.toUtf8());
     QVariantMap msg = json.toVariant().toMap();
 
-    LOG_INFO() << msg;
+    LOG_TRACE() << msg;
 
     if (msg["type"] == "color")
     {
-        emit colorChanged(msg["value"].value<QColor>());
+        Color color(msg["value"].value<QColor>());
+
+        Kromophone* app = qobject_cast<Kromophone*>(parent());
+        app->onColorChanged(color);
+    }
+    else if (msg["type"] == "settings")
+    {
+        QVariantMap settings = msg["settings"].toMap();
+
+        for (auto it = settings.cbegin(); it != settings.cend(); ++it)
+        {
+            LOG_INFO() << it.key() << it.value();
+            SettingsCreator::get(it.key()).set(it.value());
+        }
     }
 }
 
 void RemoteController::onError(QAbstractSocket::SocketError error)
 {
-    LOG_INFO() << "SocketError: " << error;
+    LOG_ERROR() << "SocketError: " << error;
+}
+
+void RemoteController::onSettingChanged(const QVariant &value)
+{
+
 }
