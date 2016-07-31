@@ -2,7 +2,7 @@
 #include "Kromophone.h"
 #include "Settings.h"
 #include <QWebSocket>
-#include <QDebug>
+#include "Logger.h"
 #include <QJsonDocument>
 
 WebSocketServer::WebSocketServer(QObject *parent)
@@ -36,12 +36,12 @@ WebSocketServer::WebSocketServer(QObject *parent)
 
 void WebSocketServer::processTextMessage(const QString &message)
 {
-    qDebug() << "Msg: " << message;
+    LOG_INFO() << "Msg: " << message;
 }
 
 void WebSocketServer::processBinaryMessage(const QByteArray &message)
 {
-    qDebug() << "BMsg: " << message.toHex();
+    LOG_INFO() << "BMsg: " << message.toHex();
 }
 
 void WebSocketServer::onNewConnection()

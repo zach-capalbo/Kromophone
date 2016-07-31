@@ -2,7 +2,7 @@
 #include "Settings.h"
 #include "Platform.h"
 
-#include <QDebug>
+#include "Logger.h"
 
 WiiMoteInputController::WiiMoteInputController(QObject* parent) : QObject(parent), 
     wiimote(nullptr),
@@ -25,7 +25,7 @@ void WiiMoteInputController::findWiiMote()
 {
     if (wiimote != nullptr)
     {
-        qDebug() << "Already found wii mote";
+        LOG_TRACE() << "Already found wii mote";
         return;
     }
     
@@ -33,7 +33,7 @@ void WiiMoteInputController::findWiiMote()
     
     if (wiimote == nullptr)
     {
-        qDebug() << "Could not find wiimote. Starting search thread.";
+        LOG_TRACE() << "Could not find wiimote. Starting search thread.";
         
         if (blueToothConnector == nullptr)
         {

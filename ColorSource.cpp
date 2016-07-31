@@ -24,7 +24,7 @@
 #include <QEvent>
 #include <QMouseEvent>
 #include <QRgb>
-#include <QDebug>
+#include "Logger.h"
 #include "KeyboardFilter.h"
 
 RandomColorSource::RandomColorSource()

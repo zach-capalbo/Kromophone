@@ -1,7 +1,7 @@
 #include "V4L2ImageSource.h"
 #include "v4lcamera_raw.h"
 #include "Settings.h"
-#include <QDebug>
+#include "Logger.h"
 #include <QTimer>
 
 extern "C" void process_image(void* data);

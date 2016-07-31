@@ -16,8 +16,9 @@
 
 // Qt
 #include <QString>
-#include <QDebug>
+#include "Logger.h"
 #include <QDateTime>
+#include <QDebug>
 
 // Local
 #include "CuteLogger_global.h"

@@ -6,7 +6,7 @@
 class SoundEffect
 {
 public:
-    SoundEffect(int durationMs, float volume = 0.45);
+    SoundEffect(int durationMs, float volume = 0.25);
     void fillBuffer(unsigned int sampleRate);
     qreal getSample();
     bool isDone();

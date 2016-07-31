@@ -19,7 +19,7 @@
 #include <QMetaType>
 #include <QApplication>
 #include <QQmlContext>
-#include <QDebug>
+#include "Logger.h"
 
 #include "Kromophone.h"
 #include "StaticImageColorSource.h"
@@ -29,6 +29,7 @@
 #include "version.h"
 #include "Logger.h"
 #include "ConsoleAppender.h"
+#include "RollingFileAppender.h"
 
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
@@ -88,6 +89,10 @@ void Kromophone::startup(const QStringList arguments)
     args.parse(arguments);
 
     initializeLogging();
+
+    LOG_INFO() << "Kromophone " KROMOPHONE_VERSION " initializing";
+    LOG_DEBUG() << "Arguments: " << arguments;
+
     initializeAudio();
     createInitialTransform();
     
@@ -127,7 +132,7 @@ void Kromophone::startFileSonification(const QString& path)
 {
     if (imageSource != nullptr || colorSource != nullptr)
     {
-        qDebug() << "Cannot start file with sonification already in progress";
+        LOG_INFO() << "Cannot start file with sonification already in progress";
         return;
     }
     
@@ -149,7 +154,7 @@ void Kromophone::startCameraSonification()
 {
     if (imageSource != nullptr || colorSource != nullptr)
     {
-        qDebug() << "Cannot start camera with sonification already in progress";
+        LOG_INFO() << "Cannot start camera with sonification already in progress";
         return;
     }
     
@@ -212,7 +217,13 @@ void Kromophone::onImageChanged(const QImage& image)
 void Kromophone::initializeLogging()
 {
    ConsoleAppender* consoleAppender = new ConsoleAppender;
-   ConsoleAppender->setFormat("[%{type:-7}] <%{Function}> %{message}\n");
+   consoleAppender->setFormat("[%{type:-7}] <%{Function}> %{message}\n");
+   logger->registerAppender(consoleAppender);
+
+   RollingFileAppender* fileAppender = new RollingFileAppender("kromophone-log.txt");
+   fileAppender->setDatePattern(RollingFileAppender::DailyRollover);
+   fileAppender->setDetailsLevel(Logger::Info);
+   logger->registerAppender(fileAppender);
 }
 
 void Kromophone::connectToRemote(const QString &address)
@@ -226,6 +237,8 @@ void Kromophone::initializeAudio()
     {
         return;
     }
+
+    LOG_TRACE("Initializing Audio");
     
     audioEngine = new AudioEngine;
     effectGenerator = new SoundEffectGenerator(audioEngine);
@@ -243,6 +256,7 @@ void Kromophone::createInitialTransform()
 
 void Kromophone::createDisplay()
 {
+    LOG_TRACE("Initializing Display");
     quickView = new QQuickView;
     quickView->rootContext()->setContextProperty("app", this);
     quickView->engine()->addImageProvider("preview", &previewProvider);

@@ -10,6 +10,8 @@
 #include <QtAndroidExtras>
 #endif
 
+#include "Logger.h"
+
 extern QImage qt_imageFromVideoFrame(const QVideoFrame &f);
 static const int FRAMES_TO_SKIP = 5;
 
@@ -60,8 +62,8 @@ void QmlCameraSource::start()
         return;
     }
     
-    qDebug() << camera->supportedViewfinderResolutions();
-    qDebug() << camera->viewfinderSettings().resolution();
+    LOG_INFO() << camera->supportedViewfinderResolutions();
+    LOG_INFO() << camera->viewfinderSettings().resolution();
     connect(&probe,SIGNAL(videoFrameProbed(QVideoFrame)),this,SLOT(onFrame(QVideoFrame)));
     probe.setSource(camera);
     connect(view, SIGNAL(closing(QQuickCloseEvent)), qApp, SLOT(quit()));

@@ -1,7 +1,7 @@
 #include "ArgParser.h"
 #include "Settings.h"
 
-#include <QDebug>
+#include "Logger.h"
 
 ArgParser::ArgParser(const QStringList& arguments)
 {
@@ -28,7 +28,7 @@ void ArgParser::parse(QStringList args)
         
         if (!p.startsWith("--"))
         {
-            qDebug() << "Unknown argument: " << p;
+            LOG_INFO() << "Unknown argument: " << p;
             continue;
         }
         

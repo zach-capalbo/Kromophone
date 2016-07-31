@@ -73,7 +73,7 @@ Color &ImageColorSource::pickColor(const QImage& image)
 	else
 	{
 		lastColor = image.pixel(cursor);
-//        qDebug() << image.isNull() << image.width() << image.height();
+//        LOG_INFO() << image.isNull() << image.width() << image.height();
 //        lastColor = image.pixel(image.width() / 2, image.height() / 2);
 	}
 	

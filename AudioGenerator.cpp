@@ -24,7 +24,7 @@
 #include <QtEndian>
 
 #include <QElapsedTimer>
-#include <QDebug>
+#include "Logger.h"
 #include <QDateTime>
 
 void delay(unsigned int msecs)
@@ -98,7 +98,7 @@ m_mutex.lock();
 	QVector<qreal> channels;
     channels.resize(2);
 	
-//	qDebug() << "generating Sounds" << QDateTime::currentDateTime() << length;
+//	LOG_INFO() << "generating Sounds" << QDateTime::currentDateTime() << length;
 	initializeSounds();
 	
     while (length) {
@@ -202,7 +202,7 @@ void AudioGenerator::setSounds(const SoundList& sounds)
 	{
 		m_sounds = sounds;
 		m_mutex.unlock();
-//		qDebug() << "Setting Sounds" << QDateTime::currentDateTime();
+//		LOG_INFO() << "Setting Sounds" << QDateTime::currentDateTime();
     }
 }
 

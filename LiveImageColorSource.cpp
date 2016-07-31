@@ -18,7 +18,7 @@
 */
 #include "LiveImageColorSource.h"
 
-#include <QDebug>
+#include "Logger.h"
 #include <QLabel>
 #include <QLayout>
 #include <QApplication>

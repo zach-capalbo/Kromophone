@@ -1,7 +1,7 @@
 #include "WiiBluetoothConnector.h"
 #include "Platform.h"
 #include <QThread>
-#include <QDebug>
+#include "Logger.h"
 
 WiiBluetoothConnector::WiiBluetoothConnector(QObject *parent) : QObject(parent),
     timeoutMs(20 * 1000)

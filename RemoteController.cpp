@@ -1,5 +1,6 @@
 #include "RemoteController.h"
 #include "WebSocketServer.h"
+#include "Logger.h"
 
 #include <QJsonDocument>
 #include <QColor>
@@ -27,7 +28,7 @@ void RemoteController::connectTo(const QString &address)
     url.setHost(address);
     url.setPort(WebSocketServer::Port);
     url.setPath("/");
-    qDebug() << "Connecting to: " << url;
+    LOG_INFO() << "Connecting to: " << url;
     socket->open(url);
 }
 
@@ -36,7 +37,7 @@ void RemoteController::onTextMessageReceived(const QString &message)
     QJsonDocument json = QJsonDocument::fromJson(message.toUtf8());
     QVariantMap msg = json.toVariant().toMap();
 
-    qDebug() << msg;
+    LOG_INFO() << msg;
 
     if (msg["type"] == "color")
     {
@@ -46,5 +47,5 @@ void RemoteController::onTextMessageReceived(const QString &message)
 
 void RemoteController::onError(QAbstractSocket::SocketError error)
 {
-    qDebug() << "SocketError: " << error;
+    LOG_INFO() << "SocketError: " << error;
 }

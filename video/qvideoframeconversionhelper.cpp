@@ -32,7 +32,7 @@
 ****************************************************************************/
 
 #include "qvideoframeconversionhelper_p.h"
-#include <QDebug>
+#include "Logger.h"
 
 QT_BEGIN_NAMESPACE
 

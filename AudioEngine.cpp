@@ -18,7 +18,7 @@
 */
 #include "AudioEngine.h"
 
-#include <QDebug>
+#include "Logger.h"
 #include <QThread>
 
 #include "Settings.h"
@@ -55,18 +55,18 @@ void AudioEngine::initializeAudio()
     m_format.setByteOrder(QAudioFormat::LittleEndian);
     m_format.setSampleType(QAudioFormat::SignedInt);
 	
-//	qDebug() << "Available devices";
+//	LOG_INFO() << "Available devices";
 	foreach (QAudioDeviceInfo out, QAudioDeviceInfo::availableDevices(QAudio::AudioOutput))
 	{
-//			qDebug() << out.deviceName();
+//			LOG_INFO() << out.deviceName();
 	}
 
     QAudioDeviceInfo info;
-    qDebug() << "Default: " << info.deviceName();
+    LOG_TRACE() << "Default: " << info.deviceName();
     QList<QAudioDeviceInfo> il = QAudioDeviceInfo::availableDevices(QAudio::AudioOutput);
     for (QList<QAudioDeviceInfo>::Iterator it = il.begin(); it != il.end(); it++)
     {
-//        qDebug() << it->deviceName();
+//        LOG_INFO() << it->deviceName();
         if (it->deviceName() == Settings::audioDevice().value().toString())
         {
             info = *it;
@@ -80,10 +80,10 @@ void AudioEngine::initializeAudio()
 
     m_device = info;
     
-    qDebug() << "Using: " << m_device.deviceName();
+    LOG_INFO() << "Using: " << m_device.deviceName();
 
     if (!info.isFormatSupported(m_format)) {
-        qWarning() << "Default format not supported - trying to use nearest";
+        LOG_WARNING() << "Default format not supported - trying to use nearest";
         m_format = info.nearestFormat(m_format);
     }
 
@@ -113,7 +113,7 @@ void AudioEngine::initializeAudio()
 
 void AudioEngine::pullTimerExpired()
 {
-//    qDebug() << "pull timer" << m_audioOutput->periodSize();
+//    LOG_INFO() << "pull timer" << m_audioOutput->periodSize();
     if (m_audioOutput && m_audioOutput->state() != QAudio::StoppedState) {
         int chunks = m_audioOutput->bytesFree()/m_audioOutput->periodSize();
         while (chunks) {
@@ -150,12 +150,12 @@ void AudioEngine::addSoundEffect(std::unique_ptr<SoundEffect> soundEffect)
 
 void AudioEngine::notify()
 {
-	qDebug() << "Notified";
+    LOG_DEBUG() << "Notified";
 }
 
 void AudioEngine::stateChanged(QAudio::State newState)
 {
-	qDebug() << newState;
+    LOG_DEBUG() << newState;
 	
 	if (m_audioOutput->error() != QAudio::NoError)
 	{

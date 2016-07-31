@@ -2,7 +2,7 @@
 #include "Settings.h"
 
 #include <QThread>
-#include <QDebug>
+#include "Logger.h"
 
 #ifdef Q_OS_LINUX
 
@@ -51,7 +51,7 @@ WiiMote* WiiMote::find()
         if (fd == -1)
         {
             int err = errno;
-            qDebug() << "Could not open " << entry << " becase " << err << strerror(err);
+            LOG_INFO() << "Could not open " << entry << " becase " << err << strerror(err);
             continue;
         }
         
@@ -91,7 +91,7 @@ void WiiMote::loop()
     
     if (!valid)
     {
-        qDebug() << "Cannot start invalid wiimote";
+        LOG_INFO() << "Cannot start invalid wiimote";
         emit error();
         return;
     }
@@ -103,7 +103,7 @@ void WiiMote::loop()
         if (read (fd, ev, size * 64) < size)
         {
             int err = errno;
-            qDebug() << "Error reading from input" << err << strerror(err);
+            LOG_INFO() << "Error reading from input" << err << strerror(err);
             emit error();
             return;
         }
