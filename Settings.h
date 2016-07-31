@@ -78,7 +78,7 @@ namespace Settings {
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
     KROMOPHONE_SETTING(lockExposure, false)
-    KROMOPHONE_SETTING(saturation, 25)
+    KROMOPHONE_SETTING(saturation, 100)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)

@@ -21,7 +21,8 @@
 #include <iostream>
 using namespace std;
 
-SoundOut::SoundOut()
+SoundOut::SoundOut(QObject *parent)
+    : QObject(parent)
 {
 }
 

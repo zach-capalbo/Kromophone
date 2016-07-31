@@ -27,6 +27,8 @@
 #include "Transform.h"
 #include "CameraFactory.h"
 #include "version.h"
+#include "Logger.h"
+#include "ConsoleAppender.h"
 
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
@@ -36,7 +38,8 @@ Kromophone::Kromophone(QObject *parent) :
     colorSource(nullptr),
     quickView(nullptr),
     effectGenerator(nullptr),
-    webSocketServer(nullptr)
+    webSocketServer(nullptr),
+    remote(nullptr)
 {
     _platform = new Platform;
 }
@@ -83,7 +86,8 @@ void Kromophone::startup()
 void Kromophone::startup(const QStringList arguments)
 {
     args.parse(arguments);
-    
+
+    initializeLogging();
     initializeAudio();
     createInitialTransform();
     
@@ -105,9 +109,16 @@ void Kromophone::startup(const QStringList arguments)
         startFileSonification(args["file"].toString());
     }
 
-    webSocketServer = new WebSocketServer(this);
+    if (!args.contains("noSockets"))
+    {
+        webSocketServer = new WebSocketServer(this);
+        remote = new RemoteController(this);
+    }
     
-    wiiController.start();
+    if (!args.contains("noWiiMote"))
+    {
+        wiiController.start();
+    }
     
     emit startupComplete();
 }
@@ -196,6 +207,17 @@ void Kromophone::onColorChanged(Color newColor)
 void Kromophone::onImageChanged(const QImage& image)
 {
     this->previewProvider.setImage(image);
+}
+
+void Kromophone::initializeLogging()
+{
+   ConsoleAppender* consoleAppender = new ConsoleAppender;
+   ConsoleAppender->setFormat("[%{type:-7}] <%{Function}> %{message}\n");
+}
+
+void Kromophone::connectToRemote(const QString &address)
+{
+    this->remote->connectTo(address);
 }
 
 void Kromophone::initializeAudio()

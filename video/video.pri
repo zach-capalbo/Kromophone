@@ -1,5 +1,6 @@
 
 INCLUDEPATH += video
+DEPENDPATH += video
 
 
 HEADERS += \

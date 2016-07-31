@@ -37,8 +37,9 @@ const int DataFrequencyHz = 48000;
 const int BufferSize      = 3276*4;
 
 AudioEngine::AudioEngine(QObject *parent) :
-	SoundOut(),  m_pullTimer(new QTimer(this)), m_buffer(BufferSize, 0), m_output(NULL)
+    SoundOut(parent),  m_pullTimer(nullptr), m_buffer(BufferSize, 0), m_output(NULL)
 {
+    m_pullTimer = new QTimer(this);
 }
 
 void AudioEngine::initializeAudio()

@@ -87,7 +87,8 @@ SOURCES += main.cpp\
     WiiMote.cpp \
     WiiBluetoothConnector.cpp \
     WiiMoteInputController.cpp \
-    WebSocketServer.cpp
+    WebSocketServer.cpp \
+    RemoteController.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -108,7 +109,8 @@ HEADERS  += MainWindow.h \
     WiiBluetoothConnector.h \
     WiiMoteInputController.h \
     version.h \
-    WebSocketServer.h
+    WebSocketServer.h \
+    RemoteController.h
 
     
 FORMS    += MainWindow.ui
@@ -139,3 +141,4 @@ DISTFILES += \
 include(video/video.pri)
 include(sources.pri)
 include(audio.pri)
+include(CuteLogger/CuteLogger.pri)

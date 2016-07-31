@@ -25,7 +25,7 @@ class SoundOut : public QObject
 {
     Q_OBJECT
 public:
-    SoundOut();
+    SoundOut(QObject* parent = nullptr);
 
 public slots:
     virtual void PlaySound(const Sound &InputSound);

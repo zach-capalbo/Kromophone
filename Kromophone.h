@@ -34,6 +34,7 @@
 #include "WiiMoteInputController.h"
 #include "SoundEffectGenerator.h"
 #include "WebSocketServer.h"
+#include "RemoteController.h"
 
 #include <memory>
 
@@ -72,12 +73,13 @@ public slots:
     void startCameraSonification();
     void stopSonification();
     
-    void onMouseImageHover(int x, int y);
-    
+    void connectToRemote(const QString& address);
+    void onMouseImageHover(int x, int y);    
     void onColorChanged(Color newColor);
     void onImageChanged(const QImage& image);
         
 private:
+    void initializeLogging();
     void initializeAudio();
     void createInitialTransform();
     void createDisplay();
@@ -104,6 +106,7 @@ private:
     WiiMoteInputController wiiController;
     SoundEffectGenerator* effectGenerator;
     WebSocketServer* webSocketServer;
+    RemoteController* remote;
 };
 
 #endif // KROMOPHONE_H

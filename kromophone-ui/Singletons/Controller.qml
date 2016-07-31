@@ -18,6 +18,8 @@ Item {
             app.startFileSonification(image)
         } else if (currentForm == "CameraSonificationForm") {
             startCameraTimer.start()
+        } else if (currentForm == "RemoteControlForm") {
+            app.connectToRemote("voyager.home");
         }
         
         _previousForm = currentForm

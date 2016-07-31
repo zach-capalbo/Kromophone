@@ -31,5 +31,6 @@
         <file>kromophone-ui/Images/Kromophone.png</file>
         <file>kromophone-ui/Forms/LicenseForm.qml</file>
         <file>kromophone-ui/Components/BackButton.qml</file>
+        <file>kromophone-ui/Forms/RemoteControlForm.qml</file>
     </qresource>
 </RCC>

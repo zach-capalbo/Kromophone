@@ -4,12 +4,13 @@ TextButton {
     id: settingButton
     width: parent.width
     property string setting
-    text: settingButton.setting + ":\n" + app.settings[setting]
+    property var source: app
+    text: settingButton.setting + ":\n" + source.settings[setting]
     
     onClicked: {
-        if (app.settings[setting] == true || app.settings[setting] == false)
+        if (source.settings[setting] == true || source.settings[setting] == false)
         {
-            app.settings[setting] = !app.settings[setting]
+            source.settings[setting] = !source.settings[setting]
         }
     }
 }
