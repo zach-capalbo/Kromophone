@@ -20,7 +20,7 @@ void RemoteController::connectTo(const QString &address)
         socket->deleteLater();
     }
 
-    socket = new QWebSocket(QStringLiteral("Kromophone"));
+    socket = new QWebSocket(QStringLiteral("Kromophone"), QWebSocketProtocol::VersionLatest, this);
     connect(socket, &QWebSocket::textMessageReceived, this, &RemoteController::onTextMessageReceived);
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
 

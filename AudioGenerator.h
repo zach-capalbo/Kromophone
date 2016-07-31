@@ -56,7 +56,7 @@ protected:
     qint64 m_durationUs;
     int m_frequency;
 	int m_sampleIndex;
-	QMutex m_mutex;
+    QMutex* m_mutex;
 };
 
 class AudioGenerator : public Generator

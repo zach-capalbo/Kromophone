@@ -220,6 +220,10 @@ void Kromophone::initializeLogging()
    consoleAppender->setFormat("[%{type:-7}] <%{Function}> %{message}\n");
    logger->registerAppender(consoleAppender);
 
+   ConsoleAppender* qmlAppender = new ConsoleAppender;
+   qmlAppender->setFormat("[%{type:-7}] <%{File}:%{Function}> %{message}\n");
+   logger->registerCategoryAppender("qml", qmlAppender);
+
    RollingFileAppender* fileAppender = new RollingFileAppender("kromophone-log.txt");
    fileAppender->setDatePattern(RollingFileAppender::DailyRollover);
    fileAppender->setDetailsLevel(Logger::Info);

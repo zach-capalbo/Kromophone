@@ -46,6 +46,7 @@ Generator::Generator(const QAudioFormat &format,
     ,   m_durationUs(durationUs)
     ,   m_frequency(frequency)
 	,	m_sampleIndex(0)
+    ,   m_mutex(new QMutex(QMutex::Recursive))
 {
 
 }
@@ -94,7 +95,8 @@ void Generator::generateData(const QAudioFormat& format, unsigned char* ptr, qin
 	const int channelBytes = format.sampleSize() / 8;
 	if (length <= 0)
 		return;
-m_mutex.lock();	
+    QMutexLocker lock(m_mutex);
+
 	QVector<qreal> channels;
     channels.resize(2);
 	
@@ -130,7 +132,6 @@ m_mutex.lock();
         }
         ++m_sampleIndex;
     }
-	m_mutex.unlock();
 	
 }
 
@@ -198,17 +199,17 @@ void AudioGenerator::setSound(const Sound &sound)
 
 void AudioGenerator::setSounds(const SoundList& sounds)
 {
-	if (m_mutex.tryLock())
+    if (m_mutex->tryLock())
 	{
 		m_sounds = sounds;
-		m_mutex.unlock();
+        m_mutex->unlock();
 //		LOG_INFO() << "Setting Sounds" << QDateTime::currentDateTime();
     }
 }
 
 void AudioGenerator::addSoundEffect(std::unique_ptr<SoundEffect> soundEffect)
 {
-    QMutexLocker lock(&m_mutex);
+    QMutexLocker lock(m_mutex);
     m_soundEffect = std::move(soundEffect);
     m_soundEffect->fillBuffer(m_format.sampleRate());
 }

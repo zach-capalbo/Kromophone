@@ -37,7 +37,7 @@ const int DataFrequencyHz = 48000;
 const int BufferSize      = 3276*4;
 
 AudioEngine::AudioEngine(QObject *parent) :
-    SoundOut(parent),  m_pullTimer(nullptr), m_buffer(BufferSize, 0), m_output(NULL)
+    SoundOut(parent),  m_pullTimer(nullptr), m_buffer(BufferSize, 0), m_output(nullptr), m_generator(nullptr)
 {
     m_pullTimer = new QTimer(this);
 }
@@ -106,14 +106,10 @@ void AudioEngine::initializeAudio()
     m_pullTimer->start(1);
 
     m_output = m_audioOutput->start();
-//    m_audioOutput->start(m_generator);
-
-
 }
 
 void AudioEngine::pullTimerExpired()
 {
-//    LOG_INFO() << "pull timer" << m_audioOutput->periodSize();
     if (m_audioOutput && m_audioOutput->state() != QAudio::StoppedState) {
         int chunks = m_audioOutput->bytesFree()/m_audioOutput->periodSize();
         while (chunks) {
@@ -131,21 +127,25 @@ void AudioEngine::pullTimerExpired()
 
 void AudioEngine::PlaySound(const Sound &otherSound)
 {
-	currentSound = otherSound;
-	//m_audioOutput->stop();
-	emit updateSound(currentSound);
-	//m_audioOutput->start(m_generator);
+    currentSound = otherSound;
+    emit updateSound(currentSound);
 }
 
 void AudioEngine::PlaySounds(const SoundList &InputSounds)
 {
-	emit updateSounds(InputSounds);
-	m_generator->setSounds(InputSounds);
+    if (m_generator != nullptr)
+    {
+        emit updateSounds(InputSounds);
+        m_generator->setSounds(InputSounds);
+    }
 }
 
 void AudioEngine::addSoundEffect(std::unique_ptr<SoundEffect> soundEffect)
 {
-    m_generator->addSoundEffect(std::move(soundEffect));
+    if (m_generator != nullptr)
+    {
+        m_generator->addSoundEffect(std::move(soundEffect));
+    }
 }
 
 void AudioEngine::notify()
