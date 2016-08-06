@@ -1,9 +1,31 @@
 #include "QtCameraSource.h"
+#include "Settings.h"
+#include "Logger.h"
 #include <QCameraInfo>
 
 QtCameraSource::QtCameraSource(QObject* parent)
+    : ImageSource(parent)
 {
-    camera = new QCamera(QCamera::BackFace);
+    camera = nullptr;
+    QString requestedDevice = Settings::v4lDevice().value().toString();
+    if (!requestedDevice.isEmpty())
+    {
+        foreach(QCameraInfo info, QCameraInfo::availableCameras())
+        {
+            LOG_DEBUG() << info.deviceName();
+            if (info.deviceName() == requestedDevice)
+            {
+                camera = new QCamera(info);
+                break;
+            }
+        }
+    }
+    
+    if (camera == nullptr)
+    {
+        camera = new QCamera(QCamera::BackFace);
+    }
+    
     q_check_ptr(camera);
     surface = new CallbackVideoSurface;
     connect(surface, &CallbackVideoSurface::update, this, &QtCameraSource::update);

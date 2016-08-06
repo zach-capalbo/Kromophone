@@ -76,6 +76,14 @@ FormBase {
         {
             Controller.stopSonification()
         }
+        else if (event.text == "g")
+        {
+            app.settings.hue += 3
+        }
+        else if (event.text == "f")
+        {
+            app.settings.hue -= 3
+        }
 
         console.log(event.text);
     }

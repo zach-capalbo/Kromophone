@@ -6,30 +6,32 @@
 
 extern "C" void process_image(void* data);
 
-void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b, bool bgr) {
-	int tmp;
-    if (y < 16)
-        y = 16;
+void yuvtorgb_pixel(unsigned int uy, unsigned int uu, unsigned int uv, unsigned char* r, unsigned char* g, unsigned char* b, bool bgr) {
+	unsigned int tmp;
+    long int stmp;
+
+    long y = uy;
+    long u = uu;
+    long v = uv;
     
-    if (v < 128)
-        v = 128;
-    
-    if (u < 128)
-        u = 128;
-    
-	tmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
+	stmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
+    tmp = stmp;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
 	*(bgr ? b : r) = tmp;
-	tmp = (298*(y-16) - 100*(u-128)-208*(v-128) + 128) >> 8;
+	
+    stmp = (298*(y-16) - 100*(u-128)-208*(v-128) + 128) >> 8;
+    tmp = stmp;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
 	*g = tmp;
-	tmp = (298*(y-16) + 516*(u-128) + 128) >> 8;
+	
+    stmp = (298*(y-16) + 516*(u-128) + 128) >> 8;
+    tmp = stmp;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
@@ -39,7 +41,7 @@ void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned cha
 
 void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height, bool bgr) {
 	int i,n=0;
-	unsigned char y0,u,y1,v,r,g,b;
+	unsigned char y0,u,y1,v;
 	
 	unsigned char* yuv = iyuv;
 	for (i=0;i<(width*height);) {
@@ -124,6 +126,7 @@ V4L2ImageSource::V4L2ImageSource()
 {
     connect(&Settings::saturation(), &Setting::valueChanged, this, &V4L2ImageSource::onSaturationChanged);
     connect(&Settings::lockExposure(), &Setting::valueChanged, this, &V4L2ImageSource::onLockExposureChanged);
+    connect(&Settings::hue(), &Setting::valueChanged, this, &V4L2ImageSource::onHueChanged);
 }
 
 V4L2ImageSource::~V4L2ImageSource()
@@ -172,5 +175,12 @@ void V4L2ImageSource::onLockExposureChanged(const QVariant& value)
 {
 #ifdef Q_OS_LINUX
     set_auto_exposure(value.toBool() ? 0 : 1);
+#endif
+}
+
+void V4L2ImageSource::onHueChanged(const QVariant& value)
+{
+#ifdef Q_OS_LINUX
+    set_hue(value.toInt());
 #endif
 }

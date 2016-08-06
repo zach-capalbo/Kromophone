@@ -720,3 +720,15 @@ void set_saturation(int saturation) {
               printf("Saturation set to %d \n", control.value);
 	
 }
+
+void set_hue(int hue) {
+			struct v4l2_control control;
+		 	control.id    =V4L2_CID_HUE;	
+            control.value =hue;
+			int value;
+            if ((value = ioctl(fd, VIDIOC_S_CTRL, &control)) < 0)
+              printf("Set Saturation error\n");
+            else
+              printf("Saturation set to %d \n", control.value);
+	
+}

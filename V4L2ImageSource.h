@@ -19,6 +19,7 @@ private slots:
     void getImage();
     void onSaturationChanged(const QVariant& value);
     void onLockExposureChanged(const QVariant& value);
+    void onHueChanged(const QVariant& value);
 };
 
 #endif // V4L2IMAGESOURCE_H

@@ -78,7 +78,8 @@ namespace Settings {
     KROMOPHONE_SETTING(average, false)
     KROMOPHONE_SETTING(averageSize, 10)
     KROMOPHONE_SETTING(lockExposure, false)
-    KROMOPHONE_SETTING(saturation, 100)
+    KROMOPHONE_SETTING(saturation, 30)
+    KROMOPHONE_SETTING(hue, 0)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)
@@ -86,6 +87,7 @@ namespace Settings {
     HIDDEN_KROMOPHONE_SETTING(v4lDevice, "/dev/video0")
     HIDDEN_KROMOPHONE_SETTING(forceCameraDriver, false)
     HIDDEN_KROMOPHONE_SETTING(bgr, false)
+    HIDDEN_KROMOPHONE_SETTING(rotate, 0)
 }
 
 #endif // SETTINGS_H
