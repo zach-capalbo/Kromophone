@@ -6,32 +6,24 @@
 
 extern "C" void process_image(void* data);
 
-void yuvtorgb_pixel(unsigned int uy, unsigned int uu, unsigned int uv, unsigned char* r, unsigned char* g, unsigned char* b, bool bgr) {
+void yuvtorgb_pixel(unsigned int y, unsigned int u, unsigned int v, unsigned char* r, unsigned char* g, unsigned char* b, bool bgr) {
 	unsigned int tmp;
-    long int stmp;
-
-    long y = uy;
-    long u = uu;
-    long v = uv;
     
-	stmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
-    tmp = stmp;
+	tmp = (298*(y-16) + 409*(v-128) + 128) >> 8;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
 	*(bgr ? b : r) = tmp;
 	
-    stmp = (298*(y-16) - 100*(u-128)-208*(v-128) + 128) >> 8;
-    tmp = stmp;
+    tmp = (298*(y-16) - 100*(u-128)-208*(v-128) + 128) >> 8;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
 		tmp=0;
 	*g = tmp;
 	
-    stmp = (298*(y-16) + 516*(u-128) + 128) >> 8;
-    tmp = stmp;
+    tmp = (298*(y-16) + 516*(u-128) + 128) >> 8;
 	if (tmp >255)
 		tmp=255;
 	if (tmp<0)
@@ -39,7 +31,7 @@ void yuvtorgb_pixel(unsigned int uy, unsigned int uu, unsigned int uv, unsigned 
 	*(bgr ? r : b) = tmp;
 }
 
-void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height, bool bgr) {
+void yuyvtorgb_old(unsigned char* iyuv, unsigned char* rgb, int width, int height, bool bgr) {
 	int i,n=0;
 	unsigned char y0,u,y1,v;
 	
@@ -56,7 +48,7 @@ void yuyvtorgb(unsigned char* iyuv, unsigned char* rgb, int width, int height, b
 	}
 }
 
-void yuyvtorgb_new(unsigned char* yuyv_image, unsigned char* rgb_image, int width, int height) {
+void yuyvtorgb(unsigned char* yuyv_image, unsigned char* rgb_image, int width, int height, bool) {
     int y;
     int cr;
     int cb;
@@ -84,7 +76,7 @@ void yuyvtorgb_new(unsigned char* yuyv_image, unsigned char* rgb_image, int widt
         else if (b > 255) b = 255;
     
         rgb_image[i] = (unsigned char)r;
-        rgb_image[+1] = (unsigned char)g;
+        rgb_image[i+1] = (unsigned char)g;
         rgb_image[i+2] = (unsigned char)b;
     
         //second pixel
@@ -104,9 +96,13 @@ void yuyvtorgb_new(unsigned char* yuyv_image, unsigned char* rgb_image, int widt
         else if (b > 255) b = 255;
     
         rgb_image[i+3] = (unsigned char)r;
-        rgb_image[+4] = (unsigned char)g;
+        rgb_image[i+4] = (unsigned char)g;
         rgb_image[i+5] = (unsigned char)b;
     }
+}
+
+void yuyvtorgb_mine(unsigned char* yuyv_image, unsigned char* rgb_image, int width, int height, bool) {
+    
 }
 
 static QImage v4limage;
