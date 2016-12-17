@@ -7,4 +7,8 @@ SonificationForm {
         anchors.centerIn: parent
         text: "Connected to: "
     }
+
+    TextButton {
+        text: "Start Recording"
+    }
 }

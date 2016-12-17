@@ -17,6 +17,7 @@
 	
 */
 #include "Transform.h"
+#include "Settings.h"
 
 Transform::Transform() : sweepEnabled(false)
 {}

@@ -50,6 +50,7 @@ public:
     
     operator QColor();
 
+    Color saturate(float alpha) const;
 };
 
 Q_DECLARE_METATYPE(Color)

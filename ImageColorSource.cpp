@@ -1,8 +1,10 @@
 #include "ImageColorSource.h"
 #include <QTimer>
+#include "Logger.h"
 
 ImageColorSource::ImageColorSource(QObject* parent)
-	: ColorSource(parent), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200)
+    : ColorSource(parent), cursorSize(5,5), averageEnabled(false), sweepPos(0,0), sweepSize(200, 200),
+      saturationAdjustment(1.0)
 {
 	sweepTimer = new QTimer(this);
 	connect(sweepTimer, SIGNAL(timeout()), this, SLOT(sweep()));
@@ -76,8 +78,42 @@ Color &ImageColorSource::pickColor(const QImage& image)
 //        LOG_INFO() << image.isNull() << image.width() << image.height();
 //        lastColor = image.pixel(image.width() / 2, image.height() / 2);
 	}
+
+    if (Settings::saturationAdjustment().value().toBool())
+    {
+        findSaturation(image);
+    }
+
+    postProcessColor();
 	
 	return lastColor;
+}
+
+void ImageColorSource::findSaturation(const QImage& image)
+{
+    int endX = image.width();
+    int endY = image.height();
+
+    float totalSaturation = 0;
+
+    for (int x = 0; x < endX; ++x)
+    {
+        for (int y = 0; y < endY; ++y)
+        {
+            Color color = Color(image.pixel(x, y));
+            totalSaturation += color.saturation();
+        }
+    }
+
+    saturationAdjustment = 1.0 / (totalSaturation / ((float) (endX * endY)));
+
+    LOG_INFO() << "Saturation Adjustment: " << saturationAdjustment;
+
+}
+
+void ImageColorSource::postProcessColor()
+{
+    lastColor = lastColor.saturate(saturationAdjustment);
 }
 
 void ImageColorSource::average(const QImage& image)

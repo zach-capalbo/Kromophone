@@ -80,6 +80,7 @@ namespace Settings {
     KROMOPHONE_SETTING(lockExposure, false)
     KROMOPHONE_SETTING(saturation, 30)
     KROMOPHONE_SETTING(hue, 0)
+    KROMOPHONE_SETTING(saturationAdjustment, true)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)

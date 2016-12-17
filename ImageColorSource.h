@@ -20,6 +20,8 @@ public slots:
     
     void averageSizeChanged(const QVariant& value);
     void sweepSizeChanged(const QVariant& value);
+
+    void postProcessColor();
 	
 signals:
 	void doSweep(bool enabled, QPointF sweepPct);
@@ -35,6 +37,8 @@ protected:
 	Color& pickColor(const QImage& image);
 	
 	void average(const QImage& image);
+
+    void findSaturation(const QImage &image);
 	
 	QPoint cursor;
 	
@@ -49,8 +53,10 @@ protected:
 	Color lastColor;
 	
 	bool averageEnabled;
+
+    float saturationAdjustment;
 	
-	QTimer* sweepTimer;
+    QTimer* sweepTimer;
 };
 
 #endif // IMAGECOLORSOURCE_H

@@ -53,7 +53,10 @@ float Color::hue() const
 
 float Color::saturation() const
 {
-	return qMin(Red, qMin(Green, Blue));
+    //return qMin(Red, qMin(Green, Blue));
+
+    // FCC Standard
+    return 0.2989f*Red + 0.5870f*Green + 0.1140f*Blue;
 }
 
 float Color::luminosity() const
@@ -63,6 +66,14 @@ float Color::luminosity() const
 	hsl(h,s,l);
 	
 	return l;
+}
+
+Color Color::saturate(float alpha) const
+{
+    float sat = saturation();
+    return Color(qMin(1.0, qMax(0.0, Red * alpha + (1.0 - alpha) * sat)),
+                 qMin(1.0, qMax(0.0, Green * alpha + (1.0 - alpha) * sat)),
+                 qMin(1.0, qMax(0.0, Blue * alpha + (1.0 - alpha) * sat)));
 }
 
 void Color::hsl(float& hue, float& saturation, float& luminosity) const
