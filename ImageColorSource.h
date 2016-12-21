@@ -11,6 +11,7 @@ class ImageColorSource : public ColorSource
 public slots:
 	
     void setAverage(const QVariant& value);
+    void setSaturationAdjustment(const QVariant& value);
 	
 	void toggleAverage();
 	

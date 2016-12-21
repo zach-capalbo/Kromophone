@@ -53,9 +53,27 @@ float Color::hue() const
 
 float Color::saturation() const
 {
-    //return qMin(Red, qMin(Green, Blue));
+    float imax = qMax( qMax(Red, Green), Blue);
 
-    // FCC Standard
+    float imin = qMin( qMin(Red, Green), Blue);
+
+    if (imax==imin)
+    {
+        return 0;
+    }
+    else
+    {
+        return (imax-imin)/imax;
+    }
+}
+
+float Color::min() const
+{
+    return qMin(Red, qMin(Green, Blue));
+}
+
+float Color::grayness() const
+{
     return 0.2989f*Red + 0.5870f*Green + 0.1140f*Blue;
 }
 
@@ -65,12 +83,12 @@ float Color::luminosity() const
 	
 	hsl(h,s,l);
 	
-	return l;
+    return l;
 }
 
 Color Color::saturate(float alpha) const
 {
-    float sat = saturation();
+    float sat = grayness();
     return Color(qMin(1.0, qMax(0.0, Red * alpha + (1.0 - alpha) * sat)),
                  qMin(1.0, qMax(0.0, Green * alpha + (1.0 - alpha) * sat)),
                  qMin(1.0, qMax(0.0, Blue * alpha + (1.0 - alpha) * sat)));

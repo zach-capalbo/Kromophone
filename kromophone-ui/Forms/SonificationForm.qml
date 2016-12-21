@@ -33,10 +33,24 @@ FormBase {
                 help.visible = !help.visible
             }
         }
+
+        TextButton {
+            text: "Adv Settings"
+            width: parent.width
+            onClicked: {
+                advSettings.visible = !advSettings.visible
+            }
+        }
     }
     
     HotKeyOverlay {
         id: help
+        visible: false
+        z: 2000
+    }
+
+    AdvancedSettings {
+        id: advSettings
         visible: false
         z: 2000
     }

@@ -1,11 +1,9 @@
 import QtQuick 2.0
 import "../Singletons"
 
-Item {
+Overlay {
     id: overlay
-    width: parent.width * 0.95
-    height: parent.height * 0.95
-    anchors.centerIn: parent
+
     property bool showingWiimote: false
     
     property var keys: [
@@ -30,15 +28,6 @@ Item {
         "Left - Decrease Sweep Area",
         "Right - Increase Sweep Area",
     ]
-    
-    Rectangle {
-        anchors.fill: parent
-        color: Style.normalBg
-        opacity: 0.85
-        radius: 10
-        border.color: Style.normalFg
-        border.width: Style.borderWidth
-    }
     
     Column {
         width: parent.width

@@ -32,5 +32,9 @@
         <file>kromophone-ui/Forms/LicenseForm.qml</file>
         <file>kromophone-ui/Components/BackButton.qml</file>
         <file>kromophone-ui/Forms/RemoteControlForm.qml</file>
+        <file>kromophone-ui/Components/Equalizer.qml</file>
+        <file>kromophone-ui/Components/Overlay.qml</file>
+        <file>kromophone-ui/Components/SettingSlider.qml</file>
+        <file>kromophone-ui/Forms/AdvancedSettings.qml</file>
     </qresource>
 </RCC>

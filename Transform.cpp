@@ -106,7 +106,7 @@ void RGBYWMode::ReceiveColor(Color P)
 {
 	SoundList l;
 	
-	float saturation = P.saturation();
+    float saturation = P.min();
 	
 	float yellow = qMin( P.Red, P.Green ) - saturation;
 	

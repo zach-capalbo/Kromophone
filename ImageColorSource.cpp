@@ -13,6 +13,7 @@ ImageColorSource::ImageColorSource(QObject* parent)
     connect(&Settings::sweepSize(), &Setting::valueChanged, this, &ImageColorSource::sweepSizeChanged);
     connect(&Settings::average(), &Setting::valueChanged, this, &ImageColorSource::setAverage);
     connect(&Settings::averageSize(), &Setting::valueChanged, this, &ImageColorSource::averageSizeChanged);
+    connect(&Settings::saturationAdjustment(), &Setting::valueChanged, this, &ImageColorSource::setSaturationAdjustment);
 }
 
 void ImageColorSource::setAverage(const QVariant& value)
@@ -32,6 +33,11 @@ void ImageColorSource::setAverage(const QVariant& value)
     }
 	
     updateColor();
+}
+
+void ImageColorSource::setSaturationAdjustment(const QVariant &value)
+{
+    this->saturationAdjustment = value.toFloat();
 }
 
 void ImageColorSource::toggleAverage()
@@ -79,7 +85,7 @@ Color &ImageColorSource::pickColor(const QImage& image)
 //        lastColor = image.pixel(image.width() / 2, image.height() / 2);
 	}
 
-    if (Settings::saturationAdjustment().value().toBool())
+    if (Settings::adjustSaturation().value().toBool())
     {
         findSaturation(image);
     }
@@ -101,13 +107,20 @@ void ImageColorSource::findSaturation(const QImage& image)
         for (int y = 0; y < endY; ++y)
         {
             Color color = Color(image.pixel(x, y));
-            totalSaturation += color.saturation();
+//            totalSaturation += color.saturation();
+            totalSaturation = qMax(color.saturation(), totalSaturation);
+//            totalSaturation += color.saturation() * color.saturation();
         }
     }
 
-    saturationAdjustment = 1.0 / (totalSaturation / ((float) (endX * endY)));
+//    saturationAdjustment = 1.0 / (totalSaturation / ((float) (endX * endY)));
+//    saturationAdjustment = 1.0 + 1.0 - totalSaturation / ((float) (endX * endY));
+    saturationAdjustment = 1.0 / totalSaturation;
+//    saturationAdjustment = 1.0 / (sqrt(totalSaturation / ((float) (endX * endY))));
 
-    LOG_INFO() << "Saturation Adjustment: " << saturationAdjustment;
+    Settings::saturationAdjustment().set(saturationAdjustment);
+
+    LOG_INFO() << "Saturation Adjustment: " << saturationAdjustment << totalSaturation ;
 
 }
 

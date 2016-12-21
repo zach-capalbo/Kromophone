@@ -43,9 +43,9 @@ void QtCameraSource::start()
     camera->setViewfinder(surface);
     
     QCameraViewfinderSettings settings;
-    settings.setResolution(320,240);
-    settings.setMinimumFrameRate(60);
-    camera->setViewfinderSettings(settings);
+//    settings.setResolution(320,240);
+//    settings.setMinimumFrameRate(60);
+//    camera->setViewfinderSettings(settings);
     camera->start();
 }
 

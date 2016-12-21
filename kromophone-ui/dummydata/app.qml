@@ -23,5 +23,6 @@ Item {
         
         property bool sweep: false
         property bool hiddenDisplay: false
+        property real rotate: 0.0
     }
 }

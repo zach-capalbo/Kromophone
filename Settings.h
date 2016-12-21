@@ -71,6 +71,7 @@ private:
 #define KROMOPHONE_SETTING(n, d) BASE_KROMOPHONE_SETTING(n, d, true)
 
 #define HIDDEN_KROMOPHONE_SETTING(n, d) BASE_KROMOPHONE_SETTING(n, d, false)
+#define ADVANCED_KROMOPHONE_SETTING(n, d) HIDDEN_KROMOPHONE_SETTING(n, d)
 
 namespace Settings {
     KROMOPHONE_SETTING(sweep, false)
@@ -80,7 +81,9 @@ namespace Settings {
     KROMOPHONE_SETTING(lockExposure, false)
     KROMOPHONE_SETTING(saturation, 30)
     KROMOPHONE_SETTING(hue, 0)
-    KROMOPHONE_SETTING(saturationAdjustment, true)
+    KROMOPHONE_SETTING(adjustSaturation, true)
+
+    ADVANCED_KROMOPHONE_SETTING(saturationAdjustment, 1.0)
     
     HIDDEN_KROMOPHONE_SETTING(hiddenDisplay, false)
     HIDDEN_KROMOPHONE_SETTING(headless, false)
