@@ -10,6 +10,7 @@ class MessageProcessor : public QObject
     Q_OBJECT
 
     QVariantMap lastKnownSettings;
+    bool settingsConnected;
 public:
     explicit MessageProcessor(QObject *parent = 0);
 

@@ -6,18 +6,26 @@
 #include <QJsonDocument>
 #include <QColor>
 
-MessageProcessor::MessageProcessor(QObject *parent) : QObject(parent)
+MessageProcessor::MessageProcessor(QObject *parent)
+    : QObject(parent),
+      settingsConnected(false)
 {
-    foreach (Setting* setting, SettingsCreator::settingsList())
-    {
-        connect(setting, &Setting::valueChanged, this, &MessageProcessor::onSettingChanged);
-    }
 }
 
 void MessageProcessor::connectSignals(const QWebSocket *socket)
 {
     connect(socket, &QWebSocket::textMessageReceived, this, &MessageProcessor::onTextMessageReceived);
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(onError(QAbstractSocket::SocketError)));
+
+    if (!settingsConnected)
+    {
+        foreach (Setting* setting, SettingsCreator::settingsList())
+        {
+            connect(setting, &Setting::valueChanged, this, &MessageProcessor::onSettingChanged);
+        }
+
+        settingsConnected = true;
+    }
 }
 
 void MessageProcessor::onTextMessageReceived(const QString &message)
