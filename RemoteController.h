@@ -8,6 +8,8 @@
 class RemoteController : public QObject
 {
     Q_OBJECT
+
+    QVariantMap lastKnownSettings;
 public:
     explicit RemoteController(QObject *parent = 0);
 
@@ -21,7 +23,7 @@ protected slots:
     void onTextMessageReceived(const QString& message);
     void onError(QAbstractSocket::SocketError error);
     void onSettingChanged(const QVariant& value);
-
+    void sendMessage(const QVariantMap &message);
 private:
     QWebSocket* socket;
 };

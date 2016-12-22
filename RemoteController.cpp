@@ -54,6 +54,7 @@ void RemoteController::onTextMessageReceived(const QString &message)
         for (auto it = settings.cbegin(); it != settings.cend(); ++it)
         {
             LOG_INFO() << it.key() << it.value();
+            lastKnownSettings[it.key()] = it.value();
             SettingsCreator::get(it.key()).set(it.value());
         }
     }
@@ -66,5 +67,26 @@ void RemoteController::onError(QAbstractSocket::SocketError error)
 
 void RemoteController::onSettingChanged(const QVariant &value)
 {
+    Setting* setting = qobject_cast<Setting*>(sender());
+    q_check_ptr(setting);
 
+    if (value != lastKnownSettings[setting->name()])
+    {
+        lastKnownSettings[setting->name()] = value;
+
+        QVariantMap msg {
+            {"type", "settings"},
+            {"settings", QVariantMap{
+                {setting->name(), value}
+            }}
+        };
+
+        sendMessage(msg);
+    }
+}
+
+void RemoteController::sendMessage(const QVariantMap& message)
+{
+    QByteArray json = QJsonDocument::fromVariant(message).toJson();
+    socket->sendTextMessage(json);
 }

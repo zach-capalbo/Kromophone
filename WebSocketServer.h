@@ -8,6 +8,7 @@
 class WebSocketServer : public QObject
 {
     Q_OBJECT
+    QVariantMap lastKnownSettings;
 public:
     explicit WebSocketServer(QObject *parent = 0);
     static const int Port = 7982;
