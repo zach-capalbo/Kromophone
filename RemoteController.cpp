@@ -11,6 +11,10 @@ RemoteController::RemoteController(QObject *parent)
     : QObject(parent),
       socket(nullptr)
 {
+    foreach (Setting* setting, SettingsCreator::settingsList())
+    {
+        connect(setting, &Setting::valueChanged, this, &RemoteController::onSettingChanged);
+    }
 }
 
 void RemoteController::connectTo(const QString &address)
