@@ -3,12 +3,12 @@
 
 #include <QObject>
 #include <QWebSocketServer>
+#include "MessageProcessor.h"
 #include "Color.h"
 
-class WebSocketServer : public QObject
+class WebSocketServer : public MessageProcessor
 {
     Q_OBJECT
-    QVariantMap lastKnownSettings;
 public:
     explicit WebSocketServer(QObject *parent = 0);
     static const int Port = 7982;
@@ -16,17 +16,14 @@ public:
 signals:
 
 public slots:
-    virtual void processTextMessage(const QString& message);
-    virtual void processBinaryMessage(const QByteArray& message);
 
 protected slots:
     void onNewConnection();
     void onConnectionClosed();
     void onColorChanged(const QColor &color);
-    void onSettingChanged(const QVariant& value);
 
 protected:
-    void broadcast(const QVariantMap& msg);
+    void sendMessage(const QVariantMap& msg);
     void sendSettings(QWebSocket* client);
 
 private:

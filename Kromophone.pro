@@ -88,7 +88,8 @@ SOURCES += main.cpp\
     WiiBluetoothConnector.cpp \
     WiiMoteInputController.cpp \
     WebSocketServer.cpp \
-    RemoteController.cpp
+    RemoteController.cpp \
+    MessageProcessor.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -110,7 +111,8 @@ HEADERS  += MainWindow.h \
     WiiMoteInputController.h \
     version.h \
     WebSocketServer.h \
-    RemoteController.h
+    RemoteController.h \
+    MessageProcessor.h
 
     
 FORMS    += MainWindow.ui

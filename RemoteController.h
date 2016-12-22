@@ -3,26 +3,19 @@
 
 #include <QObject>
 #include <QWebSocket>
-#include <QColor>
+#include "MessageProcessor.h"
 
-class RemoteController : public QObject
+class RemoteController : public MessageProcessor
 {
     Q_OBJECT
 
-    QVariantMap lastKnownSettings;
 public:
     explicit RemoteController(QObject *parent = 0);
-
-signals:
-    void colorChanged(QColor color);
 
 public slots:
     void connectTo(const QString& address);
 
 protected slots:
-    void onTextMessageReceived(const QString& message);
-    void onError(QAbstractSocket::SocketError error);
-    void onSettingChanged(const QVariant& value);
     void sendMessage(const QVariantMap &message);
 private:
     QWebSocket* socket;
