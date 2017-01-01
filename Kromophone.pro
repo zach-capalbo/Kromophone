@@ -89,7 +89,8 @@ SOURCES += main.cpp\
     WiiMoteInputController.cpp \
     WebSocketServer.cpp \
     RemoteController.cpp \
-    MessageProcessor.cpp
+    MessageProcessor.cpp \
+    HealthCheck.cpp
 
 
 HEADERS  += MainWindow.h \
@@ -112,7 +113,8 @@ HEADERS  += MainWindow.h \
     version.h \
     WebSocketServer.h \
     RemoteController.h \
-    MessageProcessor.h
+    MessageProcessor.h \
+    HealthCheck.h
 
     
 FORMS    += MainWindow.ui

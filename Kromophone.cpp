@@ -30,6 +30,7 @@
 #include "Logger.h"
 #include "ConsoleAppender.h"
 #include "RollingFileAppender.h"
+#include "HealthCheck.h"
 
 Kromophone::Kromophone(QObject *parent) :
 	QObject(parent), 
@@ -92,6 +93,9 @@ void Kromophone::startup(const QStringList arguments)
 
     LOG_INFO() << "Kromophone " KROMOPHONE_VERSION " initializing";
     LOG_DEBUG() << "Arguments: " << arguments;
+
+    HealthCheck* health = new HealthCheck(this);
+    Q_UNUSED(health);
 
     initializeAudio();
     createInitialTransform();

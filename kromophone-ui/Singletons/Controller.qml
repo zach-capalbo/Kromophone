@@ -19,7 +19,7 @@ Item {
         } else if (currentForm == "CameraSonificationForm") {
             startCameraTimer.start()
         } else if (currentForm == "RemoteControlForm") {
-            app.connectToRemote("voyager.home");
+            app.connectToRemote("raspberrypi.home");
         }
         
         _previousForm = currentForm
