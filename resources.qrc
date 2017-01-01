@@ -36,5 +36,7 @@
         <file>kromophone-ui/Components/Overlay.qml</file>
         <file>kromophone-ui/Components/SettingSlider.qml</file>
         <file>kromophone-ui/Forms/AdvancedSettings.qml</file>
+        <file>kromophone-ui/Forms/ConnectionForm.qml</file>
+        <file>kromophone-ui/Components/StandardTextField.qml</file>
     </qresource>
 </RCC>

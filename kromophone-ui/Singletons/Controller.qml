@@ -8,6 +8,7 @@ Item {
     property string image: ":/Images/Resources/spectrum.jpg"
     property bool landscape: false
     property bool isPortrait: !landscape
+    property string remoteHost: "raspberrypi.home"
     
     onCurrentFormChanged: {
         console.log("Navigating from " + _previousForm + " to " + currentForm)
@@ -19,7 +20,7 @@ Item {
         } else if (currentForm == "CameraSonificationForm") {
             startCameraTimer.start()
         } else if (currentForm == "RemoteControlForm") {
-            app.connectToRemote("raspberrypi.home");
+            app.connectToRemote(remoteHost);
         }
         
         _previousForm = currentForm

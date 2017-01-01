@@ -17,7 +17,7 @@ FormBase {
                 ListElement { desc: "Sonify Camera"; target: "CameraSonificationForm" }
                 ListElement { desc: "Sonify Image File"; target: "SelectImageForm" }
                 ListElement { desc: "Sonify Color Spectrum"; target: "SpectrumSonificationForm" }
-                ListElement { desc: "Remote Control another Kromophone"; target: "RemoteControlForm" }
+                ListElement { desc: "Remote Control another Kromophone"; target: "ConnectionForm" }
                 ListElement { desc: "About"; target: "AboutForm" }
             }
             
